@@ -44,7 +44,7 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fa fa-user mr-2"></i> Administrator
+          <i class="fa fa-user mr-2"></i> {{ Auth::user()->name }}
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">Profile</span>
@@ -78,7 +78,7 @@
           <img src="{{asset('assets/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">@if (Auth::check()){{Auth::user()->name}} @else Administrator @endif</a>
+          <a href="#" class="d-block">{{Auth::user()->name}}</a>
         </div>
       </div>
 
@@ -117,7 +117,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('/admin/menu-makan') }}" class="nav-link {{ $page == 'menu-makan' ? 'active' : '' }}">
+            <a href="{{ url('/admin/menu-makan') }}" class="nav-link">
               <i class="nav-icon fas fa-money-bill-wave"></i>
               <p>
                 Kasir

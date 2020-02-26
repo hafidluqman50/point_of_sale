@@ -1,6 +1,4 @@
 <?php
-use Illuminate\Support\Str;
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,32 +11,26 @@ use App\Models\User;
 |
 */
 
-Route::get('/',['uses' => 'AuthController@index']);
-Route::post('/login',['uses' => 'AuthController@login']);
+Route::group(['middleware' => 'has.auth'],function(){
+	Route::get('/',['uses' => 'AuthController@index']);
+	Route::post('/login',['uses' => 'AuthController@login']);
+});
 Route::get('/logout',['uses' => 'AuthController@logout']);
 
-Route::get('/insert-admin',function(){
-	User::insert([[
-		'id_users'	  => (string)Str::uuid(),
-		'name'        => 'Administrator',
-		'username'    => 'admin',
-		'password'    => bcrypt('admin'),
-		'level_user'  => 1,
-		'status_akun' => 1
-	],[
-		'id_users'	  => (string)Str::uuid(),
-		'name'        => 'Petugas',
-		'username'    => 'petugas',
-		'password'    => bcrypt('petugas'),
-		'level_user'  => 0,
-		'status_akun' => 1,
-	]]);
-});
-
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/dashboard',['uses' => 'Admin\DashboardController@index']);
+
+	// ROUTE MENU MAKAN //
+	Route::get('/menu-makan',['uses' => 'Admin\MenuMakanController@index']);
+	Route::get('/menu-makan/tambah',['uses' => 'Admin\MenuMakanController@tambah']);
+	Route::post('/menu-makan/save',['uses' => 'Admin\MenuMakanController@save']);
+	Route::get('/menu-makan/edit/{id}',['uses' => 'Admin\MenuMakanController@edit']);
+	Route::put('/menu-makan/update/{id}',['uses' => 'Admin\MenuMakanController@update']);
+	Route::delete('/menu-makan/delete/{id}',['uses' => 'Admin\MenuMakanController@delete']);
+	// END ROUTE MENU MAKAN //
+	
 });
 
-Route::group(['prefix'=>'petugas'],function(){
+Route::group(['middleware' => 'is.petugas', 'prefix' => 'petugas'],function(){
 	Route::get('/kasir',['uses' => 'Kasir\KasirController@index']);
 });
