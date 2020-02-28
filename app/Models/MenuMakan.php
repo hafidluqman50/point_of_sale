@@ -9,6 +9,7 @@ class MenuMakan extends Model
 	protected $table      = 'menu_makan';
 	protected $primaryKey = 'id_menu_makan';
 	public $timestamps    = false;
-    public $incrementing  = false;
-    protected $keyType    = 'string';
+	public $incrementing  = false;
+	protected $keyType    = 'string';
+	protected $guarded    = [];
 }

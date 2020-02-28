@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Feb 25, 2020 at 04:07 PM
+-- Generation Time: Feb 28, 2020 at 12:43 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -31,9 +31,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `menu_makan` (
   `id_menu_makan` varchar(36) NOT NULL,
   `nama_menu` varchar(100) NOT NULL,
-  `harga` int(11) NOT NULL,
-  `status_menu` int(11) NOT NULL
+  `harga_menu` int(11) NOT NULL,
+  `foto_menu` text NOT NULL,
+  `status_menu` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `menu_makan`
+--
+
+INSERT INTO `menu_makan` (`id_menu_makan`, `nama_menu`, `harga_menu`, `foto_menu`, `status_menu`) VALUES
+('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, 'photo.jpg', 'tersedia');
 
 -- --------------------------------------------------------
 
@@ -85,7 +93,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `status_akun`, `remember_token`) VALUES
 ('5fcc4e88-979d-48c6-893c-4226b3432467', 'Petugas', 'petugas', '$2y$10$9eTnfzyJ.sK6MU3nSB58eOdyxnCF4/mNCQJnwvXiUDikbg5POkAWO', 0, 1, 'YMKX9UMYkvD7Ynqi5w6zrJP69QZq6oOPrBRJQVoXr4eNVejHvBEoTm2Gy50x'),
-('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 1, 1, '7YvX2ZDNeIPEAiWZMt5l8Qsx0fWcSyYJM2j7TWLM2EKgw0qWtf7FYcTOkDc9');
+('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 1, 1, 'nvNAm1Dd3apbJYE9Xz9XC2kBOOflheJtAVgBvfZ6Vz8XL7KFyRk8fnyExCkZ');
 
 --
 -- Indexes for dumped tables

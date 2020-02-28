@@ -36,6 +36,7 @@
 										<th>Nama Menu</th>
 										<th>Harga</th>
 										<th>Foto Menu</th>
+										<th>Status Menu</th>
 										<th>#</th>
 									</tr>
 								</thead>

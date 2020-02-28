@@ -117,7 +117,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('/admin/menu-makan') }}" class="nav-link">
+            <a href="{{ url('/admin/kasir') }}" class="nav-link">
               <i class="nav-icon fas fa-money-bill-wave"></i>
               <p>
                 Kasir
