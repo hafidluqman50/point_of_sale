@@ -29,7 +29,7 @@
 							</a>
 						</div>
 						<div class="card-body">
-							<table class="table table-hover">
+							<table class="table table-hover" id="menu-makan" width="100%">
 								<thead>
 									<tr>
 										<th>No.</th>

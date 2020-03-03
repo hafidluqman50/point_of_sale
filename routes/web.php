@@ -17,6 +17,10 @@ Route::group(['middleware' => 'has.auth'],function(){
 });
 Route::get('/logout',['uses' => 'AuthController@logout']);
 
+Route::group(['prefix' => 'datatables'],function(){
+	Route::get('/menu-makan',['uses' => 'DatatablesController@dataMenuMakan']);
+});
+
 Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/dashboard',['uses' => 'Admin\DashboardController@index']);
 
