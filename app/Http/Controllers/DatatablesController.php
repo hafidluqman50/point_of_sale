@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MenuMakan;
+use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
 use DataTables;
 
 class DatatablesController extends Controller
@@ -34,6 +36,23 @@ class DatatablesController extends Controller
     			return '<span class="badge badge-danger"> Kosong </span';
     		}
     	})->rawColumns(['action','foto_menu','status_menu'])->make(true);
+
+        return $datatables;
+    }
+
+    public function dataTransaksi()
+    {
+        $transaksi = Transaksi::getData();
+        $datatables = DataTables::of($transaksi)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/menu-makan/edit/$action->id_menu_makan").'">
+                          <button class="btn btn-warning"> Edit </button>
+                       </a>
+                       <a href="'.url("/admin/menu-makan/delete/$action->id_menu_makan").'">
+                           <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
+                       </a>
+                    ';
+            return $column;
+        })->make(true);
 
         return $datatables;
     }

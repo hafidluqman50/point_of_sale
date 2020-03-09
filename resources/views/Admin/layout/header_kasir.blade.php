@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Top Navigation</title>
+  <title>Point Of Sale | Kasir</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('assets/plugins/fontawesome-free/css/all.min.css')}}">
@@ -23,9 +23,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white fixed-top">
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
-      <a href="index3.html" class="navbar-brand">
+      <a href="#" class="navbar-brand">
         <span class="brand-text font-weight-light">Point Of Sale</span>
       </a>
       
@@ -37,7 +37,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="index3.html" class="nav-link">Semua</a>
+            <a href="#" class="nav-link">Semua</a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">Makanan</a>
@@ -50,7 +50,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- SEARCH FORM -->
         <form class="form-inline ml-0 ml-md-3">
           <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Cari Menu" aria-label="Cari Menu">
+            <input class="form-control form-control-navbar" name="cari_menu" type="search" placeholder="Cari Menu" aria-label="Cari Menu">
             <div class="input-group-append">
               <button class="btn btn-navbar" type="submit">
                 <i class="fas fa-search"></i>

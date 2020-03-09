@@ -93,6 +93,46 @@
               </p>
             </a>
           </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-warehouse"></i>
+              <p>Inventory Barang
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-barang') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Barang</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-supplier') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Supplier</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-barang-masuk') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Barang Masuk</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-barang-keluar') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Barang Keluar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-belanja') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Belanja</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item">
             <a href="{{ url('/admin/transaksi') }}" class="nav-link {{ $page == 'transaksi' ? 'active' : '' }}">
               <i class="nav-icon fas fa-money-check"></i>
