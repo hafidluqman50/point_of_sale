@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Traits\UuidInsert;
 
 class User extends Authenticatable
 {
+    use UuidInsert;
+
     protected $table      = 'users';
     protected $primaryKey = 'id_users';
     public $timestamps    = false;
-    public $incrementing  = false;
-    protected $keyType    = 'string';
 
     use Notifiable;
 

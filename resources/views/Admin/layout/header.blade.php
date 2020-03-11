@@ -93,8 +93,8 @@
               </p>
             </a>
           </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li class="nav-item has-treeview @if (isset($treeview)){{ $treeview == 'inventory' ? 'menu-open' : '' }}@endif">
+            <a href="#" class="nav-link @if (isset($treeview)){{ $treeview == 'inventory' ? 'active' : '' }}@endif">
               <i class="nav-icon fas fa-warehouse"></i>
               <p>Inventory Barang
                 <i class="right fas fa-angle-left"></i>
@@ -102,7 +102,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('/admin/data-barang') }}" class="nav-link">
+                <a href="{{ url('/admin/data-jenis-barang') }}" class="nav-link {{ $page == 'jenis-barang' ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Jenis Barang</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-barang') }}" class="nav-link {{ $page == 'barang' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Data Barang</p>
                 </a>

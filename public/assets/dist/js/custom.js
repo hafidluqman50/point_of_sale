@@ -31,4 +31,60 @@ $(function(){
         	cell.innerHTML = i+1;
         });
     }).draw();
+
+    var jenis_barang = $('#data-jenis-barang').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-jenis-barang',
+        columns:[
+            {data:'id_jenis_barang',searchable:false,render:function(data,type,row,meta){
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_jenis',name:'nama_jenis'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    });
+    jenis_barang.on( 'order.dt search.dt', function () {
+        jenis_barang.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        });
+    }).draw();
+
+    var barang = $('#data-barang').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-barang',
+        columns:[
+            {data:'id_barang',searchable:false,render:function(data,type,row,meta){
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_barang',name:'nama_barang'},
+            {data:'nama_jenis',name:'nama_jenis'},
+            {data:'stok_barang',name:'stok_barang'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    });
+    barang.on( 'order.dt search.dt', function () {
+        barang.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        });
+    }).draw();
 });

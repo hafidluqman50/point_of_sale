@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\UuidInsert;
 
-class MenuMakan extends Model
+class Supplier extends Model
 {
 	use UuidInsert;
 
-	protected $table      = 'menu_makan';
-	protected $primaryKey = 'id_menu_makan';
+	protected $table      = 'supplier';
+	protected $primaryKey = 'id_supplier';
 	protected $guarded    = [];
 	public $timestamps    = false;
 }

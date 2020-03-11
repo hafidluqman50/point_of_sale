@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\UuidInsert;
 
 class Transaksi extends Model
 {
+    use UuidInsert;
+
 	protected $table      = 'transaksi';
 	protected $primaryKey = 'id_transaksi';
-    public $incrementing  = false;
-    protected $keyType    = 'string';
 
    	public static function getData()
    	{

@@ -19,6 +19,8 @@ Route::get('/logout',['uses' => 'AuthController@logout']);
 
 Route::group(['prefix' => 'datatables'],function(){
 	Route::get('/menu-makan',['uses' => 'DatatablesController@dataMenuMakan']);
+	Route::get('/data-barang',['uses' => 'DatatablesController@dataBarang']);
+	Route::get('/data-jenis-barang',['uses' => 'DatatablesController@dataJenisBarang']);
 });
 
 Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
@@ -32,6 +34,24 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::put('/menu-makan/update/{id}',['uses' => 'Admin\MenuMakanController@update']);
 	Route::delete('/menu-makan/delete/{id}',['uses' => 'Admin\MenuMakanController@delete']);
 	// END ROUTE MENU MAKAN //
+
+	// ROUTE BARANG //
+	Route::get('/data-jenis-barang',['uses' => 'Admin\JenisBarangController@index']);
+	Route::get('/data-jenis-barang/tambah',['uses' => 'Admin\JenisBarangController@tambah']);
+	Route::post('/data-jenis-barang/save',['uses' => 'Admin\JenisBarangController@save']);
+	Route::get('/data-jenis-barang/edit/{id}',['uses' => 'Admin\JenisBarangController@edit']);
+	Route::put('/data-jenis-barang/update/{id}',['uses' => 'Admin\JenisBarangController@update']);
+	Route::delete('/data-jenis-barang/delete/{id}',['uses' => 'Admin\JenisBarangController@delete']);
+	// END ROUTE BARANG //
+
+	// ROUTE BARANG //
+	Route::get('/data-barang',['uses' => 'Admin\BarangController@index']);
+	Route::get('/data-barang/tambah',['uses' => 'Admin\BarangController@tambah']);
+	Route::post('/data-barang/save',['uses' => 'Admin\BarangController@save']);
+	Route::get('/data-barang/edit/{id}',['uses' => 'Admin\BarangController@edit']);
+	Route::put('/data-barang/update/{id}',['uses' => 'Admin\BarangController@update']);
+	Route::delete('/data-barang',['uses' => 'Admin\BarangController@delete']);
+	// END ROUTE BARANG //
 	
 	// ROUTE TRANSAKSI //
 	Route::get('/transaksi',['uses' => 'Admin\TransaksiController@index']);

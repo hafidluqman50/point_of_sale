@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 09, 2020 at 01:37 PM
+-- Generation Time: Mar 11, 2020 at 04:41 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -31,8 +31,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `barang` (
   `id_barang` varchar(36) NOT NULL,
   `nama_barang` varchar(100) NOT NULL,
+  `id_jenis_barang` varchar(36) NOT NULL,
   `stok_barang` int(11) NOT NULL,
-  `keterangan_stok` varchar(30) NOT NULL
+  `keterangan_stok` varchar(30) NOT NULL,
+  `status_delete` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -58,9 +60,12 @@ CREATE TABLE `barang_keluar` (
 CREATE TABLE `barang_masuk` (
   `id_barang_masuk` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `tanggal_masuk` date NOT NULL,
-  `id_barang` varchar(36) NOT NULL,
-  `id_supplier` varchar(36) NOT NULL,
-  `jumlah_masuk` int(11) NOT NULL
+  `id_supplier` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id_barang` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `jumlah_masuk` int(11) NOT NULL,
+  `harga_satuan` int(11) NOT NULL,
+  `harga_total` int(11) NOT NULL,
+  `keterangan` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -79,6 +84,27 @@ CREATE TABLE `belanja` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `jenis_barang`
+--
+
+CREATE TABLE `jenis_barang` (
+  `id_jenis_barang` varchar(36) NOT NULL,
+  `nama_jenis` varchar(70) NOT NULL,
+  `status_delete` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `jenis_barang`
+--
+
+INSERT INTO `jenis_barang` (`id_jenis_barang`, `nama_jenis`, `status_delete`) VALUES
+('55997545-f0c2-4125-973c-ba5be683e02e', 'Buah Buahan', 0),
+('57ca891b-94b8-455b-9466-056f22a02aeb', 'Sayuran', 0),
+('99a7b837-874b-40a4-8eb2-1db422f32c0e', 'Daging', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menu_makan`
 --
 
@@ -87,15 +113,16 @@ CREATE TABLE `menu_makan` (
   `nama_menu` varchar(100) NOT NULL,
   `harga_menu` int(11) NOT NULL,
   `foto_menu` text NOT NULL,
-  `status_menu` varchar(20) NOT NULL
+  `status_menu` varchar(20) NOT NULL,
+  `status_delete` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `menu_makan`
 --
 
-INSERT INTO `menu_makan` (`id_menu_makan`, `nama_menu`, `harga_menu`, `foto_menu`, `status_menu`) VALUES
-('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, 'photo.jpg', 'tersedia');
+INSERT INTO `menu_makan` (`id_menu_makan`, `nama_menu`, `harga_menu`, `foto_menu`, `status_menu`, `status_delete`) VALUES
+('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, 'photo.jpg', 'tersedia', 0);
 
 -- --------------------------------------------------------
 
@@ -119,7 +146,8 @@ CREATE TABLE `supplier` (
   `id_supplier` varchar(36) NOT NULL,
   `nama_supplier` varchar(100) NOT NULL,
   `alamat_supplier` text NOT NULL,
-  `nomor_telepon_supplier` varchar(12) NOT NULL
+  `nomor_telepon_supplier` varchar(12) NOT NULL,
+  `status_delete` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -131,7 +159,9 @@ CREATE TABLE `supplier` (
 CREATE TABLE `transaksi` (
   `id_transaksi` varchar(36) NOT NULL,
   `tanggal_transaksi` date NOT NULL,
-  `id_users` varchar(36) NOT NULL
+  `id_users` varchar(36) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -182,25 +212,35 @@ INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `
 -- Indexes for table `barang`
 --
 ALTER TABLE `barang`
-  ADD PRIMARY KEY (`id_barang`);
+  ADD PRIMARY KEY (`id_barang`),
+  ADD KEY `id_jenis_barang` (`id_jenis_barang`);
 
 --
 -- Indexes for table `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  ADD PRIMARY KEY (`id_barang_keluar`);
+  ADD PRIMARY KEY (`id_barang_keluar`),
+  ADD KEY `id_barang` (`id_barang`);
 
 --
 -- Indexes for table `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  ADD PRIMARY KEY (`id_barang_masuk`);
+  ADD PRIMARY KEY (`id_barang_masuk`),
+  ADD KEY `id_barang` (`id_barang`),
+  ADD KEY `id_supplier` (`id_supplier`);
 
 --
 -- Indexes for table `belanja`
 --
 ALTER TABLE `belanja`
   ADD PRIMARY KEY (`id_belanja`);
+
+--
+-- Indexes for table `jenis_barang`
+--
+ALTER TABLE `jenis_barang`
+  ADD PRIMARY KEY (`id_jenis_barang`);
 
 --
 -- Indexes for table `menu_makan`
@@ -212,7 +252,8 @@ ALTER TABLE `menu_makan`
 -- Indexes for table `menu_makan_detail`
 --
 ALTER TABLE `menu_makan_detail`
-  ADD PRIMARY KEY (`id_menu_makan_detail`);
+  ADD PRIMARY KEY (`id_menu_makan_detail`),
+  ADD KEY `menu_makan_detail_ibfk_1` (`id_menu_makan`);
 
 --
 -- Indexes for table `supplier`
@@ -244,6 +285,31 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `barang`
+--
+ALTER TABLE `barang`
+  ADD CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_jenis_barang`) REFERENCES `jenis_barang` (`id_jenis_barang`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `barang_keluar`
+--
+ALTER TABLE `barang_keluar`
+  ADD CONSTRAINT `barang_keluar_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD CONSTRAINT `barang_masuk_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `barang_masuk_ibfk_2` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `menu_makan_detail`
+--
+ALTER TABLE `menu_makan_detail`
+  ADD CONSTRAINT `menu_makan_detail_ibfk_1` FOREIGN KEY (`id_menu_makan`) REFERENCES `menu_makan` (`id_menu_makan`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `transaksi`
