@@ -19,8 +19,9 @@ Route::get('/logout',['uses' => 'AuthController@logout']);
 
 Route::group(['prefix' => 'datatables'],function(){
 	Route::get('/menu-makan',['uses' => 'DatatablesController@dataMenuMakan']);
-	Route::get('/data-barang',['uses' => 'DatatablesController@dataBarang']);
 	Route::get('/data-jenis-barang',['uses' => 'DatatablesController@dataJenisBarang']);
+	Route::get('/data-barang',['uses' => 'DatatablesController@dataBarang']);
+	Route::get('/data-supplier',['uses' => 'DatatablesController@dataSupplier']);
 });
 
 Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
@@ -50,8 +51,17 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::post('/data-barang/save',['uses' => 'Admin\BarangController@save']);
 	Route::get('/data-barang/edit/{id}',['uses' => 'Admin\BarangController@edit']);
 	Route::put('/data-barang/update/{id}',['uses' => 'Admin\BarangController@update']);
-	Route::delete('/data-barang',['uses' => 'Admin\BarangController@delete']);
+	Route::delete('/data-barang/delete/{id}',['uses' => 'Admin\BarangController@delete']);
 	// END ROUTE BARANG //
+
+	// ROUTE SUPPLIER //
+	Route::get('/data-supplier',['uses' => 'Admin\SupplierController@index']);
+	Route::get('/data-supplier/tambah',['uses' => 'Admin\SupplierController@tambah']);
+	Route::post('/data-supplier/save',['uses' => 'Admin\SupplierController@save']);
+	Route::get('/data-supplier/edit/{id}',['uses' => 'Admin\SupplierController@edit']);
+	Route::put('/data-supplier/update/{id}',['uses' => 'Admin\SupplierController@update']);
+	Route::delete('/data-supplier/delete/{id}',['uses' => 'Admin\SupplierController@delete']);
+	// END ROUTE SUPPLIER //
 	
 	// ROUTE TRANSAKSI //
 	Route::get('/transaksi',['uses' => 'Admin\TransaksiController@index']);
@@ -75,6 +85,6 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	// END ROUTE KASIR //
 });
 
-Route::group(['middleware' => 'is.petugas', 'prefix' => 'petugas'],function(){
+Route::group(['middleware' => 'is.karyawan', 'prefix' => 'karyawan'],function(){
 	Route::get('/kasir',['uses' => 'Kasir\KasirController@index']);
 });

@@ -3,21 +3,21 @@
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+  {{-- <aside class="control-sidebar control-sidebar-dark"> --}}
     <!-- Control sidebar content goes here -->
-    <div class="p-3">
+    {{-- <div class="p-3">
       <h5>Title</h5>
       <p>Sidebar content</p>
     </div>
-  </aside>
+  </aside> --}}
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
+  {{-- <footer class="main-footer"> --}}
     <!-- Default to the left -->
-    <strong>Copyright &copy; {{ date('Y') }} Jupiter IT Solutions.</strong> All rights reserved.
+    {{-- <strong>Copyright &copy; {{ date('Y') }} Jupiter IT Solutions.</strong> All rights reserved.
   </footer>
-</div>
+</div> --}}
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->

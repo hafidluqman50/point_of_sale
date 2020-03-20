@@ -1,4 +1,6 @@
 $(function(){
+    $('.select2').select2();
+    
     var getUrlHost = window.location.origin;
     var urlSegment = window.location.pathname.split('/');
 
@@ -84,6 +86,35 @@ $(function(){
     });
     barang.on( 'order.dt search.dt', function () {
         barang.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        });
+    }).draw();
+
+    var supplier = $('#data-supplier').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-supplier',
+        columns:[
+            {data:'id_supplier',searchable:false,render:function(data,type,row,meta){
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_supplier',name:'nama_supplier'},
+            {data:'nomor_telepon_supplier',name:'nomor_telepon_supplier'},
+            {data:'alamat_supplier',name:'alamat_supplier'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    });
+    supplier.on( 'order.dt search.dt', function () {
+        supplier.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
             cell.innerHTML = i+1;
         });
     }).draw();

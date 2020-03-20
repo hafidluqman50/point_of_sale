@@ -38,9 +38,7 @@
 							</div>
 						</div>
 						<div class="card-footer">
-							<button class="btn btn-primary">
-								Simpan <span class="fas fa-save"></span>
-							</button>
+							<button class="btn btn-warning">Edit <span class="fas fa-pencil-alt"></span></button>
 						</div>
 					</form>
 				</div>

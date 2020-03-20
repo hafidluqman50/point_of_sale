@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 11, 2020 at 04:41 PM
+-- Generation Time: Mar 19, 2020 at 04:46 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -33,9 +33,16 @@ CREATE TABLE `barang` (
   `nama_barang` varchar(100) NOT NULL,
   `id_jenis_barang` varchar(36) NOT NULL,
   `stok_barang` int(11) NOT NULL,
-  `keterangan_stok` varchar(30) NOT NULL,
+  `satuan_stok` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `status_delete` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `barang`
+--
+
+INSERT INTO `barang` (`id_barang`, `nama_barang`, `id_jenis_barang`, `stok_barang`, `satuan_stok`, `status_delete`) VALUES
+('91be7ca5-1775-468f-a9b1-c47f17836fef', 'Bayam', '57ca891b-94b8-455b-9466-056f22a02aeb', 120, 'Ikat', 0);
 
 -- --------------------------------------------------------
 
@@ -122,7 +129,7 @@ CREATE TABLE `menu_makan` (
 --
 
 INSERT INTO `menu_makan` (`id_menu_makan`, `nama_menu`, `harga_menu`, `foto_menu`, `status_menu`, `status_delete`) VALUES
-('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, 'photo.jpg', 'tersedia', 0);
+('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, '29f97428-9833-4dc0-95fe-d6e7896c1a25.jpg', 'tersedia', 0);
 
 -- --------------------------------------------------------
 
@@ -149,6 +156,13 @@ CREATE TABLE `supplier` (
   `nomor_telepon_supplier` varchar(12) NOT NULL,
   `status_delete` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id_supplier`, `nama_supplier`, `alamat_supplier`, `nomor_telepon_supplier`, `status_delete`) VALUES
+('cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'PT Usaha Pangan Sejahtera', 'JL. Piere Tendean 43 Tulungagung 66212, Jawa Timur, Tulungagung, Jawa Timur, Indonesia', '08888888888', 0);
 
 -- --------------------------------------------------------
 

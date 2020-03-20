@@ -73,7 +73,7 @@ class DatatablesController extends Controller
             $column = '<a href="'.url("/admin/data-barang/edit/$action->id_barang").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                       <form action="'.url("/admin/data-jenis-barang/delete/$action->id_barang").'" method="POST">
+                       <form action="'.url("/admin/data-barang/delete/$action->id_barang").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -83,10 +83,10 @@ class DatatablesController extends Controller
         })->editColumn('stok_barang',function($edit){
             $stok = '';
             if ($edit->stok_barang == 0) {
-                $stok = '<span class="badges badges-danger">0</span>';
+                $stok = '<span class="badge badge-danger">0 '.$edit->satuan_stok.'</span>';
             }
             else {
-                $stok = '<span class="badges badges-success">'.$edit->stok_barang.'</span>';
+                $stok = '<span class="badge badge-success">'.$edit->stok_barang.' '.$edit->satuan_stok.'</span>';
             }
 
             return $stok;
@@ -97,7 +97,21 @@ class DatatablesController extends Controller
 
     public function dataSupplier()
     {
+        $supplier = Supplier::where('status_delete',0)->get();
+        $datatables = DataTables::of($supplier)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/data-supplier/edit/$action->id_supplier").'">
+                          <button class="btn btn-warning"> Edit </button>
+                       </a>
+                       <form action="'.url("/admin/data-supplier/delete/$action->id_supplier").'" method="POST">
+                            <input type="hidden" name="_token" value="'.csrf_token().'">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
+                       </form>
+                    ';
+            return $column;
+        })->make(true);
 
+        return $datatables;
     }
 
     public function dataBarangMasuk()

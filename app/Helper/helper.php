@@ -5,6 +5,17 @@ function format_rupiah($rupiah) {
 	return $hasil_rupiah;
 }
 
+function replace_file($file_old,$dir,$file_new,$tmp) {
+	if (file_exists(public_path($dir.$file_old))) 
+	{
+		unlink(public_path($dir.$file_old));
+		$tmp->move(public_path($dir),$file_new);
+	}
+	else {
+		$tmp->move(public_path($dir),$file_new);
+	}
+}
+
 function human_date($date) {
 	$explode = explode('-',$date);
 	return $explode[2].' '.month($explode[1]).' '.$explode[0];

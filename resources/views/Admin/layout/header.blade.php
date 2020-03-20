@@ -13,6 +13,9 @@
   <!-- JQVMap -->
   <link rel="stylesheet" href="{{asset('assets/plugins/jqvmap/jqvmap.min.css')}}">
   <!-- Theme style -->
+  <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+  
   <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
@@ -114,29 +117,29 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/admin/data-supplier') }}" class="nav-link">
+                <a href="{{ url('/admin/data-supplier') }}" class="nav-link {{ $page == 'supplier' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Data Supplier</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/admin/data-barang-masuk') }}" class="nav-link">
+                <a href="{{ url('/admin/data-barang-masuk') }}" class="nav-link {{ $page == 'barang-masuk' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Data Barang Masuk</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/admin/data-barang-keluar') }}" class="nav-link">
+                <a href="{{ url('/admin/data-barang-keluar') }}" class="nav-link {{ $page == 'barang-keluar' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Data Barang Keluar</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('/admin/data-belanja') }}" class="nav-link">
+              {{-- <li class="nav-item">
+                <a href="{{ url('/admin/data-belanja') }}" class="nav-link {{ $page == 'barang' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Data Belanja</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </li>
           <li class="nav-item">

@@ -61,7 +61,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </div>
 
       <!-- Right navbar links -->
-      <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+      {{-- <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
@@ -151,7 +151,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
               class="fas fa-th-large"></i></a>
         </li>
-      </ul>
+      </ul> --}}
     </div>
   </nav>
   <!-- /.navbar -->

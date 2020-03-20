@@ -1,4 +1,9 @@
 .scrollable-content {
-	height:550px;
+	height:88vh;
+	overflow:auto;
+}
+
+.checkout {
+	height:81vh;
 	overflow:auto;
 }

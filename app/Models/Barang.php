@@ -17,6 +17,7 @@ class Barang extends Model
 	public static function getData()
 	{
 		$db = self::join('jenis_barang','barang.id_jenis_barang','=','jenis_barang.id_jenis_barang')
+					->where('barang.status_delete',0)
 					->get();
 
 		return $db;
