@@ -13,7 +13,6 @@ class KasirController extends Controller
     public function index()
     {
     	$title = 'Kasir';
-
     	return view('Admin.kasir.main',compact('title'));
     }
 }

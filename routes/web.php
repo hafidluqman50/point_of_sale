@@ -82,6 +82,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 
 	// ROUTE KASIR //
 	Route::get('/kasir',['uses' => 'Admin\KasirController@index']);
+	Route::any('/{any}',['uses' => 'Admin\KasirController@index'])->where('any', '^(?!api\/)[\/\w\.-]*');
 	// END ROUTE KASIR //
 });
 

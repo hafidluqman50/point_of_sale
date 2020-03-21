@@ -1,126 +1,27 @@
-@extends('Admin.layout.layout_kasir')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-@section('content')
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid" style="padding-top:1%;">
-        <div class="row">
-        	<div class="col-md-9">
-        		<div class="card">
-        			<div class="card-body scrollable-content">
-		        		<div class="row">
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" src="{{asset('assets/foto_menu/photo.jpg')}}" alt="Card image tap"></img>
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        		</div>	
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-3">
-        		<div class="card">
-        			<div class="card-header">
-        				PESANAN
-        			</div>
-        			<div class="card-body checkout">
-        				
-        			</div>
-        		</div>
-        	</div>
-        </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+    <title>Point Of Sale | Kasir</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{{asset('assets/plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/dist/css/custom.css')}}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition layout-top-nav">
+    <div id="app">
+        <app></app>
     </div>
-@endsection
+</body>
+</html>
+
+<script src="{{mix('js/app.js')}}"></script>
+<script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
