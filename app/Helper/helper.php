@@ -5,6 +5,12 @@ function format_rupiah($rupiah) {
 	return $hasil_rupiah;
 }
 
+function remove_file($dir,$file) {
+	if (file_exists(public_path($dir.$file))) {
+		unlink(public_path($dir.$file));
+	}
+}
+
 function replace_file($file_old,$dir,$file_new,$tmp) {
 	if (file_exists(public_path($dir.$file_old))) 
 	{

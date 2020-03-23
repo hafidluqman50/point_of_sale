@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\MenuMakan;
@@ -30,7 +31,7 @@ class MenuMakanController extends Controller
 		$nama_menu   = $request->nama_menu;
 		$harga_menu  = $request->harga_menu;
 		$foto_menu   = $request->foto_menu;
-		$fileName	 = $foto_menu->getClientOriginalName();
+		$fileName	 = $foto_menu != '' ? uniqid().'_foto_menu_'.$foto_menu->getClientOriginalName() : '-';
 		$status_menu = $request->status_menu;
 
 		$data_menu = [
@@ -40,7 +41,9 @@ class MenuMakanController extends Controller
 			'status_menu'   => $status_menu
 		];
 
-		$foto_menu->move(public_path('assets/foto_menu/'),$fileName);
+		if ($foto_menu != '') {
+			Image::make($foto_menu)->resize(250,250)->save('assets/foto_menu/'.$fileName);
+		}
 
 		MenuMakan::create($data_menu);
 
@@ -61,7 +64,7 @@ class MenuMakanController extends Controller
 		$nama_menu   = $request->nama_menu;
 		$harga_menu  = $request->harga_menu;
 		$foto_menu   = $request->foto_menu;
-		$fileName	 = $foto_menu != '' ? $foto_menu->getClientOriginalName() : '';
+		$fileName	 = $foto_menu != '' ? uniqid().'_foto_menu_'.$foto_menu->getClientOriginalName() : '';
 		$status_menu = $request->status_menu;
 		$menu_makan  = MenuMakan::where('id_menu_makan',$id)->firstOrFail();
 
@@ -76,7 +79,8 @@ class MenuMakanController extends Controller
 			unset($data_menu['foto_menu']);
 		}
 		else {
-			replace_file($menu_makan->foto_menu,'assets/foto_menu/',$fileName,$foto_menu);
+			remove_file('assets/foto_menu/',$menu_makan->foto_menu);
+			Image::make($foto_menu)->resize(250,250)->save('assets/foto_menu/'.$fileName);
 		}
 
 		MenuMakan::where('id_menu_makan',$id)->update($data_menu);

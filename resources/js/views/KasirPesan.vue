@@ -4,103 +4,13 @@
 			<div class="col-md-9">
 				<div class="card">
 					<div class="card-body scrollable-content">
-		        		<div class="row">
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
-		        			<div class="col-lg-3 col-md-4">
-				        		<div class="card">
-				        			<img class="card-img-top" :src="'/assets/foto_menu/photo.jpg'" alt="Card image tap">
-				        			<div class="card-body">
-				        				<h5 class="card-title">Nasi Goreng</h5>
-				        				<p class="card-text">
-				        					Rp. 12.000
-				        				</p>
-				        				<a href="#" class="btn btn-primary">Pesan</a>
-				        			</div>
-				        		</div>	
-		        			</div>
+	        			<div class="d-flex justify-content-center align-items-center" style="height:100%" v-if="isLoading">
+							<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+								<span class="sr-only">Loading...</span>
+							</div>
+	        			</div>
+		        		<div class="row" v-else>
+							<menu-item v-for="menuMakan in dataMenu" :menuMakan="menuMakan" :key="menuMakan.id"></menu-item>
 		        		</div>	
 					</div>
 				</div>
@@ -108,7 +18,7 @@
 			<div class="col-md-3">
 				<div class="card">
 					<div class="card-header">
-						PESANAN
+						<p class="card-text" style="margin:0;" align="center"><b>PESANAN</b></p>
 					</div>
 					<div class="card-body checkout">
 						
@@ -120,7 +30,22 @@
 </template>
 
 <script>
-	export default {
+	import { mapGetters,mapActions } from 'vuex'
 
+	export default {
+		computed: {
+			...mapGetters([
+				'dataMenu',
+				'isLoading'
+			])
+		},
+		methods: {
+			...mapActions([
+				'tampilMenu'
+			])
+		},
+		mounted() {
+			this.tampilMenu();
+		}
 	}
 </script>

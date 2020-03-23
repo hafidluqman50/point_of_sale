@@ -89,3 +89,5 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 Route::group(['middleware' => 'is.karyawan', 'prefix' => 'karyawan'],function(){
 	Route::get('/kasir',['uses' => 'Kasir\KasirController@index']);
 });
+
+Route::get('/data-menu',['uses' => 'ApiController@dataMenu']);

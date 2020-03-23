@@ -7,3 +7,7 @@
 	height:81vh;
 	overflow:auto;
 }
+
+.checkout-div {
+	cursor:pointer;
+}
