@@ -11,3 +11,29 @@
 .checkout-div {
 	cursor:pointer;
 }
+
+.vue-modal {
+	position:fixed;
+	left:0;
+	bottom:-100%;
+	width:100%;
+	min-height:100px;
+	background:#fff;
+	box-shadow:0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+	border:0 solid rgba(0,0,0,.125);
+	border-radius:.25rem;
+}
+
+.show-modal {
+	bottom:0%;
+	transition:.2s ease;
+}
+
+/*@keyframes modalmove {
+	from {
+		bottom:-100%;
+	}
+	to {
+		bottom:0%;
+	}
+}*/
