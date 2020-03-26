@@ -1997,12 +1997,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['menuMakan'],
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['loadSend', 'loadById'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['pesanMenu']))
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['pilihMenu']))
 });
 
 /***/ }),
@@ -2016,26 +2014,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      showModal: false
-    };
-  },
-  methods: {
-    show_modal: function show_modal() {
-      this.showModal = true;
-    },
-    close_modal: function close_modal() {
-      this.showModal = false;
-    }
-  }
+  props: ['modalInfo'],
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['showModal'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['closeModal']))
 });
 
 /***/ }),
@@ -2147,9 +2152,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'showModal', 'singleData'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['tampilMenu'])),
   mounted: function mounted() {
     this.tampilMenu();
@@ -37667,29 +37682,23 @@ var render = function() {
             "d-flex justify-content-center card-footer bg-primary checkout-div",
           on: {
             click: function($event) {
-              return _vm.pesanMenu(_vm.menuMakan)
+              return _vm.pilihMenu(_vm.menuMakan)
             }
           }
         },
-        [
-          _vm.loadById != _vm.menuMakan.id_menu_makan || _vm.loadSend == false
-            ? _c("p", { staticClass: "card-text" }, [
-                _c("b", [_vm._v("PESAN")])
-              ])
-            : _vm.loadById == _vm.menuMakan.id_menu_makan &&
-              _vm.loadSend == true
-            ? _c("span", {
-                staticClass: "spinner-border spinner-border-sm",
-                staticStyle: { width: "1.47em", height: "1.47em" },
-                attrs: { role: "status", "aria-hidden": "true" }
-              })
-            : _vm._e()
-        ]
+        [_vm._m(0)]
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "card-text" }, [_c("b", [_vm._v("PESAN")])])
+  }
+]
 render._withStripped = true
 
 
@@ -37714,8 +37723,32 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "vue-modal", class: { "show-modal": _vm.showModal } },
-    [_vm._t("default")],
-    2
+    [
+      _c("div", { staticClass: "vue-modal-header bg-light" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-dark vue-modal-close",
+            staticStyle: { float: "right" },
+            on: {
+              click: function($event) {
+                return _vm.closeModal()
+              }
+            }
+          },
+          [_vm._v("Close")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "vue-modal-body" }, [_vm._t("default")], 2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "vue-modal-footer bg-light" },
+        [_vm._t("modal-footer")],
+        2
+      )
+    ]
   )
 }
 var staticRenderFns = []
@@ -37863,6 +37896,7 @@ var render = function() {
         "div",
         {
           staticClass: "container-fluid",
+          class: { "is-blur": _vm.showModal },
           staticStyle: { "padding-top": ".6%" }
         },
         [
@@ -37895,29 +37929,55 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-3" }, [
-              _c("div", { staticClass: "card m-0" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card-header bg-light",
-                    on: {
-                      click: function($event) {
-                        return _vm.show_modal()
-                      }
-                    }
-                  },
-                  [_vm._m(1)]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body checkout" })
-              ])
-            ])
+            _vm._m(1)
           ])
         ]
       ),
       _vm._v(" "),
-      _c("modal-component")
+      _c(
+        "modal-component",
+        {
+          attrs: {
+            modalInfo: _vm.singleData != null ? _vm.singleData.nama_menu : ""
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "modal-footer",
+              fn: function() {
+                return undefined
+              },
+              proxy: true
+            }
+          ])
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Jumlah")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                type: "number",
+                name: "jumlah",
+                placeholder: "Jumlah Menu"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Keterangan")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "keterangan",
+                placeholder: "Keterangan Menu"
+              }
+            })
+          ])
+        ]
+      )
     ],
     1
   )
@@ -37941,15 +38001,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "p",
-      {
-        staticClass: "card-text",
-        staticStyle: { margin: "0" },
-        attrs: { align: "center" }
-      },
-      [_c("b", [_vm._v("PESANAN")])]
-    )
+    return _c("div", { staticClass: "col-md-3" }, [
+      _c("div", { staticClass: "card m-0" }, [
+        _c("div", { staticClass: "card-header bg-light" }, [
+          _c(
+            "p",
+            {
+              staticClass: "card-text",
+              staticStyle: { margin: "0" },
+              attrs: { align: "center" }
+            },
+            [_c("b", [_vm._v("PESANAN")])]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body checkout" })
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -54629,8 +54697,17 @@ __webpack_require__.r(__webpack_exports__);
   tampilMenu: function tampilMenu(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"]);
   },
+  pilihMenu: function pilihMenu(context, data_menu) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], data_menu);
+  },
   pesanMenu: function pesanMenu(context, data_menu) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], data_menu);
+  },
+  showModal: function showModal(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_MODAL"]);
+  },
+  closeModal: function closeModal(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"]);
   }
 });
 
@@ -54652,11 +54729,14 @@ __webpack_require__.r(__webpack_exports__);
   isLoading: function isLoading(state) {
     return state.isLoading;
   },
-  loadSend: function loadSend(state) {
-    return state.loadSend;
+  dataPesanan: function dataPesanan(state) {
+    return state.dataPesanan;
   },
-  loadById: function loadById(state) {
-    return state.loadById;
+  singleData: function singleData(state) {
+    return state.singleData;
+  },
+  showModal: function showModal(state) {
+    return state.showModal;
   }
 });
 
@@ -54698,15 +54778,21 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: TAMPIL_MENU, PESAN_MENU */
+/*! exports provided: TAMPIL_MENU, PILIH_MENU, PESAN_MENU, SHOW_MODAL, CLOSE_MODAL */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_MENU", function() { return TAMPIL_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_MENU", function() { return PILIH_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PESAN_MENU", function() { return PESAN_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHOW_MODAL", function() { return SHOW_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 var TAMPIL_MENU = 'TAMPIL_MENU';
+var PILIH_MENU = 'PILIH_MENU';
 var PESAN_MENU = 'PESAN_MENU';
+var SHOW_MODAL = 'SHOW_MODAL';
+var CLOSE_MODAL = 'CLOSE_MODAL';
 
 /***/ }),
 
@@ -54733,10 +54819,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     state.dataMenu = response.data;
     state.isLoading = false;
   });
+}), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], function (state, data_menu) {
+  state.singleData = data_menu;
+  state.showModal = true;
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], function (state, data_menu) {
-  console.log(data_menu);
-  state.loadById = data_menu.id_menu_makan;
-  state.loadSend = true;
+  state.dataPesanan.push(data_menu);
+}), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_MODAL"], function (state) {
+  state.showModal = true;
+}), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
+  state.showModal = false;
 }), _mutations$TAMPIL_MEN);
 
 /***/ }),
@@ -54754,7 +54845,10 @@ __webpack_require__.r(__webpack_exports__);
   isLoading: true,
   loadSend: false,
   loadById: null,
-  dataMenu: null
+  showModal: false,
+  dataMenu: null,
+  dataPesanan: null,
+  singleData: null
 });
 
 /***/ }),

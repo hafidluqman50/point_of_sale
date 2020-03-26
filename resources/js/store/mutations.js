@@ -9,9 +9,17 @@ export default {
 			state.isLoading = false
 		})
 	},
+	[mutations.PILIH_MENU] (state,data_menu) {
+		state.singleData = data_menu
+		state.showModal  = true
+	},
 	[mutations.PESAN_MENU] (state,data_menu) {
-		console.log(data_menu)
-		state.loadById = data_menu.id_menu_makan
-		state.loadSend = true
+		state.dataPesanan.push(data_menu)
+	},
+	[mutations.SHOW_MODAL] (state) {
+		state.showModal = true
+	},
+	[mutations.CLOSE_MODAL] (state) {
+		state.showModal = false
 	}
 }

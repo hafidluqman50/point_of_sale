@@ -14,32 +14,25 @@
 					Kosong
 				</span>
 			</div>
-			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" v-on:click="pesanMenu(menuMakan)">
-				<p class="card-text" v-if="loadById != menuMakan.id_menu_makan || loadSend == false">
+			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" v-on:click="pilihMenu(menuMakan)">
+				<p class="card-text">
 					<b>PESAN</b>
 				</p>
-				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-else-if="loadById == menuMakan.id_menu_makan && loadSend == true" style="width:1.47em; height:1.47em;"></span>
 			</div>
 		</div>	
 	</div>
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex'
+	import { mapActions } from 'vuex'
 
 	export default {
 		props:[
 			'menuMakan'
 		],
-		computed: {
-			...mapGetters([
-				'loadSend',
-				'loadById'
-			])
-		},
 		methods: {
 			...mapActions([
-				'pesanMenu'
+				'pilihMenu'
 			])
 		}
 	}

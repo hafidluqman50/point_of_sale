@@ -2,5 +2,8 @@ export default {
 	isLoading:true,
 	loadSend:false,
 	loadById:null,
-	dataMenu:null
+	showModal:false,
+	dataMenu:null,
+	dataPesanan:null,
+	singleData:null
 }

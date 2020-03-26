@@ -1,23 +1,33 @@
 <template>
 	<div class="vue-modal" v-bind:class="{'show-modal':showModal}">
-		<slot></slot>
+		<div class="vue-modal-header bg-light">
+				<!-- <p class="vue-modal-title">{{ modalInfo }}</p> -->
+				<button class="btn btn-outline-dark vue-modal-close" @click="closeModal()" style="float:right">Close</button>
+		</div>
+		<div class="vue-modal-body">
+			<slot></slot>
+		</div>
+		<div class="vue-modal-footer bg-light">
+			<slot name="modal-footer"></slot>
+		</div>
 	</div>
 </template>
 
 <script>
+	import { mapGetters, mapActions } from 'vuex'
 	export default {
-		data: function() {
-			return {
-				showModal:false
-			}
+		props: [
+			'modalInfo'
+		],
+		computed: {
+			...mapGetters([
+				'showModal'
+			])
 		},
 		methods: {
-			show_modal() {
-				this.showModal = true
-			},
-			close_modal() {
-				this.showModal = false
-			}
+			...mapActions([
+				'closeModal'
+			])
 		}
 	}
 </script>
