@@ -1,8 +1,12 @@
 <template>
 	<div class="vue-modal" v-bind:class="{'show-modal':showModal}">
-		<div class="vue-modal-header bg-light">
-				<!-- <p class="vue-modal-title">{{ modalInfo }}</p> -->
-				<button class="btn btn-outline-dark vue-modal-close" @click="closeModal()" style="float:right">Close</button>
+		<div class="vue-modal-header bg-light d-flex">
+			<div class="vue-modal-title">
+				<p><b>{{ modalInfo }}</b></p>
+			</div>
+			<div class="vue-modal-close">
+				<button class="btn btn-outline-dark" @click="closeModal()">Close</button>
+			</div>
 		</div>
 		<div class="vue-modal-body">
 			<slot></slot>

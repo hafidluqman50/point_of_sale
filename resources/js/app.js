@@ -26,7 +26,7 @@ import filters from './filters.js'
 Vue.component('example-component', require('./components/ExampleComponent.vue').default)
 Vue.component('navbar-component', require('./components/NavbarComponent.vue').default)
 Vue.component('menu-item', require('./components/MenuItem.vue').default)
-Vue.component('modal-component', require('./components/ModalComponent.vue').default)
+Vue.component('vue-modal', require('./components/VueModal.vue').default)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

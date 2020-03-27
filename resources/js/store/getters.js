@@ -11,6 +11,9 @@ export default {
 	singleData: state => {
 		return state.singleData
 	},
+	menuInput: state => {
+		return state.menuInput
+	},
 	showModal: state => {
 		return state.showModal
 	}

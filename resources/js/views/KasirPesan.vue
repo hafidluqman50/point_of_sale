@@ -22,25 +22,38 @@
 							<p class="card-text" style="margin:0;" align="center"><b>PESANAN</b></p>
 						</div>
 						<div class="card-body checkout">
-							
+							<table width="100%">
+								<tr v-for="data_pesan in dataPesanan">
+									<td style="font-size:18px;"><b>{{ data_pesan.nama_menu }}</b>
+										<tr v-if="data_pesan.keterangan != null || data_pesan.keterangan !== undefined">
+											<td style="font-size:15px;">{{ data_pesan.keterangan }}</td>
+										</tr>
+									</td>
+									<td>{{ data_pesan.banyak_pesan}}x</td>
+									<td>{{ data_pesan.sub_total | formatRupiah }}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="card-footer bg-success cursor-pointer" align="center">
+							<b>CHECKOUT</b>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<modal-component :modalInfo="singleData != null ? singleData.nama_menu : ''">
+		<vue-modal :modalInfo="singleData != null ? singleData.nama_menu : ''">
 			<div class="form-group">
 				<label for="">Jumlah</label>
-				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu">
+				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu" v-model="menuInput.banyak_pesan">
 			</div>
 			<div class="form-group">
 				<label for="">Keterangan</label>
-				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu">
+				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
 			<template v-slot:modal-footer>
-
+				<button class="btn btn-outline-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
 			</template>
-		</modal-component>
+		</vue-modal>
 	</div>
 </template>
 
@@ -53,12 +66,15 @@
 				'dataMenu',
 				'isLoading',
 				'showModal',
-				'singleData'
+				'singleData',
+				'dataPesanan',
+				'menuInput'
 			])
 		},
 		methods: {
 			...mapActions([
-				'tampilMenu'
+				'tampilMenu',
+				'pesanMenu'
 			])
 		},
 		mounted() {

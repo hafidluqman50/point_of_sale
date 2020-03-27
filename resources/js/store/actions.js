@@ -10,6 +10,9 @@ export default {
 	pesanMenu(context,data_menu) {
 		context.commit(mutations.PESAN_MENU,data_menu)
 	},
+	ubahPesanan(context,data_menu) {
+		context.commit(mutations.UBAH_PESANAN,data_menu)
+	},
 	showModal(context) {
 		context.commit(mutations.SHOW_MODAL)
 	},

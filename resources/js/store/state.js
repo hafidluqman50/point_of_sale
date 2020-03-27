@@ -1,9 +1,12 @@
 export default {
 	isLoading:true,
-	loadSend:false,
-	loadById:null,
 	showModal:false,
 	dataMenu:null,
-	dataPesanan:null,
+	dataPesanan:[],
+	menuInput:{
+		varian:[],
+		banyak_pesan:null,
+		keterangan:null,
+	},
 	singleData:null
 }
