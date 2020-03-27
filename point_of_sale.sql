@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 19, 2020 at 04:46 PM
+-- Generation Time: Mar 27, 2020 at 03:19 AM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -129,7 +129,8 @@ CREATE TABLE `menu_makan` (
 --
 
 INSERT INTO `menu_makan` (`id_menu_makan`, `nama_menu`, `harga_menu`, `foto_menu`, `status_menu`, `status_delete`) VALUES
-('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, '29f97428-9833-4dc0-95fe-d6e7896c1a25.jpg', 'tersedia', 0);
+('107924bd-84af-4f77-9570-965b908938e3', 'Nasi Pecel', 12000, '5e78e83a984b4_foto_menu_nasi-pecel.jpg', 'tersedia', 0),
+('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, '5e78e84829584_foto_menu_photo.jpg', 'tersedia', 0);
 
 -- --------------------------------------------------------
 
@@ -216,7 +217,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `status_akun`, `remember_token`) VALUES
 ('5fcc4e88-979d-48c6-893c-4226b3432467', 'Petugas', 'petugas', '$2y$10$9eTnfzyJ.sK6MU3nSB58eOdyxnCF4/mNCQJnwvXiUDikbg5POkAWO', 0, 1, 'YMKX9UMYkvD7Ynqi5w6zrJP69QZq6oOPrBRJQVoXr4eNVejHvBEoTm2Gy50x'),
-('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 1, 1, 'UNOAqw31vWPgUx7r2cUxVo6YmArnPgGk96OFnmB624V6GJUxAHnrwjBu5IM0');
+('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 1, 1, 'X4zr1LhLcVG6sYY6lOIuzws3qYnrLeGMD8EzgWhqb9bXgKi79CotlWIxbZbG');
 
 --
 -- Indexes for dumped tables

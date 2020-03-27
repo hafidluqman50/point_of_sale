@@ -15,8 +15,8 @@
 .vue-modal {
 	position:fixed;
 	left:12%;
-	/*bottom:-100%;*/
-	bottom:0;
+	bottom:-100%;
+	/*bottom:0;*/
 	width:75%;
 	height:90vh;
 	background:#fff;
