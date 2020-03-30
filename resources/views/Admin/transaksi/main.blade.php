@@ -42,7 +42,12 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<table class="table table-hover">
+						@if(session()->has('message'))
+						<div class="alert alert-success alert-dismissible fade show">
+							{{ session('message') }} <button class="close" data-dismiss="alert">X</button>
+						</div>
+						@endif
+						<table class="table table-hover" id="transaksi" width="100%">
 							<thead>
 								<tr>
 									<th>No.</th>

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class isKaryawan
+class isKasir
 {
     /**
      * Handle an incoming request.

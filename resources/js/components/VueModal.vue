@@ -5,7 +5,7 @@
 				<p><b>{{ modalInfo }}</b></p>
 			</div>
 			<div class="vue-modal-close">
-				<button class="btn btn-outline-dark" @click="closeModal()">Close</button>
+				<button class="btn btn-dark" @click="closeModal()">Close</button>
 			</div>
 		</div>
 		<div class="vue-modal-body">

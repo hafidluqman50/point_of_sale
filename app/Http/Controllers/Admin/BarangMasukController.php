@@ -16,4 +16,13 @@ class BarangMasukController extends Controller
 
 		return view('Admin.barang-masuk.main',compact('title','page','treeview'));
     }
+
+    public function tambah()
+    {
+		$title    = 'Barang Masuk Tambah';
+		$page     = 'barang-masuk';
+		$treeview = 'inventory';
+
+		return view('Admin.barang-masuk.tambah',compact('title','page','treeview'));
+    }
 }

@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/hash',function(){
+	dd(bcrypt('kasir'));
+});
 
 Route::group(['middleware' => 'has.auth'],function(){
 	Route::get('/',['uses' => 'AuthController@index']);
@@ -18,10 +21,15 @@ Route::group(['middleware' => 'has.auth'],function(){
 Route::get('/logout',['uses' => 'AuthController@logout']);
 
 Route::group(['prefix' => 'datatables'],function(){
-	Route::get('/menu-makan',['uses' => 'DatatablesController@dataMenuMakan']);
-	Route::get('/data-jenis-barang',['uses' => 'DatatablesController@dataJenisBarang']);
-	Route::get('/data-barang',['uses' => 'DatatablesController@dataBarang']);
-	Route::get('/data-supplier',['uses' => 'DatatablesController@dataSupplier']);
+	Route::get('/menu-makan',['uses' => 'DataTablesController@dataMenuMakan']);
+	Route::get('/data-jenis-barang',['uses' => 'DataTablesController@dataJenisBarang']);
+	Route::get('/data-barang',['uses' => 'DataTablesController@dataBarang']);
+	Route::get('/data-supplier',['uses' => 'DataTablesController@dataSupplier']);
+	Route::get('/data-barang-masuk',['uses' => 'DataTablesController@dataBarangMasuk']);
+	Route::get('/data-barang-keluar',['uses' => 'DataTablesController@dataBarangKeluar']);
+	Route::get('/data-transaksi',['uses' => 'DataTablesController@dataTransaksi']);
+	Route::get('/data-transaksi/detail/{id}',['uses' => 'DataTablesController@dataTransaksiDetail']);
+	Route::get('/data-users',['uses' => 'DataTablesController@dataUsers']);
 });
 
 Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
@@ -62,6 +70,26 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::put('/data-supplier/update/{id}',['uses' => 'Admin\SupplierController@update']);
 	Route::delete('/data-supplier/delete/{id}',['uses' => 'Admin\SupplierController@delete']);
 	// END ROUTE SUPPLIER //
+
+	// ROUTE BARNAG MASUK //
+	Route::get('/data-barang-masuk',['uses' => 'Admin\BarangMasukController@index']);
+	Route::get('/data-barang-masuk/tambah',['uses' => 'Admin\BarangMasukController@tambah']);
+	Route::post('/data-barang-masuk/save',['uses' => 'Admin\BarangMasukController@save']);
+	Route::get('/data-barang-masuk/edit/{id}',['uses' => 'Admin\BarangMasukController@edit']);
+	Route::put('/data-barang-masuk/update/{id}',['uses' => 'Admin\BarangMasukController@update']);
+	Route::get('/data-barang-masuk/detail/{id}',['uses' => 'Admin\BarangMasukController@detail']);
+	Route::delete('/data-barang-masuk/delete/{id}',['uses' => 'Admin\BarangMasukController@delete']);
+	// END ROUTE BARANG MASUK //
+
+	// ROUTE BARNAG MASUK //
+	Route::get('/data-barang-keluar',['uses' => 'Admin\BarangKeluarController@index']);
+	Route::get('/data-barang-keluar/tambah',['uses' => 'Admin\BarangKeluarController@tambah']);
+	Route::post('/data-barang-keluar/save',['uses' => 'Admin\BarangKeluarController@save']);
+	Route::get('/data-barang-keluar/edit/{id}',['uses' => 'Admin\BarangKeluarController@edit']);
+	Route::put('/data-barang-keluar/update/{id}',['uses' => 'Admin\BarangKeluarController@update']);
+	Route::get('/data-barang-keluar/detail/{id}',['uses' => 'Admin\BarangKeluarController@detail']);
+	Route::delete('/data-barang-keluar/delete/{id}',['uses' => 'Admin\BarangKeluarController@delete']);
+	// END ROUTE BARANG MASUK //
 	
 	// ROUTE TRANSAKSI //
 	Route::get('/transaksi',['uses' => 'Admin\TransaksiController@index']);
@@ -82,12 +110,17 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 
 	// ROUTE KASIR //
 	Route::get('/kasir',['uses' => 'Admin\KasirController@index']);
-	Route::any('/{any}',['uses' => 'Admin\KasirController@index'])->where('any', '^(?!api\/)[\/\w\.-]*');
+	Route::any('/kasir/{any}',['uses' => 'Admin\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 	// END ROUTE KASIR //
 });
 
-Route::group(['middleware' => 'is.karyawan', 'prefix' => 'karyawan'],function(){
-	Route::get('/kasir',['uses' => 'Kasir\KasirController@index']);
+Route::group(['middleware' => 'is.gudang'],function(){
+	Route::get('/dashboard',['uses' => 'Gudang\DashboardController@index']);
+});
+
+Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
+	Route::get('/{any}',['uses' => 'Kasir\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 });
 
 Route::get('/data-menu',['uses' => 'ApiController@dataMenu']);
+Route::post('/data-menu/checkout',['uses' => 'ApiController@dataMenuCheckout']);

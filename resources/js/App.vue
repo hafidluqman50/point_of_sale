@@ -1,12 +1,5 @@
 <template>
-    <div class="wrapper">
-		<navbar-component></navbar-component>
-		<div class="content-wrapper">
-			<div class="content">
-				<router-view></router-view>	
-			</div>
-		</div>
-	</div>
+	<router-view></router-view>
 </template>
 
 <script>

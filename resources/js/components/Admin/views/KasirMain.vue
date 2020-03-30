@@ -23,7 +23,7 @@
 						</div>
 						<div class="card-body checkout">
 							<table width="100%">
-								<tr v-for="data_pesan in dataPesanan">
+								<tr v-for="data_pesan in dataPesanan.pesanan">
 									<td style="font-size:18px;"><b>{{ data_pesan.nama_menu }}</b>
 										<tr v-if="data_pesan.keterangan != null || data_pesan.keterangan !== undefined">
 											<td style="font-size:15px;">{{ data_pesan.keterangan }}</td>
@@ -34,8 +34,9 @@
 								</tr>
 							</table>
 						</div>
-						<div class="card-footer bg-success cursor-pointer" align="center">
-							<b>CHECKOUT</b>
+						<div class="card-footer bg-success cursor-pointer" align="center" @click="checkoutPesanan()">
+							<b v-if="loadSend == false">CHECKOUT</b>
+							<div class="spinner-border" role="status" v-else></div>
 						</div>
 					</div>
 				</div>
@@ -51,7 +52,7 @@
 				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-outline-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
+				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
 			</template>
 		</vue-modal>
 	</div>
@@ -65,6 +66,7 @@
 			...mapGetters([
 				'dataMenu',
 				'isLoading',
+				'loadSend',
 				'showModal',
 				'singleData',
 				'dataPesanan',
@@ -74,7 +76,8 @@
 		methods: {
 			...mapActions([
 				'tampilMenu',
-				'pesanMenu'
+				'pesanMenu',
+				'checkoutPesanan'
 			])
 		},
 		mounted() {

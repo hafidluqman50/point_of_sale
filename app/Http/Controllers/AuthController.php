@@ -18,13 +18,17 @@ class AuthController extends Controller
 
     	if (Auth::attempt($auth)) 
     	{
-    		if (Auth::user()->level_user == 1) 
+    		if (Auth::user()->level_user == 2) 
     		{
     			return redirect('/admin/dashboard');
     		}
+            else if (Auth::user()->level_user == 1) 
+            {
+                return redirect('/gudang/dashboard');
+            }
     		else if(Auth::user()->level_user == 0)
     		{
-    			return redirect('/petugas/kasir');
+    			return redirect('/kasir');
     		}
     		else if (Auth::user()->status_akun == 0) 
     		{

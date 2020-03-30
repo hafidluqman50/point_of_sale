@@ -20,7 +20,7 @@ class TransaksiController extends Controller
     {
     	Transaksi::where('id_transaksi',$id)->delete();
 
-    	return redirect('/admin/transaksi')->with('messages','Berhasil Hapus Transaksi');
+    	return redirect('/admin/transaksi')->with('message','Berhasil Hapus Transaksi');
     }
 
     public function laporanTransaksi(Request $request)

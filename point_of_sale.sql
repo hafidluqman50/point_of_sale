@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 27, 2020 at 03:19 AM
+-- Generation Time: Mar 30, 2020 at 03:02 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -53,9 +53,22 @@ INSERT INTO `barang` (`id_barang`, `nama_barang`, `id_jenis_barang`, `stok_baran
 CREATE TABLE `barang_keluar` (
   `id_barang_keluar` varchar(36) NOT NULL,
   `tanggal_keluar` date NOT NULL,
+  `keterangan` text NOT NULL,
+  `id_users` varchar(36) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barang_keluar_detail`
+--
+
+CREATE TABLE `barang_keluar_detail` (
+  `id_barang_keluar_detail` varchar(36) NOT NULL,
+  `id_barang_keluar` varchar(36) NOT NULL,
   `id_barang` varchar(36) NOT NULL,
-  `jumlah_keluar` int(11) NOT NULL,
-  `keterangan` text NOT NULL
+  `jumlah_barang` int(11) NOT NULL,
+  `satuan_barang` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -68,11 +81,23 @@ CREATE TABLE `barang_masuk` (
   `id_barang_masuk` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `tanggal_masuk` date NOT NULL,
   `id_supplier` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `id_barang` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id_users` varchar(36) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barang_masuk_detail`
+--
+
+CREATE TABLE `barang_masuk_detail` (
+  `id_barang_masuk_detail` varchar(36) NOT NULL,
+  `id_barang_masuk` varchar(36) NOT NULL,
+  `id_barang` varchar(36) NOT NULL,
   `jumlah_masuk` int(11) NOT NULL,
+  `satuan_barang` varchar(10) NOT NULL,
   `harga_satuan` int(11) NOT NULL,
-  `harga_total` int(11) NOT NULL,
-  `keterangan` text NOT NULL
+  `harga_total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -174,10 +199,18 @@ INSERT INTO `supplier` (`id_supplier`, `nama_supplier`, `alamat_supplier`, `nomo
 CREATE TABLE `transaksi` (
   `id_transaksi` varchar(36) NOT NULL,
   `tanggal_transaksi` date NOT NULL,
+  `total_harga` int(11) NOT NULL,
   `id_users` varchar(36) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `id_users`, `created_at`, `updated_at`) VALUES
+('13f87a32-5385-4b0f-9684-34cef0a08fc0', '2020-03-28', 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-03-28 22:17:00', '2020-03-28 22:17:00');
 
 -- --------------------------------------------------------
 
@@ -189,11 +222,20 @@ CREATE TABLE `transaksi_detail` (
   `id_transaksi_detail` varchar(36) NOT NULL,
   `id_transaksi` varchar(36) NOT NULL,
   `id_menu_makan` varchar(36) NOT NULL,
-  `qty` int(11) NOT NULL,
+  `banyak_pesan` int(11) NOT NULL,
   `sub_total` int(11) NOT NULL,
+  `keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `transaksi_detail`
+--
+
+INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_menu_makan`, `banyak_pesan`, `sub_total`, `keterangan`, `created_at`, `updated_at`) VALUES
+('ae24daaa-1e3a-4b39-bbb6-ebe268420c1f', '13f87a32-5385-4b0f-9684-34cef0a08fc0', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, 'Telor Setengah Matang', '2020-03-28 22:17:00', '2020-03-28 22:17:00'),
+('d2cb5913-85e0-4dc4-8525-6b8932259605', '13f87a32-5385-4b0f-9684-34cef0a08fc0', '107924bd-84af-4f77-9570-965b908938e3', 2, 24000, 'Pedesin', '2020-03-28 22:17:00', '2020-03-28 22:17:00');
 
 -- --------------------------------------------------------
 
@@ -208,16 +250,17 @@ CREATE TABLE `users` (
   `password` varchar(75) NOT NULL,
   `level_user` int(1) NOT NULL,
   `status_akun` int(1) NOT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
+  `remember_token` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `status_delete` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `status_akun`, `remember_token`) VALUES
-('5fcc4e88-979d-48c6-893c-4226b3432467', 'Petugas', 'petugas', '$2y$10$9eTnfzyJ.sK6MU3nSB58eOdyxnCF4/mNCQJnwvXiUDikbg5POkAWO', 0, 1, 'YMKX9UMYkvD7Ynqi5w6zrJP69QZq6oOPrBRJQVoXr4eNVejHvBEoTm2Gy50x'),
-('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 1, 1, 'X4zr1LhLcVG6sYY6lOIuzws3qYnrLeGMD8EzgWhqb9bXgKi79CotlWIxbZbG');
+INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `status_akun`, `remember_token`, `status_delete`) VALUES
+('5fcc4e88-979d-48c6-893c-4226b3432467', 'Kasir', 'kasir', '$2y$10$ATocz/kGbvihcRhUmDo1peZ2TjbdJtn.89xItZwxac3/RC4lmI3ES', 0, 1, 'YMKX9UMYkvD7Ynqi5w6zrJP69QZq6oOPrBRJQVoXr4eNVejHvBEoTm2Gy50x', 0),
+('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 2, 1, 'X4zr1LhLcVG6sYY6lOIuzws3qYnrLeGMD8EzgWhqb9bXgKi79CotlWIxbZbG', 0);
 
 --
 -- Indexes for dumped tables
@@ -235,6 +278,13 @@ ALTER TABLE `barang`
 --
 ALTER TABLE `barang_keluar`
   ADD PRIMARY KEY (`id_barang_keluar`),
+  ADD KEY `id_users` (`id_users`);
+
+--
+-- Indexes for table `barang_keluar_detail`
+--
+ALTER TABLE `barang_keluar_detail`
+  ADD KEY `id_barang_keluar` (`id_barang_keluar`),
   ADD KEY `id_barang` (`id_barang`);
 
 --
@@ -242,8 +292,16 @@ ALTER TABLE `barang_keluar`
 --
 ALTER TABLE `barang_masuk`
   ADD PRIMARY KEY (`id_barang_masuk`),
-  ADD KEY `id_barang` (`id_barang`),
-  ADD KEY `id_supplier` (`id_supplier`);
+  ADD KEY `id_supplier` (`id_supplier`),
+  ADD KEY `id_users` (`id_users`);
+
+--
+-- Indexes for table `barang_masuk_detail`
+--
+ALTER TABLE `barang_masuk_detail`
+  ADD PRIMARY KEY (`id_barang_masuk_detail`),
+  ADD KEY `id_barang_masuk` (`id_barang_masuk`),
+  ADD KEY `id_barang` (`id_barang`);
 
 --
 -- Indexes for table `belanja`
@@ -311,14 +369,28 @@ ALTER TABLE `barang`
 -- Constraints for table `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  ADD CONSTRAINT `barang_keluar_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `barang_keluar_ibfk_1` FOREIGN KEY (`id_users`) REFERENCES `users` (`id_users`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `barang_keluar_detail`
+--
+ALTER TABLE `barang_keluar_detail`
+  ADD CONSTRAINT `barang_keluar_detail_ibfk_1` FOREIGN KEY (`id_barang_keluar`) REFERENCES `barang_keluar` (`id_barang_keluar`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `barang_keluar_detail_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Constraints for table `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  ADD CONSTRAINT `barang_masuk_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `barang_masuk_ibfk_2` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `barang_masuk_ibfk_1` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `barang_masuk_ibfk_2` FOREIGN KEY (`id_users`) REFERENCES `users` (`id_users`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `barang_masuk_detail`
+--
+ALTER TABLE `barang_masuk_detail`
+  ADD CONSTRAINT `barang_masuk_detail_ibfk_1` FOREIGN KEY (`id_barang_masuk`) REFERENCES `barang_masuk` (`id_barang_masuk`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `barang_masuk_detail_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Constraints for table `menu_makan_detail`

@@ -7,10 +7,13 @@ use App\Models\Traits\UuidInsert;
 
 class Transaksi extends Model
 {
-    use UuidInsert;
+    // use UuidInsert;
 
 	protected $table      = 'transaksi';
 	protected $primaryKey = 'id_transaksi';
+	protected $keyType    = 'string';
+	protected $guarded    = [];
+	public $incrementing  = false;
 
    	public static function getData()
    	{

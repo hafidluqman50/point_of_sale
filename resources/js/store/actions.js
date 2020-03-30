@@ -13,6 +13,9 @@ export default {
 	ubahPesanan(context,data_menu) {
 		context.commit(mutations.UBAH_PESANAN,data_menu)
 	},
+	checkoutPesanan(context) {
+		context.commit(mutations.CHECKOUT_PESANAN)
+	},
 	showModal(context) {
 		context.commit(mutations.SHOW_MODAL)
 	},

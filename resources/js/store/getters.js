@@ -5,6 +5,9 @@ export default {
 	isLoading: state => {
 		return state.isLoading
 	},
+	loadSend: state => {
+		return state.loadSend
+	},
 	dataPesanan: state => {
 		return state.dataPesanan
 	},

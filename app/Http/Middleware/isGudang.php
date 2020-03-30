@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class isAdmin
+class isGudang
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class isAdmin
     {
         if (Auth::check()) 
         {
-            if (Auth::user()->level_user == 2) 
+            if (Auth::user()->level_user == 1) 
             {
                 true;
             }

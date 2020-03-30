@@ -14,13 +14,13 @@
         <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="#" class="nav-link">Semua</a>
+            <router-link to="/admin/kasir" class="nav-link">Semua</router-link>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Makanan</a>
+            <router-link to="/admin/kasir/makanan" class="nav-link">Makanan</router-link>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Minuman</a>
+            <router-link to="/admin/kasir/minuman" class="nav-link">Minuman</router-link>
           </li>
         </ul>
 
