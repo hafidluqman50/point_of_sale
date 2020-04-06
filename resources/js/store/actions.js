@@ -16,6 +16,9 @@ export default {
 	checkoutPesanan(context) {
 		context.commit(mutations.CHECKOUT_PESANAN)
 	},
+	prosesBayar(context) {
+		context.commit(mutations.PROSES_BAYAR)
+	},
 	showModal(context) {
 		context.commit(mutations.SHOW_MODAL)
 	},

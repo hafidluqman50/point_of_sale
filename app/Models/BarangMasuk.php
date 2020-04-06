@@ -7,11 +7,11 @@ use App\Models\Traits\UuidInsert;
 
 class BarangMasuk extends Model
 {
-	// use UuidInsert;
-
 	protected $table      = 'barang_masuk';
 	protected $primaryKey = 'id_barang_masuk';
+	protected $keyType    = 'string';
 	protected $guarded    = [];
+	public $incrementing  = false;
 
 	public static function getData()
 	{

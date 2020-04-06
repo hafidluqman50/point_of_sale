@@ -18,7 +18,7 @@ class Transaksi extends Model
    	public static function getData()
    	{
    		$db = self::join('users','transaksi.id_users','=','users.id_users')
-   					->get();
+   					    ->get();
 
    		return $db;
    	}	

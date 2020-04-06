@@ -11,7 +11,7 @@ export default {
 	},
 	[mutations.PILIH_MENU] (state,data_menu) {
 		state.singleData = data_menu
-		state.showModal  = true
+		state.showModal.modalMenu  = true
 	},
 	[mutations.PESAN_MENU] (state,data_menu) {
 		data_menu.banyak_pesan = state.menuInput.banyak_pesan
@@ -23,7 +23,7 @@ export default {
 
 		state.menuInput.banyak_pesan = null
 		state.menuInput.keterangan   = null
-		state.showModal              = false
+		state.showModal.modalMenu	 = false
 	},
 	[mutations.UBAH_PESANAN] (state,data_menu) {
 		state.menuInput.banyak_pesan = data_menu.banyak_pesan
@@ -32,29 +32,39 @@ export default {
 	},
 	[mutations.CHECKOUT_PESANAN] (state) {
 		if (state.dataPesanan.pesanan.length != 0) {
-			state.loadSend = true
-			axios.post('/data-menu/checkout',{
-				pesanan:state.dataPesanan.pesanan,
-				total_harga:state.dataPesanan.total_harga
-			})
-			.then(response => {
-				state.dataPesanan.total_harga = null
-				state.dataPesanan.pesanan     = []
-				state.loadSend                = false
-				console.log(response.data)
-			})
-			.catch(e => {
-				console.log(e)
-			})
+			state.showModal.modalBayar = true
 		}
 		else {
 			console.log('kosong bos');
 		}
 	},
+	[mutations.PROSES_BAYAR] (state) {
+		state.loadSend = true
+		axios.post('/data-menu/checkout',{
+			total_harga:state.dataPesanan.total_harga,
+			total_bayar:state.dataPesanan.total_bayar,
+			// kembalian:state.dataPesanan.kembalian,
+			keterangan:state.dataPesanan.keterangan,
+			pesanan:state.dataPesanan.pesanan
+		})
+		.then(response => {
+			state.dataPesanan.total_harga = null
+			state.dataPesanan.total_bayar = null
+			// state.dataPesanan.kembalian   = null
+			state.dataPesanan.pesanan     = []
+			state.loadSend                = false
+			state.showModal.modalBayar	  = false
+			console.log(response.data)
+		})
+		.catch(e => {
+			console.log(e)
+		})
+	},
 	[mutations.SHOW_MODAL] (state) {
 		state.showModal = true
 	},
 	[mutations.CLOSE_MODAL] (state) {
-		state.showModal = false
+		state.showModal.modalMenu = false
+		state.showModal.modalBayar = false
 	}
 }

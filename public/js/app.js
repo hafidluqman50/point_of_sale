@@ -2071,10 +2071,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['tampilMenu', 'pesanMenu', 'checkoutPesanan'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput', 'bayarNanti'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['tampilMenu', 'pesanMenu', 'checkoutPesanan', 'prosesBayar'])),
   mounted: function mounted() {
     this.tampilMenu();
   }
@@ -2417,7 +2448,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['modalInfo'],
+  props: ['show', 'modalInfo'],
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['showModal'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['closeModal']))
 });
@@ -38012,7 +38043,9 @@ var render = function() {
         "div",
         {
           staticClass: "container-fluid",
-          class: { "is-blur": _vm.showModal },
+          class: {
+            "is-blur": _vm.showModal.modalMenu || _vm.showModal.modalBayar
+          },
           staticStyle: { "padding-top": ".6%" }
         },
         [
@@ -38078,6 +38111,21 @@ var render = function() {
                           _vm._v(
                             _vm._s(_vm._f("formatRupiah")(data_pesan.sub_total))
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "close",
+                              on: {
+                                click: function($event) {
+                                  return _vm.hapusPesanan(data_pesan)
+                                }
+                              }
+                            },
+                            [_vm._v("X")]
+                          )
                         ])
                       ])
                     }),
@@ -38087,22 +38135,33 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  {
-                    staticClass: "card-footer bg-success cursor-pointer",
-                    attrs: { align: "center" },
-                    on: {
-                      click: function($event) {
-                        return _vm.checkoutPesanan()
-                      }
-                    }
-                  },
+                  { staticClass: "card-footer", attrs: { align: "center" } },
                   [
-                    _vm.loadSend == false
-                      ? _c("b", [_vm._v("CHECKOUT")])
-                      : _c("div", {
-                          staticClass: "spinner-border",
-                          attrs: { role: "status" }
-                        })
+                    _c("h5", [
+                      _c("b", [
+                        _vm._v(
+                          "Total Harga : " +
+                            _vm._s(
+                              _vm._f("formatRupiah")(
+                                _vm.dataPesanan.total_harga
+                              )
+                            )
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: {
+                          click: function($event) {
+                            return _vm.checkoutPesanan()
+                          }
+                        }
+                      },
+                      [_c("b", [_vm._v("CHECKOUT")])]
+                    )
                   ]
                 )
               ])
@@ -38115,7 +38174,8 @@ var render = function() {
         "vue-modal",
         {
           attrs: {
-            modalInfo: _vm.singleData != null ? _vm.singleData.nama_menu : ""
+            modalInfo: _vm.singleData != null ? _vm.singleData.nama_menu : "",
+            show: _vm.showModal.modalMenu
           },
           scopedSlots: _vm._u([
             {
@@ -38199,6 +38259,136 @@ var render = function() {
                 }
               }
             })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "vue-modal",
+        {
+          attrs: { modelInfo: "CHECKOUT", show: _vm.showModal.modalBayar },
+          scopedSlots: _vm._u([
+            {
+              key: "modal-footer",
+              fn: function() {
+                return [
+                  _vm.loadSend == false
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary float-md-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.prosesBayar()
+                            }
+                          }
+                        },
+                        [_vm._v("PROSES")]
+                      )
+                    : _c("div", {
+                        staticClass: "spinner-border",
+                        attrs: { role: "status" }
+                      })
+                ]
+              },
+              proxy: true
+            }
+          ])
+        },
+        [
+          _c("p", [
+            _c("b", [
+              _vm._v(
+                "Harga Total : " +
+                  _vm._s(_vm._f("formatRupiah")(_vm.dataPesanan.total_harga))
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-outline-success active" }, [
+            _vm._v("Bayar Sekarang")
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-outline-info" }, [
+            _vm._v("Bayar Nanti")
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { class: { "is-hide": _vm.bayarNanti } }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Metode Bayar")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("button", { staticClass: "btn btn-outline-primary active" }, [
+                _vm._v("Tunai")
+              ]),
+              _vm._v(" "),
+              _c("button", { staticClass: "btn btn-outline-primary" }, [
+                _vm._v("Kartu Debit/Kredit")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("Jumlah Bayar")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.dataPesanan.total_bayar,
+                    expression: "dataPesanan.total_bayar"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number", name: "jumlah_bayar" },
+                domProps: { value: _vm.dataPesanan.total_bayar },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.dataPesanan,
+                      "total_bayar",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("Keterangan")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.dataPesanan.keterangan,
+                    expression: "dataPesanan.keterangan"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", name: "ket_bayar" },
+                domProps: { value: _vm.dataPesanan.keterangan },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.dataPesanan, "keterangan", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("hr")
           ])
         ]
       )
@@ -38971,7 +39161,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "vue-modal", class: { "show-modal": _vm.showModal } },
+    { staticClass: "vue-modal", class: { "show-modal": _vm.show } },
     [
       _c("div", { staticClass: "vue-modal-header bg-light d-flex" }, [
         _c("div", { staticClass: "vue-modal-title" }, [
@@ -56215,6 +56405,9 @@ __webpack_require__.r(__webpack_exports__);
   checkoutPesanan: function checkoutPesanan(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CHECKOUT_PESANAN"]);
   },
+  prosesBayar: function prosesBayar(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"]);
+  },
   showModal: function showModal(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_MODAL"]);
   },
@@ -56255,6 +56448,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   showModal: function showModal(state) {
     return state.showModal;
+  },
+  bayarNanti: function bayarNanti(state) {
+    return state.bayarNanti;
   }
 });
 
@@ -56296,7 +56492,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: TAMPIL_MENU, PILIH_MENU, PESAN_MENU, UBAH_PESANAN, CHECKOUT_PESANAN, SHOW_MODAL, CLOSE_MODAL */
+/*! exports provided: TAMPIL_MENU, PILIH_MENU, PESAN_MENU, UBAH_PESANAN, CHECKOUT_PESANAN, PROSES_BAYAR, SHOW_MODAL, CLOSE_MODAL */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56306,6 +56502,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PESAN_MENU", function() { return PESAN_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UBAH_PESANAN", function() { return UBAH_PESANAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHECKOUT_PESANAN", function() { return CHECKOUT_PESANAN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_BAYAR", function() { return PROSES_BAYAR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHOW_MODAL", function() { return SHOW_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 var TAMPIL_MENU = 'TAMPIL_MENU';
@@ -56313,6 +56510,7 @@ var PILIH_MENU = 'PILIH_MENU';
 var PESAN_MENU = 'PESAN_MENU';
 var UBAH_PESANAN = 'UBAH_PESANAN';
 var CHECKOUT_PESANAN = 'CHECKOUT_PESANAN';
+var PROSES_BAYAR = 'PROSES_BAYAR';
 var SHOW_MODAL = 'SHOW_MODAL';
 var CLOSE_MODAL = 'CLOSE_MODAL';
 
@@ -56343,7 +56541,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   });
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], function (state, data_menu) {
   state.singleData = data_menu;
-  state.showModal = true;
+  state.showModal.modalMenu = true;
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], function (state, data_menu) {
   data_menu.banyak_pesan = state.menuInput.banyak_pesan;
   data_menu.sub_total = state.menuInput.banyak_pesan * data_menu.harga_menu;
@@ -56352,32 +56550,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.dataPesanan.pesanan.push(data_menu);
   state.menuInput.banyak_pesan = null;
   state.menuInput.keterangan = null;
-  state.showModal = false;
+  state.showModal.modalMenu = false;
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_PESANAN"], function (state, data_menu) {
   state.menuInput.banyak_pesan = data_menu.banyak_pesan;
   state.menuInput.keterangan = data_menu.keterangan;
   state.showModal = true;
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CHECKOUT_PESANAN"], function (state) {
   if (state.dataPesanan.pesanan.length != 0) {
-    state.loadSend = true;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/data-menu/checkout', {
-      pesanan: state.dataPesanan.pesanan,
-      total_harga: state.dataPesanan.total_harga
-    }).then(function (response) {
-      state.dataPesanan.total_harga = null;
-      state.dataPesanan.pesanan = [];
-      state.loadSend = false;
-      console.log(response.data);
-    })["catch"](function (e) {
-      console.log(e);
-    });
+    state.showModal.modalBayar = true;
   } else {
     console.log('kosong bos');
   }
+}), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"], function (state) {
+  state.loadSend = true;
+  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/data-menu/checkout', {
+    total_harga: state.dataPesanan.total_harga,
+    total_bayar: state.dataPesanan.total_bayar,
+    // kembalian:state.dataPesanan.kembalian,
+    keterangan: state.dataPesanan.keterangan,
+    pesanan: state.dataPesanan.pesanan
+  }).then(function (response) {
+    state.dataPesanan.total_harga = null;
+    state.dataPesanan.total_bayar = null; // state.dataPesanan.kembalian   = null
+
+    state.dataPesanan.pesanan = [];
+    state.loadSend = false;
+    state.showModal.modalBayar = false;
+    console.log(response.data);
+  })["catch"](function (e) {
+    console.log(e);
+  });
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_MODAL"], function (state) {
   state.showModal = true;
 }), _defineProperty(_mutations$TAMPIL_MEN, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
-  state.showModal = false;
+  state.showModal.modalMenu = false;
+  state.showModal.modalBayar = false;
 }), _mutations$TAMPIL_MEN);
 
 /***/ }),
@@ -56394,10 +56601,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   isLoading: true,
   loadSend: false,
-  showModal: false,
+  showModal: {
+    modalMenu: false,
+    modalBayar: false
+  },
+  bayarNanti: false,
   dataMenu: null,
   dataPesanan: {
     total_harga: null,
+    total_bayar: null,
+    // kembalian:null,
+    keterangan: null,
     pesanan: []
   },
   menuInput: {

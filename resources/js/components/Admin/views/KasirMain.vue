@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="container-fluid" style="padding-top:.6%;" v-bind:class="{'is-blur':showModal}">
+		<div class="container-fluid" style="padding-top:.6%;" :class="{'is-blur':showModal.modalMenu || showModal.modalBayar}">
 			<div class="row">
 				<div class="col-md-9">
 					<div class="card m-0">
@@ -31,18 +31,21 @@
 									</td>
 									<td>{{ data_pesan.banyak_pesan}}x</td>
 									<td>{{ data_pesan.sub_total | formatRupiah }}</td>
+									<td><button class="close" @click="hapusPesanan(data_pesan)">X</button></td>
 								</tr>
 							</table>
 						</div>
-						<div class="card-footer bg-success cursor-pointer" align="center" @click="checkoutPesanan()">
-							<b v-if="loadSend == false">CHECKOUT</b>
-							<div class="spinner-border" role="status" v-else></div>
+						<div class="card-footer" align="center">
+							<h5><b>Total Harga : {{ dataPesanan.total_harga | formatRupiah }}</b></h5>
+							<button class="btn btn-success" @click="checkoutPesanan()">
+								<b>CHECKOUT</b>
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<vue-modal :modalInfo="singleData != null ? singleData.nama_menu : ''">
+		<vue-modal :modalInfo="singleData != null ? singleData.nama_menu : ''" :show="showModal.modalMenu">
 			<div class="form-group">
 				<label for="">Jumlah</label>
 				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu" v-model="menuInput.banyak_pesan">
@@ -53,6 +56,34 @@
 			</div>
 			<template v-slot:modal-footer>
 				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
+			</template>
+		</vue-modal>
+		<vue-modal :modelInfo="'CHECKOUT'" :show="showModal.modalBayar">
+			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
+			<button class="btn btn-outline-success active">Bayar Sekarang</button>
+			<button class="btn btn-outline-info">Bayar Nanti</button>
+			<hr>
+			<div :class="{'is-hide':bayarNanti}">
+				<label for="">Metode Bayar</label>
+				<div class="form-group">
+					<button class="btn btn-outline-primary active">Tunai</button>
+					<button class="btn btn-outline-primary">Kartu Debit/Kredit</button>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label for="">Jumlah Bayar</label>
+					<input type="number" class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar">
+				</div>
+				<hr>
+				<div class="form-group">
+					<label for="">Keterangan</label>
+					<input type="text" name="ket_bayar" class="form-control" v-model="dataPesanan.keterangan">
+				</div>
+				<hr>
+			</div>
+			<template v-slot:modal-footer>
+				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar()">PROSES</button>
+				<div class="spinner-border" role="status" v-else></div>
 			</template>
 		</vue-modal>
 	</div>
@@ -70,14 +101,16 @@
 				'showModal',
 				'singleData',
 				'dataPesanan',
-				'menuInput'
+				'menuInput',
+				'bayarNanti'
 			])
 		},
 		methods: {
 			...mapActions([
 				'tampilMenu',
 				'pesanMenu',
-				'checkoutPesanan'
+				'checkoutPesanan',
+				'prosesBayar'
 			])
 		},
 		mounted() {

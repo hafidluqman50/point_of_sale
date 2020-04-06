@@ -19,5 +19,8 @@ export default {
 	},
 	showModal: state => {
 		return state.showModal
+	},
+	bayarNanti: state => {
+		return state.bayarNanti
 	}
 }

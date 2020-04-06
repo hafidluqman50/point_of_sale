@@ -124,14 +124,36 @@ class DataTablesController extends Controller
             $column = '<a href="'.url("/admin/data-barang-masuk/detail/$action->id_barang_masuk").'">
                           <button class="btn btn-info"> Detail </button>
                        </a>
+                       <a href="'.url("/admin/data-barang-masuk/edit/$action->id_barang_masuk").'">
+                          <button class="btn btn-warning"> Edit </button>
+                       </a>
                         <form action="'.url("/admin/data-barang-masuk/delete/$action->id_barang_masuk").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
                        </form>';
             return $column;
-        })->editColumn('tanggal_barang_masuk',function($edit){
-            return human_date($edit->tanggal_barang_masuk);
+        })->editColumn('tanggal_masuk',function($edit){
+            return human_date($edit->tanggal_masuk);
+        })->make(true);
+
+        return $datatables;
+    }
+
+    public function dataBarangMasukDetail($id)
+    {
+        $barang_masuk_detail = BarangMasukDetail::getData($id);
+        $datatables = DataTables::of($barang_masuk_detail)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/data-barang-masuk/detail/$action->id_barang_masuk/delete/$action->id_barang_masuk_detail").'">
+                          <button class="btn btn-danger"> Delete </button>
+                       </a>';
+            return $column;
+        })->editColumn('jumlah_masuk',function($edit){
+            return $edit->jumlah_masuk.' '.$edit->satuan_stok;
+        })->editColumn('harga_satuan',function($edit){
+            return format_rupiah($edit->harga_satuan);
+        })->editColumn('harga_total',function($edit){
+            return format_rupiah($edit->harga_total);
         })->make(true);
 
         return $datatables;
@@ -174,6 +196,8 @@ class DataTablesController extends Controller
             return human_date($edit->tanggal_transaksi);
         })->editColumn('total_harga',function($edit){
             return format_rupiah($edit->total_harga);
+        })->editColumn('total_bayar',function($edit){
+            return format_rupiah($edit->total_bayar);
         })->make(true);
 
         return $datatables;

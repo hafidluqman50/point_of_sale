@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\MenuMakan;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
+use App\Models\Barang;
 use Auth;
 use Str;
 
@@ -20,14 +21,18 @@ class ApiController extends Controller
 
     public function dataMenuCheckout(Request $request)
     {
-		$pesanan      = $request->pesanan;
-		$total_harga  = $request->total_harga;
+		$pesanan     = $request->pesanan;
+		$total_harga = $request->total_harga;
+		$total_bayar = $request->total_bayar;
+		$keterangan  = $request->keterangan;
 		
 		$id_transaksi = (string)Str::uuid();
     	Transaksi::create([
 			'id_transaksi'		=> $id_transaksi,
 			'tanggal_transaksi' => date('Y-m-d'),
 			'total_harga'		=> $total_harga,
+			'total_bayar'		=> $total_bayar,
+			'keterangan'		=> $keterangan,
 			'id_users'          => Auth::id()
     	]);
 
@@ -47,5 +52,14 @@ class ApiController extends Controller
 		TransaksiDetail::insert($insert_data);
 
 		return response()->json(['message' => 'Berhasil Input Pesanan']);
+    }
+
+    public function ajaxDataBarang($id)
+    {
+    	$barang = Barang::where('id_jenis_barang',$id)
+    					->where('status_delete',0)
+    					->get();
+
+    	return $barang;
     }
 }

@@ -53,7 +53,9 @@
 									<th>No.</th>
 									<th>Tanggal Transaksi</th>
 									<th>Total Harga</th>
+									<th>Total Bayar</th>
 									<th>Input By</th>
+									<th>Keterangan</th>
 									<th>#</th>
 								</tr>
 							</thead>

@@ -26,6 +26,7 @@ Route::group(['prefix' => 'datatables'],function(){
 	Route::get('/data-barang',['uses' => 'DataTablesController@dataBarang']);
 	Route::get('/data-supplier',['uses' => 'DataTablesController@dataSupplier']);
 	Route::get('/data-barang-masuk',['uses' => 'DataTablesController@dataBarangMasuk']);
+	Route::get('/data-barang-masuk/detail/{id}',['uses' => 'DataTablesController@dataBarangMasukDetail']);
 	Route::get('/data-barang-keluar',['uses' => 'DataTablesController@dataBarangKeluar']);
 	Route::get('/data-transaksi',['uses' => 'DataTablesController@dataTransaksi']);
 	Route::get('/data-transaksi/detail/{id}',['uses' => 'DataTablesController@dataTransaksiDetail']);
@@ -124,3 +125,4 @@ Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
 
 Route::get('/data-menu',['uses' => 'ApiController@dataMenu']);
 Route::post('/data-menu/checkout',['uses' => 'ApiController@dataMenuCheckout']);
+Route::get('/ajax/data-barang/{id}',['uses' => 'ApiController@ajaxDataBarang']);

@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-modal" v-bind:class="{'show-modal':showModal}">
+	<div class="vue-modal" v-bind:class="{'show-modal':show}">
 		<div class="vue-modal-header bg-light d-flex">
 			<div class="vue-modal-title">
 				<p><b>{{ modalInfo }}</b></p>
@@ -21,6 +21,7 @@
 	import { mapGetters, mapActions } from 'vuex'
 	export default {
 		props: [
+			'show',
 			'modalInfo'
 		],
 		computed: {
