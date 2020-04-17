@@ -22,6 +22,9 @@
           <li class="nav-item">
             <router-link to="/admin/kasir/minuman" class="nav-link">Minuman</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/admin/kasir/pembayaran" class="nav-link">Pembayaran</router-link>
+          </li>
         </ul>
 
         <!-- SEARCH FORM -->

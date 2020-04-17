@@ -14,7 +14,7 @@
 					Kosong
 				</span>
 			</div>
-			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" v-on:click="pilihMenu(menuMakan)">
+			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" v-on:click="pilihMenu(menuMakan); pesanModal()">
 				<p class="card-text">
 					<b>PESAN</b>
 				</p>
@@ -28,12 +28,16 @@
 
 	export default {
 		props:[
-			'menuMakan'
+			'menuMakan',
+			'targetModal'
 		],
 		methods: {
 			...mapActions([
 				'pilihMenu'
-			])
+			]),
+			pesanModal:() => {
+				console.log('sip')
+			}
 		}
 	}
 </script>

@@ -54,6 +54,13 @@ class ApiController extends Controller
 		return response()->json(['message' => 'Berhasil Input Pesanan']);
     }
 
+    public function dataPembayaran() 
+    {
+    	$pembayaran = Transaksi::where('tanggal_transaksi',now()->toDateString())->get();
+
+    	return response()->json($pembayaran);
+    }
+
     public function ajaxDataBarang($id)
     {
     	$barang = Barang::where('id_jenis_barang',$id)

@@ -2,16 +2,19 @@ import * as mutations from './mutations-type'
 import axios from 'axios'
 
 export default {
+	[mutations.LOAD_STATE] (state) {
+		state.isLoading = true
+	},
 	[mutations.TAMPIL_MENU] (state) {
 		axios.get('/data-menu')
-		.then((response) => {
-			state.dataMenu  = response.data
-			state.isLoading = false
-		})
+			 .then((response) => {
+				state.dataMenu  = response.data
+				state.isLoading = false
+			})
 	},
 	[mutations.PILIH_MENU] (state,data_menu) {
-		state.singleData = data_menu
-		state.showModal.modalMenu  = true
+		state.singleData          = data_menu
+		// state.showModal.modalMenu = true
 	},
 	[mutations.PESAN_MENU] (state,data_menu) {
 		data_menu.banyak_pesan = state.menuInput.banyak_pesan
@@ -23,12 +26,11 @@ export default {
 
 		state.menuInput.banyak_pesan = null
 		state.menuInput.keterangan   = null
-		state.showModal.modalMenu	 = false
 	},
 	[mutations.UBAH_PESANAN] (state,data_menu) {
 		state.menuInput.banyak_pesan = data_menu.banyak_pesan
 		state.menuInput.keterangan   = data_menu.keterangan
-		state.showModal              = true
+		state.showModal.modalMenu    = true
 	},
 	[mutations.CHECKOUT_PESANAN] (state) {
 		if (state.dataPesanan.pesanan.length != 0) {
@@ -60,11 +62,21 @@ export default {
 			console.log(e)
 		})
 	},
+	[mutations.GET_PEMBAYARAN] (state) {
+		axios.get('/data-pembayaran')
+			 .then((response) => {
+			 	state.dataPembayaran = response.data
+			 	state.isLoading = false
+			 })
+	},
 	[mutations.SHOW_MODAL] (state) {
 		state.showModal = true
 	},
 	[mutations.CLOSE_MODAL] (state) {
-		state.showModal.modalMenu = false
-		state.showModal.modalBayar = false
+		state.showModal = false
+	},
+	[mutations.CLOSE_PESAN] (state) {
+		state.menuInput.banyak_pesan = null
+		state.menuInput.keterangan   = null
 	}
 }

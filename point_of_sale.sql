@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 30, 2020 at 03:02 PM
+-- Generation Time: Apr 17, 2020 at 05:34 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -42,6 +42,7 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `nama_barang`, `id_jenis_barang`, `stok_barang`, `satuan_stok`, `status_delete`) VALUES
+('539184cc-6b5d-4b98-b85b-5f72bba220e2', 'Kangkung', '57ca891b-94b8-455b-9466-056f22a02aeb', 120, 'Ikat', 0),
 ('91be7ca5-1775-468f-a9b1-c47f17836fef', 'Bayam', '57ca891b-94b8-455b-9466-056f22a02aeb', 120, 'Ikat', 0);
 
 -- --------------------------------------------------------
@@ -68,7 +69,7 @@ CREATE TABLE `barang_keluar_detail` (
   `id_barang_keluar` varchar(36) NOT NULL,
   `id_barang` varchar(36) NOT NULL,
   `jumlah_barang` int(11) NOT NULL,
-  `satuan_barang` varchar(10) NOT NULL
+  `satuan_stok` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -81,8 +82,18 @@ CREATE TABLE `barang_masuk` (
   `id_barang_masuk` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `tanggal_masuk` date NOT NULL,
   `id_supplier` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `id_users` varchar(36) NOT NULL
+  `keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id_users` varchar(36) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `barang_masuk`
+--
+
+INSERT INTO `barang_masuk` (`id_barang_masuk`, `tanggal_masuk`, `id_supplier`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
+('921596f8-bfbc-4ed9-9920-7a5e384c01ef', '2020-04-02', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Pemasukan Bahan Sayuran', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-04-02 21:56:36', '2020-04-02 21:56:36');
 
 -- --------------------------------------------------------
 
@@ -95,10 +106,17 @@ CREATE TABLE `barang_masuk_detail` (
   `id_barang_masuk` varchar(36) NOT NULL,
   `id_barang` varchar(36) NOT NULL,
   `jumlah_masuk` int(11) NOT NULL,
-  `satuan_barang` varchar(10) NOT NULL,
   `harga_satuan` int(11) NOT NULL,
   `harga_total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `barang_masuk_detail`
+--
+
+INSERT INTO `barang_masuk_detail` (`id_barang_masuk_detail`, `id_barang_masuk`, `id_barang`, `jumlah_masuk`, `harga_satuan`, `harga_total`) VALUES
+('4aeec88e-e4c4-469e-9487-7b51f8a31ef6', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 10000, 120000),
+('e6268c7c-a666-40ff-bb5e-47cc1a30e231', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 20, 20000, 400000);
 
 -- --------------------------------------------------------
 
@@ -200,7 +218,9 @@ CREATE TABLE `transaksi` (
   `id_transaksi` varchar(36) NOT NULL,
   `tanggal_transaksi` date NOT NULL,
   `total_harga` int(11) NOT NULL,
+  `total_bayar` int(11) NOT NULL,
   `id_users` varchar(36) NOT NULL,
+  `keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -209,8 +229,9 @@ CREATE TABLE `transaksi` (
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `id_users`, `created_at`, `updated_at`) VALUES
-('13f87a32-5385-4b0f-9684-34cef0a08fc0', '2020-03-28', 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-03-28 22:17:00', '2020-03-28 22:17:00');
+INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `total_bayar`, `id_users`, `keterangan`, `created_at`, `updated_at`) VALUES
+('13f87a32-5385-4b0f-9684-34cef0a08fc0', '2020-04-18', 48000, 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '-', '2020-03-28 22:17:00', '2020-03-28 22:17:00'),
+('7db0831d-0d01-49ed-a452-43eb5a41db43', '2020-04-18', 24000, 24000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '-', '2020-04-03 21:40:55', '2020-04-03 21:40:55');
 
 -- --------------------------------------------------------
 
@@ -234,6 +255,8 @@ CREATE TABLE `transaksi_detail` (
 --
 
 INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_menu_makan`, `banyak_pesan`, `sub_total`, `keterangan`, `created_at`, `updated_at`) VALUES
+('163483cd-af1e-4705-abbb-3d196a52f65c', '7db0831d-0d01-49ed-a452-43eb5a41db43', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-04-03 21:40:55', '2020-04-03 21:40:55'),
+('92ecc1b4-60d3-4023-ade2-21763a85b854', '7db0831d-0d01-49ed-a452-43eb5a41db43', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '2020-04-03 21:40:55', '2020-04-03 21:40:55'),
 ('ae24daaa-1e3a-4b39-bbb6-ebe268420c1f', '13f87a32-5385-4b0f-9684-34cef0a08fc0', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, 'Telor Setengah Matang', '2020-03-28 22:17:00', '2020-03-28 22:17:00'),
 ('d2cb5913-85e0-4dc4-8525-6b8932259605', '13f87a32-5385-4b0f-9684-34cef0a08fc0', '107924bd-84af-4f77-9570-965b908938e3', 2, 24000, 'Pedesin', '2020-03-28 22:17:00', '2020-03-28 22:17:00');
 

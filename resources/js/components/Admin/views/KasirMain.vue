@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="container-fluid" style="padding-top:.6%;" :class="{'is-blur':showModal.modalMenu || showModal.modalBayar}">
+		<div class="container-fluid" style="padding-top:.6%;" :class="{'is-blur':showModal}">
 			<div class="row">
 				<div class="col-md-9">
 					<div class="card m-0">
@@ -24,7 +24,7 @@
 						<div class="card-body checkout">
 							<table width="100%">
 								<tr v-for="data_pesan in dataPesanan.pesanan">
-									<td style="font-size:18px;"><b>{{ data_pesan.nama_menu }}</b>
+									<td style="font-size:18px;" @click="ubahPesanan(data_pesan)"><b>{{ data_pesan.nama_menu }}</b>
 										<tr v-if="data_pesan.keterangan != null || data_pesan.keterangan !== undefined">
 											<td style="font-size:15px;">{{ data_pesan.keterangan }}</td>
 										</tr>
@@ -45,7 +45,15 @@
 				</div>
 			</div>
 		</div>
-		<vue-modal :modalInfo="singleData != null ? singleData.nama_menu : ''" :show="showModal.modalMenu">
+		<vue-modal :show="showModal.modalMenu">
+			<template v-slot:modal-header>
+				<div class="vue-modal-title">
+					<p><b>{{ singleData != null ? singleData.nama_menu : '' }}</b></p>
+				</div>
+				<div class="vue-modal-close">
+					<button class="btn btn-dark" @click="closePesan()">Close</button>
+				</div>
+			</template>
 			<div class="form-group">
 				<label for="">Jumlah</label>
 				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu" v-model="menuInput.banyak_pesan">
@@ -55,10 +63,18 @@
 				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
+				<button class="btn btn-primary float-md-right" refs="buttonModal" target-modal="pesan-menu" @click="pesanMenu(singleData)">PESAN MENU</button>
 			</template>
 		</vue-modal>
-		<vue-modal :modelInfo="'CHECKOUT'" :show="showModal.modalBayar">
+		<!-- <vue-modal :show="showModal.modalBayar">
+			<template v-slot:modal-header>
+				<div class="vue-modal-title">
+					<p><b>CHECKOUT</b></p>
+				</div>
+				<div class="vue-modal-close">
+					<button class="btn btn-dark" @click="closeModal()">Close</button>
+				</div>
+			</template>
 			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
 			<button class="btn btn-outline-success active">Bayar Sekarang</button>
 			<button class="btn btn-outline-info">Bayar Nanti</button>
@@ -85,7 +101,7 @@
 				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar()">PROSES</button>
 				<div class="spinner-border" role="status" v-else></div>
 			</template>
-		</vue-modal>
+		</vue-modal> -->
 	</div>
 </template>
 
@@ -110,7 +126,10 @@
 				'tampilMenu',
 				'pesanMenu',
 				'checkoutPesanan',
-				'prosesBayar'
+				'prosesBayar',
+				'ubahPesanan',
+				'closeModal',
+				'closePesan'
 			])
 		},
 		mounted() {

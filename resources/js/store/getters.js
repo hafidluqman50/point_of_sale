@@ -11,6 +11,9 @@ export default {
 	dataPesanan: state => {
 		return state.dataPesanan
 	},
+	dataPembayaran: state => {
+		return state.dataPembayaran
+	},
 	singleData: state => {
 		return state.singleData
 	},
@@ -22,5 +25,8 @@ export default {
 	},
 	bayarNanti: state => {
 		return state.bayarNanti
+	},
+	dataPembayaran: state => {
+		return state.dataPembayaran
 	}
 }

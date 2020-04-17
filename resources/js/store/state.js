@@ -1,12 +1,15 @@
 export default {
-	isLoading:true,
+	isLoading:false,
 	loadSend:false,
-	showModal:{
-		modalMenu:false,
-		modalBayar:false
-	},
+	// showModal:{
+	// 	modalMenu:false,
+	// 	modalUbah:false,
+	// 	modalBayar:false
+	// },
+	showModal:false,
 	bayarNanti:false,
 	dataMenu:null,
+	dataPembayaran:[],
 	dataPesanan:{
 		total_harga:null,
 		total_bayar:null,

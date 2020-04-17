@@ -1,12 +1,7 @@
 <template>
-	<div class="vue-modal" v-bind:class="{'show-modal':show}">
+	<div class="vue-modal" v-bind:class="{'show-modal':showModal}">
 		<div class="vue-modal-header bg-light d-flex">
-			<div class="vue-modal-title">
-				<p><b>{{ modalInfo }}</b></p>
-			</div>
-			<div class="vue-modal-close">
-				<button class="btn btn-dark" @click="closeModal()">Close</button>
-			</div>
+			<slot name="modal-header"></slot>
 		</div>
 		<div class="vue-modal-body">
 			<slot></slot>
@@ -22,7 +17,7 @@
 	export default {
 		props: [
 			'show',
-			'modalInfo'
+			// 'modalInfo'
 		],
 		computed: {
 			...mapGetters([

@@ -12,6 +12,7 @@ import App from './App'
 import router from './router.js'
 import store from './store'
 import filters from './filters.js'
+// import { loadState } from './store/actions'
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

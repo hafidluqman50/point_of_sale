@@ -125,4 +125,5 @@ Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
 
 Route::get('/data-menu',['uses' => 'ApiController@dataMenu']);
 Route::post('/data-menu/checkout',['uses' => 'ApiController@dataMenuCheckout']);
+Route::get('/data-pembayaran',['uses' => 'ApiController@dataPembayaran']);
 Route::get('/ajax/data-barang/{id}',['uses' => 'ApiController@ajaxDataBarang']);
