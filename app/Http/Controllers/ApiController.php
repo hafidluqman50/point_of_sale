@@ -19,6 +19,17 @@ class ApiController extends Controller
     	return response()->json($menu_makan);
     }
 
+    public function dataMenuCari(Request $request)
+    {
+    	$cari_menu = $request->cari_menu;
+
+    	$data_cari = MenuMakan::where('nama_menu','like','%'.$cari_menu.'%')
+    						  ->where('status_delete',0)
+			    			  ->get();
+
+    	return response()->json($data_cari);
+    }
+
     public function dataMenuCheckout(Request $request)
     {
 		$pesanan     = $request->pesanan;

@@ -27,6 +27,17 @@ export default {
 		state.menuInput.banyak_pesan = null
 		state.menuInput.keterangan   = null
 	},
+	[mutations.CARI_MENU] (state,data_cari) {
+		axios.get('/data-menu/cari', {
+			params:{
+				cari_menu:data_cari
+			}
+		})
+		.then(response => {
+			state.dataMenu  = response.data
+			state.isLoading = false
+		})
+	},
 	[mutations.UBAH_PESANAN] (state,data_menu) {
 		state.menuInput.banyak_pesan = data_menu.banyak_pesan
 		state.menuInput.keterangan   = data_menu.keterangan
@@ -64,7 +75,7 @@ export default {
 	},
 	[mutations.GET_PEMBAYARAN] (state) {
 		axios.get('/data-pembayaran')
-			 .then((response) => {
+			 .then(response => {
 			 	state.dataPembayaran = response.data
 			 	state.isLoading = false
 			 })

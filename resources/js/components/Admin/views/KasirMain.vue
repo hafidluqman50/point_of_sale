@@ -11,7 +11,12 @@
 								</div>
 		        			</div>
 			        		<div class="row" v-else>
-								<menu-item v-for="menuMakan in dataMenu" :menuMakan="menuMakan" :key="menuMakan.id"></menu-item>
+			        			<div class="d-flex justify-content-center align-items-center" style="height:100%" v-if="dataMenu == null || dataMenu.length == 0">
+			        				<div>
+			        					<h5>Tidak Ada Menu</h5>
+			        				</div>
+			        			</div>
+								<menu-item v-for="menuMakan in dataMenu" :menuMakan="menuMakan" :key="menuMakan.id" v-else></menu-item>
 			        		</div>	
 						</div>
 					</div>

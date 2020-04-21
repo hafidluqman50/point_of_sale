@@ -25,6 +25,12 @@ export default {
 	ubahPesanan(context,data_menu) {
 		context.commit(mutations.UBAH_PESANAN,data_menu)
 	},
+	cariMenu(context,input_cari) {
+		if (input_cari != null || input_cari !== undefined) {
+			context.dispatch('loadState')
+			context.commit(mutations.CARI_MENU,input_cari)
+		}
+	},
 	closePesan(context) {
 		context.commit(mutations.CLOSE_PESAN)
 		context.dispatch('closeModal')

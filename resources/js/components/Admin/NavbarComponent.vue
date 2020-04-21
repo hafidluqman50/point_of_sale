@@ -30,9 +30,9 @@
         <!-- SEARCH FORM -->
         <form class="form-inline ml-0 ml-md-3">
           <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" name="cari_menu" type="search" placeholder="Cari Menu" aria-label="Cari Menu">
+            <input class="form-control form-control-navbar" name="cari_menu" v-model="dataCari" type="search" placeholder="Cari Menu" aria-label="Cari Menu">
             <div class="input-group-append">
-              <button class="btn btn-navbar" type="submit">
+              <button class="btn btn-navbar" type="button" v-on:click="cariMenu(dataCari)">
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -44,5 +44,18 @@
 </template>
 
 <script>
-	export default {}
+  import {mapActions} from 'vuex'
+
+	export default {
+    data:() => {
+      return {
+        dataCari:null
+      }
+    },
+    methods: {
+      ...mapActions([
+          'cariMenu'
+        ])
+    }
+  }
 </script>
