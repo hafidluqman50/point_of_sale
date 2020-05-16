@@ -14,7 +14,7 @@
 					Kosong
 				</span>
 			</div>
-			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" v-on:click="pilihMenu(menuMakan); pesanModal()">
+			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" ref="menuItem" target-modal="modalMenuItem" v-on:click="pilihMenu(menuMakan); pesanModal()">
 				<p class="card-text">
 					<b>PESAN</b>
 				</p>
@@ -25,6 +25,7 @@
 
 <script>
 	import { mapActions } from 'vuex'
+	import { EventBus } from '../event-bus.js'
 
 	export default {
 		props:[
@@ -35,8 +36,8 @@
 			...mapActions([
 				'pilihMenu'
 			]),
-			pesanModal:() => {
-				console.log('sip')
+			pesanModal:function() {
+				EventBus.$emit('modalOpen',this.$refs.menuItem.getAttribute('target-modal'))
 			}
 		}
 	}

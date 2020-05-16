@@ -22,7 +22,7 @@ export default {
 		data_menu.keterangan   = state.menuInput.keterangan
 
 		state.dataPesanan.total_harga+=data_menu.sub_total
-		state.dataPesanan.pesanan.push(data_menu)
+		state.dataPesanan.menu.push(data_menu)
 
 		state.menuInput.banyak_pesan = null
 		state.menuInput.keterangan   = null
@@ -43,14 +43,14 @@ export default {
 		state.menuInput.keterangan   = data_menu.keterangan
 		state.showModal.modalMenu    = true
 	},
-	[mutations.CHECKOUT_PESANAN] (state) {
-		if (state.dataPesanan.pesanan.length != 0) {
-			state.showModal.modalBayar = true
-		}
-		else {
-			console.log('kosong bos');
-		}
-	},
+	// [mutations.CHECKOUT_PESANAN] (state) {
+		// if (state.dataPesanan.menu.length != 0) {
+		// 	state.showModal.modalBayar = true
+		// }
+		// else {
+		// 	console.log('kosong bos');
+		// }
+	// },
 	[mutations.PROSES_BAYAR] (state) {
 		state.loadSend = true
 		axios.post('/data-menu/checkout',{
@@ -58,15 +58,14 @@ export default {
 			total_bayar:state.dataPesanan.total_bayar,
 			// kembalian:state.dataPesanan.kembalian,
 			keterangan:state.dataPesanan.keterangan,
-			pesanan:state.dataPesanan.pesanan
+			menu:state.dataPesanan.menu
 		})
 		.then(response => {
-			state.dataPesanan.total_harga = null
-			state.dataPesanan.total_bayar = null
-			// state.dataPesanan.kembalian   = null
-			state.dataPesanan.pesanan     = []
-			state.loadSend                = false
-			state.showModal.modalBayar	  = false
+			state.dataPesanan.total_harga  = null
+			state.dataPesanan.total_bayar  = null
+			// state.dataPesanan.kembalian = null
+			state.dataPesanan.menu         = []
+			state.loadSend                 = false
 			console.log(response.data)
 		})
 		.catch(e => {
@@ -80,7 +79,7 @@ export default {
 			 	state.isLoading = false
 			 })
 	},
-	[mutations.SHOW_MODAL] (state) {
+	[mutations.OPEN_MODAL] (state) {
 		state.showModal = true
 	},
 	[mutations.CLOSE_MODAL] (state) {

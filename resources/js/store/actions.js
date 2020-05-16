@@ -1,15 +1,17 @@
 import * as mutations from './mutations-type'
-import EventBus from '../event-bus'
+import { EventBus } from '../event-bus'
 
 export default {
 	loadState(context) {
 		context.commit(mutations.LOAD_STATE)
 	},
-	showModal(context) {
-		context.commit(mutations.SHOW_MODAL)
+	openModal(context,target_modal) {
+		context.commit(mutations.OPEN_MODAL)
+		EventBus.$emit('modalOpen',target_modal)
 	},
-	closeModal(context) {
+	closeModal(context,target_modal) {
 		context.commit(mutations.CLOSE_MODAL)
+		EventBus.$emit('modalClose',target_modal)
 	},
 	tampilMenu(context) {
 		context.dispatch('loadState')
@@ -19,7 +21,7 @@ export default {
 		context.commit(mutations.PILIH_MENU,data_menu)
 	},
 	pesanMenu(context,data_menu) {
-		context.dispatch('showModal')
+		context.dispatch('openModal')
 		context.commit(mutations.PESAN_MENU,data_menu)
 	},
 	ubahPesanan(context,data_menu) {
@@ -34,9 +36,6 @@ export default {
 	closePesan(context) {
 		context.commit(mutations.CLOSE_PESAN)
 		context.dispatch('closeModal')
-	},
-	checkoutPesanan(context) {
-		context.commit(mutations.CHECKOUT_PESANAN)
 	},
 	prosesBayar(context) {
 		context.commit(mutations.PROSES_BAYAR)

@@ -2023,6 +2023,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../event-bus.js */ "./resources/js/event-bus.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2142,9 +2143,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput', 'bayarNanti'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['tampilMenu', 'pesanMenu', 'checkoutPesanan', 'prosesBayar', 'ubahPesanan', 'closeModal', 'closePesan'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'tampilMenu', 'pesanMenu', 'checkoutPesanan', 'prosesBayar', 'ubahPesanan']), {
+    checkoutModal: function checkoutModal() {
+      if (this.dataPesanan.menu.length != 0) {
+        this.openModal('checkoutMenu');
+      } else {
+        console.log('Kosong Bos');
+      }
+    }
+  }),
   mounted: function mounted() {
     this.tampilMenu();
   }
@@ -2510,6 +2520,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../event-bus.js */ "./resources/js/event-bus.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2542,11 +2553,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['menuMakan', 'targetModal'],
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['pilihMenu']), {
     pesanModal: function pesanModal() {
-      console.log('sip');
+      _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('modalOpen', this.$refs.menuItem.getAttribute('target-modal'));
     }
   })
 });
@@ -2563,6 +2575,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../event-bus.js */ "./resources/js/event-bus.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2584,11 +2597,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['show' // 'modalInfo'
-  ],
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['showModal'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['closeModal']))
+  data: function data() {
+    return {
+      modalAct: false
+    };
+  },
+  props: ['idModal'],
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal'])),
+  mounted: function mounted() {
+    var _this = this;
+
+    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on('modalOpen', function (target) {
+      if (target == _this.idModal) {
+        _this.modalAct = true;
+
+        _this.openModal();
+      }
+    });
+    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on('modalClose', function (target) {
+      if (target == _this.idModal) {
+        _this.modalAct = false;
+
+        _this.closeModal();
+      }
+    });
+  }
 });
 
 /***/ }),
@@ -38269,7 +38304,7 @@ var render = function() {
                   _c(
                     "table",
                     { attrs: { width: "100%" } },
-                    _vm._l(_vm.dataPesanan.pesanan, function(data_pesan) {
+                    _vm._l(_vm.dataPesanan.menu, function(data_pesan) {
                       return _c("tr", [
                         _c(
                           "td",
@@ -38347,10 +38382,12 @@ var render = function() {
                     _c(
                       "button",
                       {
+                        ref: "checkoutAct",
                         staticClass: "btn btn-success",
+                        attrs: { "target-modal": "checkoutMenu" },
                         on: {
                           click: function($event) {
-                            return _vm.checkoutPesanan()
+                            return _vm.checkoutModal()
                           }
                         }
                       },
@@ -38367,7 +38404,7 @@ var render = function() {
       _c(
         "vue-modal",
         {
-          attrs: { show: _vm.showModal.modalMenu },
+          attrs: { idModal: "modalMenuItem" },
           scopedSlots: _vm._u([
             {
               key: "modal-header",
@@ -38394,7 +38431,7 @@ var render = function() {
                         staticClass: "btn btn-dark",
                         on: {
                           click: function($event) {
-                            return _vm.closePesan()
+                            return _vm.closeModal("modalMenuItem")
                           }
                         }
                       },
@@ -38413,13 +38450,10 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-primary float-md-right",
-                      attrs: {
-                        refs: "buttonModal",
-                        "target-modal": "pesan-menu"
-                      },
                       on: {
                         click: function($event) {
-                          return _vm.pesanMenu(_vm.singleData)
+                          _vm.pesanMenu(_vm.singleData)
+                          _vm.closeModal("modalMenuItem")
                         }
                       }
                     },
@@ -38491,6 +38525,164 @@ var render = function() {
                 }
               }
             })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "vue-modal",
+        {
+          attrs: { idModal: "checkoutMenu" },
+          scopedSlots: _vm._u([
+            {
+              key: "modal-header",
+              fn: function() {
+                return [
+                  _c("div", { staticClass: "vue-modal-title" }, [
+                    _c("p", [_c("b", [_vm._v("CHECKOUT")])])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "vue-modal-close" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-dark",
+                        on: {
+                          click: function($event) {
+                            return _vm.closeModal("checkoutMenu")
+                          }
+                        }
+                      },
+                      [_vm._v("Close")]
+                    )
+                  ])
+                ]
+              },
+              proxy: true
+            },
+            {
+              key: "modal-footer",
+              fn: function() {
+                return [
+                  _vm.loadSend == false
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary float-md-right",
+                          on: {
+                            click: function($event) {
+                              _vm.prosesBayar()
+                              _vm.closeModal("checkoutMenu")
+                            }
+                          }
+                        },
+                        [_vm._v("PROSES")]
+                      )
+                    : _c("div", {
+                        staticClass: "spinner-border",
+                        attrs: { role: "status" }
+                      })
+                ]
+              },
+              proxy: true
+            }
+          ])
+        },
+        [
+          _vm._v(" "),
+          _c("p", [
+            _c("b", [
+              _vm._v(
+                "Harga Total : " +
+                  _vm._s(_vm._f("formatRupiah")(_vm.dataPesanan.total_harga))
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-outline-success active" }, [
+            _vm._v("Bayar Sekarang")
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-outline-info" }, [
+            _vm._v("Bayar Nanti")
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { class: { "is-hide": _vm.bayarNanti } }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Metode Bayar")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("button", { staticClass: "btn btn-outline-primary active" }, [
+                _vm._v("Tunai")
+              ]),
+              _vm._v(" "),
+              _c("button", { staticClass: "btn btn-outline-primary" }, [
+                _vm._v("Kartu Debit/Kredit")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("Jumlah Bayar")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.dataPesanan.total_bayar,
+                    expression: "dataPesanan.total_bayar"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number", name: "jumlah_bayar" },
+                domProps: { value: _vm.dataPesanan.total_bayar },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.dataPesanan,
+                      "total_bayar",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("Keterangan")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.dataPesanan.keterangan,
+                    expression: "dataPesanan.keterangan"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", name: "ket_bayar" },
+                domProps: { value: _vm.dataPesanan.keterangan },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.dataPesanan, "keterangan", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("hr")
           ])
         ]
       )
@@ -39435,8 +39627,10 @@ var render = function() {
       _c(
         "div",
         {
+          ref: "menuItem",
           staticClass:
             "d-flex justify-content-center card-footer bg-primary checkout-div",
+          attrs: { "target-modal": "modalMenuItem" },
           on: {
             click: function($event) {
               _vm.pilihMenu(_vm.menuMakan)
@@ -39480,7 +39674,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "vue-modal", class: { "show-modal": _vm.showModal } },
+    { class: "vue-modal " + (_vm.modalAct ? "show-modal" : "") },
     [
       _c(
         "div",
@@ -56799,11 +56993,13 @@ __webpack_require__.r(__webpack_exports__);
   loadState: function loadState(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_STATE"]);
   },
-  showModal: function showModal(context) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_MODAL"]);
+  openModal: function openModal(context, target_modal) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"]);
+    _event_bus__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('modalOpen', target_modal);
   },
-  closeModal: function closeModal(context) {
+  closeModal: function closeModal(context, target_modal) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"]);
+    _event_bus__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('modalClose', target_modal);
   },
   tampilMenu: function tampilMenu(context) {
     context.dispatch('loadState');
@@ -56813,7 +57009,7 @@ __webpack_require__.r(__webpack_exports__);
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], data_menu);
   },
   pesanMenu: function pesanMenu(context, data_menu) {
-    context.dispatch('showModal');
+    context.dispatch('openModal');
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], data_menu);
   },
   ubahPesanan: function ubahPesanan(context, data_menu) {
@@ -56828,9 +57024,6 @@ __webpack_require__.r(__webpack_exports__);
   closePesan: function closePesan(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_PESAN"]);
     context.dispatch('closeModal');
-  },
-  checkoutPesanan: function checkoutPesanan(context) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CHECKOUT_PESANAN"]);
   },
   prosesBayar: function prosesBayar(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"]);
@@ -56924,34 +57117,32 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: LOAD_STATE, TAMPIL_MENU, PILIH_MENU, PESAN_MENU, CARI_MENU, UBAH_PESANAN, CHECKOUT_PESANAN, PROSES_BAYAR, GET_PEMBAYARAN, SHOW_MODAL, CLOSE_MODAL, CLOSE_PESAN */
+/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_STATE, TAMPIL_MENU, PILIH_MENU, PESAN_MENU, CARI_MENU, UBAH_PESANAN, PROSES_BAYAR, GET_PEMBAYARAN, CLOSE_PESAN */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPEN_MODAL", function() { return OPEN_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_STATE", function() { return LOAD_STATE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_MENU", function() { return TAMPIL_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_MENU", function() { return PILIH_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PESAN_MENU", function() { return PESAN_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CARI_MENU", function() { return CARI_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UBAH_PESANAN", function() { return UBAH_PESANAN; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHECKOUT_PESANAN", function() { return CHECKOUT_PESANAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_BAYAR", function() { return PROSES_BAYAR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_PEMBAYARAN", function() { return GET_PEMBAYARAN; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHOW_MODAL", function() { return SHOW_MODAL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_PESAN", function() { return CLOSE_PESAN; });
+var OPEN_MODAL = 'OPEN_MODAL';
+var CLOSE_MODAL = 'CLOSE_MODAL';
 var LOAD_STATE = 'LOAD_STATE';
 var TAMPIL_MENU = 'TAMPIL_MENU';
 var PILIH_MENU = 'PILIH_MENU';
 var PESAN_MENU = 'PESAN_MENU';
 var CARI_MENU = 'CARI_MENU';
 var UBAH_PESANAN = 'UBAH_PESANAN';
-var CHECKOUT_PESANAN = 'CHECKOUT_PESANAN';
 var PROSES_BAYAR = 'PROSES_BAYAR';
 var GET_PEMBAYARAN = 'GET_PEMBAYARAN';
-var SHOW_MODAL = 'SHOW_MODAL';
-var CLOSE_MODAL = 'CLOSE_MODAL';
 var CLOSE_PESAN = 'CLOSE_PESAN';
 
 /***/ }),
@@ -56988,7 +57179,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data_menu.sub_total = state.menuInput.banyak_pesan * data_menu.harga_menu;
   data_menu.keterangan = state.menuInput.keterangan;
   state.dataPesanan.total_harga += data_menu.sub_total;
-  state.dataPesanan.pesanan.push(data_menu);
+  state.dataPesanan.menu.push(data_menu);
   state.menuInput.banyak_pesan = null;
   state.menuInput.keterangan = null;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], function (state, data_cari) {
@@ -57004,12 +57195,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.menuInput.banyak_pesan = data_menu.banyak_pesan;
   state.menuInput.keterangan = data_menu.keterangan;
   state.showModal.modalMenu = true;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CHECKOUT_PESANAN"], function (state) {
-  if (state.dataPesanan.pesanan.length != 0) {
-    state.showModal.modalBayar = true;
-  } else {
-    console.log('kosong bos');
-  }
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"], function (state) {
   state.loadSend = true;
   axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/data-menu/checkout', {
@@ -57017,14 +57202,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     total_bayar: state.dataPesanan.total_bayar,
     // kembalian:state.dataPesanan.kembalian,
     keterangan: state.dataPesanan.keterangan,
-    pesanan: state.dataPesanan.pesanan
+    menu: state.dataPesanan.menu
   }).then(function (response) {
     state.dataPesanan.total_harga = null;
-    state.dataPesanan.total_bayar = null; // state.dataPesanan.kembalian   = null
+    state.dataPesanan.total_bayar = null; // state.dataPesanan.kembalian = null
 
-    state.dataPesanan.pesanan = [];
+    state.dataPesanan.menu = [];
     state.loadSend = false;
-    state.showModal.modalBayar = false;
     console.log(response.data);
   })["catch"](function (e) {
     console.log(e);
@@ -57034,7 +57218,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     state.dataPembayaran = response.data;
     state.isLoading = false;
   });
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_MODAL"], function (state) {
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"], function (state) {
   state.showModal = true;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
   state.showModal = false;
@@ -57057,11 +57241,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   isLoading: false,
   loadSend: false,
-  // showModal:{
-  // 	modalMenu:false,
-  // 	modalUbah:false,
-  // 	modalBayar:false
-  // },
   showModal: false,
   bayarNanti: false,
   dataMenu: null,
@@ -57071,7 +57250,7 @@ __webpack_require__.r(__webpack_exports__);
     total_bayar: null,
     // kembalian:null,
     keterangan: null,
-    pesanan: []
+    menu: []
   },
   menuInput: {
     varian: [],

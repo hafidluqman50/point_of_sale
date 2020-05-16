@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-modal" v-bind:class="{'show-modal':showModal}">
+	<div :class="`vue-modal ${modalAct ? 'show-modal' : ''}`">
 		<div class="vue-modal-header bg-light d-flex">
 			<slot name="modal-header"></slot>
 		</div>
@@ -14,20 +14,36 @@
 
 <script>
 	import { mapGetters, mapActions } from 'vuex'
+	import { EventBus } from '../event-bus.js'
+
 	export default {
-		props: [
-			'show',
-			// 'modalInfo'
-		],
-		computed: {
-			...mapGetters([
-				'showModal'
-			])
+		data() {
+			return {
+				modalAct:false
+			}
 		},
+		props: [
+			'idModal'
+		],
 		methods: {
 			...mapActions([
+				'openModal',
 				'closeModal'
 			])
+		},
+		mounted() {
+			EventBus.$on('modalOpen',target => {
+				if (target == this.idModal) {
+					this.modalAct = true
+					this.openModal()
+				}
+			})
+			EventBus.$on('modalClose',target => {
+				if (target == this.idModal) {
+					this.modalAct = false
+					this.closeModal()
+				}
+			})
 		}
 	}
 </script>

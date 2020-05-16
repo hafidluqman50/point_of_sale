@@ -1,11 +1,6 @@
 export default {
 	isLoading:false,
 	loadSend:false,
-	// showModal:{
-	// 	modalMenu:false,
-	// 	modalUbah:false,
-	// 	modalBayar:false
-	// },
 	showModal:false,
 	bayarNanti:false,
 	dataMenu:null,
@@ -15,7 +10,7 @@ export default {
 		total_bayar:null,
 		// kembalian:null,
 		keterangan:null,
-		pesanan:[],
+		menu:[],
 	},
 	menuInput:{
 		varian:[],

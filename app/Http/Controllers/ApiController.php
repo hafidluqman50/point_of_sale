@@ -32,7 +32,7 @@ class ApiController extends Controller
 
     public function dataMenuCheckout(Request $request)
     {
-		$pesanan     = $request->pesanan;
+		$menu        = $request->menu;
 		$total_harga = $request->total_harga;
 		$total_bayar = $request->total_bayar;
 		$keterangan  = $request->keterangan;
@@ -47,14 +47,14 @@ class ApiController extends Controller
 			'id_users'          => Auth::id()
     	]);
 
-		for ($i=0; $i < count($pesanan); $i++) { 
+		for ($i=0; $i < count($menu); $i++) { 
 			$insert_data[] = [
 				'id_transaksi_detail' => (string)Str::uuid(),
 				'id_transaksi'        => $id_transaksi,
-				'id_menu_makan'       => $pesanan[$i]['id_menu_makan'],
-				'banyak_pesan'        => $pesanan[$i]['banyak_pesan'],
-				'sub_total'           => $pesanan[$i]['sub_total'],
-				'keterangan'          => $pesanan[$i]['keterangan'],
+				'id_menu_makan'       => $menu[$i]['id_menu_makan'],
+				'banyak_pesan'        => $menu[$i]['banyak_pesan'],
+				'sub_total'           => $menu[$i]['sub_total'],
+				'keterangan'          => $menu[$i]['keterangan'],
 				'created_at'          => date('Y-m-d H:i:s'),
 				'updated_at'          => date('Y-m-d H:i:s'),
 			];

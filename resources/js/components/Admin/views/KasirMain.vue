@@ -28,7 +28,7 @@
 						</div>
 						<div class="card-body checkout">
 							<table width="100%">
-								<tr v-for="data_pesan in dataPesanan.pesanan">
+								<tr v-for="data_pesan in dataPesanan.menu">
 									<td style="font-size:18px;" @click="ubahPesanan(data_pesan)"><b>{{ data_pesan.nama_menu }}</b>
 										<tr v-if="data_pesan.keterangan != null || data_pesan.keterangan !== undefined">
 											<td style="font-size:15px;">{{ data_pesan.keterangan }}</td>
@@ -42,7 +42,7 @@
 						</div>
 						<div class="card-footer" align="center">
 							<h5><b>Total Harga : {{ dataPesanan.total_harga | formatRupiah }}</b></h5>
-							<button class="btn btn-success" @click="checkoutPesanan()">
+							<button class="btn btn-success" ref="checkoutAct" target-modal="checkoutMenu" @click="checkoutModal();">
 								<b>CHECKOUT</b>
 							</button>
 						</div>
@@ -50,13 +50,13 @@
 				</div>
 			</div>
 		</div>
-		<vue-modal :show="showModal.modalMenu">
+		<vue-modal :idModal="'modalMenuItem'">
 			<template v-slot:modal-header>
 				<div class="vue-modal-title">
 					<p><b>{{ singleData != null ? singleData.nama_menu : '' }}</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closePesan()">Close</button>
+					<button class="btn btn-dark" @click="closeModal('modalMenuItem')">Close</button>
 				</div>
 			</template>
 			<div class="form-group">
@@ -68,16 +68,16 @@
 				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" refs="buttonModal" target-modal="pesan-menu" @click="pesanMenu(singleData)">PESAN MENU</button>
+				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData); closeModal('modalMenuItem')">PESAN MENU</button>
 			</template>
 		</vue-modal>
-		<!-- <vue-modal :show="showModal.modalBayar">
+		<vue-modal :idModal="'checkoutMenu'">
 			<template v-slot:modal-header>
 				<div class="vue-modal-title">
 					<p><b>CHECKOUT</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeModal()">Close</button>
+					<button class="btn btn-dark" @click="closeModal('checkoutMenu')">Close</button>
 				</div>
 			</template>
 			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
@@ -103,15 +103,16 @@
 				<hr>
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar()">PROSES</button>
+				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar(); closeModal('checkoutMenu')">PROSES</button>
 				<div class="spinner-border" role="status" v-else></div>
 			</template>
-		</vue-modal> -->
+		</vue-modal>
 	</div>
 </template>
 
 <script>
 	import { mapGetters,mapActions } from 'vuex'
+	import { EventBus } from '../../../event-bus.js'
 
 	export default {
 		computed: {
@@ -128,14 +129,22 @@
 		},
 		methods: {
 			...mapActions([
+				'openModal',
+				'closeModal',
 				'tampilMenu',
 				'pesanMenu',
 				'checkoutPesanan',
 				'prosesBayar',
-				'ubahPesanan',
-				'closeModal',
-				'closePesan'
-			])
+				'ubahPesanan'
+			]),
+			checkoutModal:function() {
+				if (this.dataPesanan.menu.length != 0) {
+					this.openModal('checkoutMenu')
+				}
+				else {
+					console.log('Kosong Bos')
+				}
+			}
 		},
 		mounted() {
 			this.tampilMenu()
