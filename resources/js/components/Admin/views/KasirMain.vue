@@ -28,15 +28,15 @@
 						</div>
 						<div class="card-body checkout">
 							<table width="100%">
-								<tr v-for="data_pesan in dataPesanan.menu">
-									<td style="font-size:18px;" @click="ubahPesanan(data_pesan)"><b>{{ data_pesan.nama_menu }}</b>
-										<tr v-if="data_pesan.keterangan != null || data_pesan.keterangan !== undefined">
-											<td style="font-size:15px;">{{ data_pesan.keterangan }}</td>
+								<tr v-for="(item, index) in dataPesanan.menu">
+									<td style="font-size:18px;" @click="ubahMenu({item,index})"><b>{{ item.nama_menu }}</b>
+										<tr v-if="item.keterangan != null || item.keterangan !== undefined">
+											<td style="font-size:15px;">{{ item.keterangan }}</td>
 										</tr>
 									</td>
-									<td>{{ data_pesan.banyak_pesan}}x</td>
-									<td>{{ data_pesan.sub_total | formatRupiah }}</td>
-									<td><button class="close" @click="hapusPesanan(data_pesan)">X</button></td>
+									<td>{{ item.banyak_pesan}}x</td>
+									<td>{{ item.sub_total | formatRupiah }}</td>
+									<td><button class="close" @click="hapusMenu(index)">X</button></td>
 								</tr>
 							</table>
 						</div>
@@ -68,7 +68,28 @@
 				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData); closeModal('modalMenuItem')">PESAN MENU</button>
+				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
+			</template>
+		</vue-modal>
+		<vue-modal :idModal="'modalEditMenu'">
+			<template v-slot:modal-header>
+				<div class="vue-modal-title">
+					<p><b>{{ singleData != null ? singleData.nama_menu : '' }}</b></p>
+				</div>
+				<div class="vue-modal-close">
+					<button class="btn btn-dark" @click="closeModal('modalEditMenu')">Close</button>
+				</div>
+			</template>
+			<div class="form-group">
+				<label for="">Jumlah</label>
+				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu" v-model="menuInput.banyak_pesan">
+			</div>
+			<div class="form-group">
+				<label for="">Keterangan</label>
+				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
+			</div>
+			<template v-slot:modal-footer>
+				<button class="btn btn-warning float-md-right" @click="updateMenu(singleData)">UBAH MENU</button>
 			</template>
 		</vue-modal>
 		<vue-modal :idModal="'checkoutMenu'">
@@ -103,7 +124,7 @@
 				<hr>
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar(); closeModal('checkoutMenu')">PROSES</button>
+				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar()">PROSES</button>
 				<div class="spinner-border" role="status" v-else></div>
 			</template>
 		</vue-modal>
@@ -135,7 +156,9 @@
 				'pesanMenu',
 				'checkoutPesanan',
 				'prosesBayar',
-				'ubahPesanan'
+				'ubahMenu',
+				'updateMenu',
+				'hapusMenu'
 			]),
 			checkoutModal:function() {
 				if (this.dataPesanan.menu.length != 0) {
@@ -144,6 +167,9 @@
 				else {
 					console.log('Kosong Bos')
 				}
+			},
+			ngetes:(index_arr) => {
+				console.log(index_arr)
 			}
 		},
 		mounted() {

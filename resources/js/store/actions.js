@@ -21,11 +21,20 @@ export default {
 		context.commit(mutations.PILIH_MENU,data_menu)
 	},
 	pesanMenu(context,data_menu) {
-		context.dispatch('openModal')
 		context.commit(mutations.PESAN_MENU,data_menu)
+		context.dispatch('closeModal','modalMenuItem')
 	},
-	ubahPesanan(context,data_menu) {
-		context.commit(mutations.UBAH_PESANAN,data_menu)
+	ubahMenu(context,payload) {
+		console.log('data_menu',payload)
+		context.commit(mutations.UBAH_MENU,payload)
+		context.dispatch('openModal','modalEditMenu')
+	},
+	updateMenu(context,menu) {
+		context.commit(mutations.UPDATE_MENU,menu)
+		context.dispatch('closeModal','modalEditMenu')
+	},
+	hapusMenu(context,index_arr) {
+		context.commit(mutations.HAPUS_MENU,index_arr)
 	},
 	cariMenu(context,input_cari) {
 		if (input_cari != null || input_cari !== undefined) {
@@ -33,12 +42,12 @@ export default {
 			context.commit(mutations.CARI_MENU,input_cari)
 		}
 	},
-	closePesan(context) {
-		context.commit(mutations.CLOSE_PESAN)
-		context.dispatch('closeModal')
-	},
+	// closeMenu(context) {
+	// 	context.commit(mutations.CLOSE_MENU)
+	// },
 	prosesBayar(context) {
 		context.commit(mutations.PROSES_BAYAR)
+		context.dispatch('closeModal','checkoutMenu')
 	},
 	getPembayaran(context) {
 		context.dispatch('loadState')
