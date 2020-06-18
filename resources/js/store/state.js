@@ -16,6 +16,7 @@ export default {
 		varian:[],
 		banyak_pesan:null,
 		keterangan:null,
+		indexMenu:null,
 	},
 	singleData:null
 }

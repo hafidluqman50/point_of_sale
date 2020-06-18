@@ -2167,7 +2167,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput', 'bayarNanti'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'tampilMenu', 'pesanMenu', 'checkoutPesanan', 'prosesBayar', 'ubahMenu', 'updateMenu', 'hapusMenu']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilMenu', 'pesanMenu', 'checkoutPesanan', 'prosesBayar', 'ubahMenu', 'updateMenu', 'hapusMenu']), {
     checkoutModal: function checkoutModal() {
       if (this.dataPesanan.menu.length != 0) {
         this.openModal('checkoutMenu');
@@ -38454,7 +38454,7 @@ var render = function() {
                         staticClass: "btn btn-dark",
                         on: {
                           click: function($event) {
-                            return _vm.closeModal("modalMenuItem")
+                            return _vm.closeMenu("modalMenuItem")
                           }
                         }
                       },
@@ -38581,7 +38581,7 @@ var render = function() {
                         staticClass: "btn btn-dark",
                         on: {
                           click: function($event) {
-                            return _vm.closeModal("modalEditMenu")
+                            return _vm.closeMenu("modalEditMenu")
                           }
                         }
                       },
@@ -38720,7 +38720,7 @@ var render = function() {
                           staticClass: "btn btn-primary float-md-right",
                           on: {
                             click: function($event) {
-                              return _vm.prosesBayar()
+                              return _vm.prosesBayar(_vm.dataPesanan)
                             }
                           }
                         },
@@ -57138,8 +57138,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  loadState: function loadState(context) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_STATE"]);
+  loadState: function loadState(context, param) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_STATE"], param);
+  },
+  loadSend: function loadSend(context, param) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_SEND"], param);
   },
   openModal: function openModal(context, target_modal) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"]);
@@ -57149,24 +57152,31 @@ __webpack_require__.r(__webpack_exports__);
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"]);
     _event_bus__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('modalClose', target_modal);
   },
+  clearPesanMenu: function clearPesanMenu(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"]);
+  },
   tampilMenu: function tampilMenu(context) {
     context.dispatch('loadState');
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"]);
+    axios.get('/data-menu').then(function (response) {
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"], response.data);
+      context.dispatch('loadState', false);
+    });
   },
   pilihMenu: function pilihMenu(context, data_menu) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], data_menu);
   },
   pesanMenu: function pesanMenu(context, data_menu) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], data_menu);
+    context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalMenuItem');
   },
   ubahMenu: function ubahMenu(context, payload) {
-    console.log('data_menu', payload);
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], payload);
     context.dispatch('openModal', 'modalEditMenu');
   },
   updateMenu: function updateMenu(context, menu) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], menu);
+    context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalEditMenu');
   },
   hapusMenu: function hapusMenu(context, index_arr) {
@@ -57175,19 +57185,49 @@ __webpack_require__.r(__webpack_exports__);
   cariMenu: function cariMenu(context, input_cari) {
     if (input_cari != null || input_cari !== undefined) {
       context.dispatch('loadState');
-      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], input_cari);
+      axios.get('/data-menu/cari', {
+        params: {
+          cari_menu: input_cari
+        }
+      }).then(function (response) {
+        context.dispatch('loadState', false);
+        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], response.data);
+      });
     }
   },
-  // closeMenu(context) {
-  // 	context.commit(mutations.CLOSE_MENU)
-  // },
-  prosesBayar: function prosesBayar(context) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"]);
-    context.dispatch('closeModal', 'checkoutMenu');
+  closeMenu: function closeMenu(context, modal) {
+    context.dispatch('clearPesanMenu');
+    context.dispatch('closeModal', modal);
+  },
+  prosesBayar: function prosesBayar(context, dataPesanan) {
+    context.dispatch('loadSend');
+    axios.post('/data-menu/checkout', {
+      total_harga: dataPesanan.total_harga,
+      total_bayar: dataPesanan.total_bayar,
+      // kembalian:dataPesanan.kembalian,
+      keterangan: dataPesanan.keterangan,
+      menu: dataPesanan.menu
+    }).then(function (response) {
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"]);
+      context.dispatch('loadSend', false);
+      context.dispatch('closeModal', 'checkoutMenu');
+    })["catch"](function (e) {
+      console.log(e);
+    });
   },
   getPembayaran: function getPembayaran(context) {
+    // let dataBayar = null
+    // if (dataBayar == null) {
     context.dispatch('loadState');
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["GET_PEMBAYARAN"]);
+    axios.get('/data-pembayaran').then(function (response) {
+      // dataBayar = response.data
+      context.dispatch('loadState', false);
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["GET_PEMBAYARAN"], response.data);
+    }); // }
+    // else {
+    // 	context.commit(mutations.GET_PEMBAYARAN,dataBayar)
+    // }
+    // console.log(dataBayar)
   }
 });
 
@@ -57274,7 +57314,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_STATE, TAMPIL_MENU, PILIH_MENU, PESAN_MENU, CARI_MENU, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, PROSES_BAYAR, GET_PEMBAYARAN, CLOSE_PESAN */
+/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_STATE, LOAD_SEND, TAMPIL_MENU, PILIH_MENU, PESAN_MENU, CARI_MENU, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, PROSES_BAYAR, CLEAR_PESAN_MENU, GET_PEMBAYARAN, CLOSE_PESAN */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57282,6 +57322,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPEN_MODAL", function() { return OPEN_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_STATE", function() { return LOAD_STATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_SEND", function() { return LOAD_SEND; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_MENU", function() { return TAMPIL_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_MENU", function() { return PILIH_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PESAN_MENU", function() { return PESAN_MENU; });
@@ -57290,11 +57331,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_MENU", function() { return UPDATE_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAPUS_MENU", function() { return HAPUS_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_BAYAR", function() { return PROSES_BAYAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLEAR_PESAN_MENU", function() { return CLEAR_PESAN_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_PEMBAYARAN", function() { return GET_PEMBAYARAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_PESAN", function() { return CLOSE_PESAN; });
 var OPEN_MODAL = 'OPEN_MODAL';
 var CLOSE_MODAL = 'CLOSE_MODAL';
 var LOAD_STATE = 'LOAD_STATE';
+var LOAD_SEND = 'LOAD_SEND';
 var TAMPIL_MENU = 'TAMPIL_MENU';
 var PILIH_MENU = 'PILIH_MENU';
 var PESAN_MENU = 'PESAN_MENU';
@@ -57303,6 +57346,7 @@ var UBAH_MENU = 'UBAH_MENU';
 var UPDATE_MENU = 'UPDATE_MENU';
 var HAPUS_MENU = 'HAPUS_MENU';
 var PROSES_BAYAR = 'PROSES_BAYAR';
+var CLEAR_PESAN_MENU = 'CLEAR_PESAN_MENU';
 var GET_PEMBAYARAN = 'GET_PEMBAYARAN';
 var CLOSE_PESAN = 'CLOSE_PESAN';
 
@@ -57327,32 +57371,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_mutations$LOAD_STATE = {}, _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_STATE"], function (state) {
-  state.isLoading = true;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"], function (state) {
-  axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/data-menu').then(function (response) {
-    state.dataMenu = response.data;
-    state.isLoading = false;
-  });
+  var param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  state.isLoading = param;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_SEND"], function (state) {
+  var param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  state.loadSend = param;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"], function (state, data_menu) {
+  state.dataMenu = data_menu;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], function (state, data_menu) {
-  state.singleData = data_menu; // state.showModal.modalMenu = true
+  state.singleData = data_menu;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], function (state, data_menu) {
+  console.log(data_menu);
   data_menu.banyak_pesan = state.menuInput.banyak_pesan;
   data_menu.sub_total = state.menuInput.banyak_pesan * data_menu.harga_menu;
   data_menu.keterangan = state.menuInput.keterangan;
-  console.log(data_menu.sub_total);
   state.dataPesanan.total_harga += data_menu.sub_total;
   state.dataPesanan.menu.push(data_menu);
-  state.menuInput.banyak_pesan = null;
-  state.menuInput.keterangan = null;
+  console.log(state.dataPesanan.menu);
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], function (state, data_cari) {
-  axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/data-menu/cari', {
-    params: {
-      cari_menu: data_cari
-    }
-  }).then(function (response) {
-    state.dataMenu = response.data;
-    state.isLoading = false;
-  });
+  state.dataMenu = data_cari;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], function (state, payload) {
   state.menuInput.banyak_pesan = payload.item.banyak_pesan;
   state.menuInput.keterangan = payload.item.keterangan;
@@ -57376,29 +57413,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   };
 
   state.dataPesanan.menu = removePesanan(dataPesanan, index_arr);
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"], function (state) {
+  state.menuInput.banyak_pesan = null;
+  state.menuInput.keterangan = null;
+  state.menuInput.indexMenu = null;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"], function (state) {
-  state.loadSend = true;
-  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/data-menu/checkout', {
-    total_harga: state.dataPesanan.total_harga,
-    total_bayar: state.dataPesanan.total_bayar,
-    // kembalian:state.dataPesanan.kembalian,
-    keterangan: state.dataPesanan.keterangan,
-    menu: state.dataPesanan.menu
-  }).then(function (response) {
-    state.dataPesanan.total_harga = null;
-    state.dataPesanan.total_bayar = null; // state.dataPesanan.kembalian = null
+  state.dataPesanan.total_harga = null;
+  state.dataPesanan.total_bayar = null; // state.dataPesanan.kembalian = null
 
-    state.dataPesanan.menu = [];
-    state.loadSend = false;
-    console.log(response.data);
-  })["catch"](function (e) {
-    console.log(e);
-  });
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["GET_PEMBAYARAN"], function (state) {
-  axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/data-pembayaran').then(function (response) {
-    state.dataPembayaran = response.data;
-    state.isLoading = false;
-  });
+  state.dataPesanan.menu = [];
+  state.loadSend = false;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["GET_PEMBAYARAN"], function (state, data_bayar) {
+  state.dataPembayaran = data_bayar;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"], function (state) {
   state.showModal = true;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
@@ -57436,7 +57462,8 @@ __webpack_require__.r(__webpack_exports__);
   menuInput: {
     varian: [],
     banyak_pesan: null,
-    keterangan: null
+    keterangan: null,
+    indexMenu: null
   },
   singleData: null
 });

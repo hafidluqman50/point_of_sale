@@ -56,7 +56,7 @@
 					<p><b>{{ singleData != null ? singleData.nama_menu : '' }}</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeModal('modalMenuItem')">Close</button>
+					<button class="btn btn-dark" @click="closeMenu('modalMenuItem')">Close</button>
 				</div>
 			</template>
 			<div class="form-group">
@@ -77,7 +77,7 @@
 					<p><b>{{ singleData != null ? singleData.nama_menu : '' }}</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeModal('modalEditMenu')">Close</button>
+					<button class="btn btn-dark" @click="closeMenu('modalEditMenu')">Close</button>
 				</div>
 			</template>
 			<div class="form-group">
@@ -124,7 +124,7 @@
 				<hr>
 			</div>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar()">PROSES</button>
+				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar(dataPesanan)">PROSES</button>
 				<div class="spinner-border" role="status" v-else></div>
 			</template>
 		</vue-modal>
@@ -152,6 +152,7 @@
 			...mapActions([
 				'openModal',
 				'closeModal',
+				'closeMenu',
 				'tampilMenu',
 				'pesanMenu',
 				'checkoutPesanan',

@@ -2,42 +2,30 @@ import * as mutations from './mutations-type'
 import axios from 'axios'
 
 export default {
-	[mutations.LOAD_STATE] (state) {
-		state.isLoading = true
+	[mutations.LOAD_STATE] (state,param = true) {
+		state.isLoading = param
 	},
-	[mutations.TAMPIL_MENU] (state) {
-		axios.get('/data-menu')
-			 .then((response) => {
-				state.dataMenu  = response.data
-				state.isLoading = false
-			})
+	[mutations.LOAD_SEND] (state,param = true) {
+		state.loadSend = param
+	},
+	[mutations.TAMPIL_MENU] (state,data_menu) {
+		state.dataMenu = data_menu
 	},
 	[mutations.PILIH_MENU] (state,data_menu) {
-		state.singleData          = data_menu
-		// state.showModal.modalMenu = true
+		state.singleData = data_menu
 	},
 	[mutations.PESAN_MENU] (state,data_menu) {
+		console.log(data_menu)
 		data_menu.banyak_pesan = state.menuInput.banyak_pesan
 		data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
 		data_menu.keterangan   = state.menuInput.keterangan
-		console.log(data_menu.sub_total)
 
 		state.dataPesanan.total_harga+=data_menu.sub_total
 		state.dataPesanan.menu.push(data_menu)
-
-		state.menuInput.banyak_pesan = null
-		state.menuInput.keterangan   = null
+		console.log(state.dataPesanan.menu)
 	},
 	[mutations.CARI_MENU] (state,data_cari) {
-		axios.get('/data-menu/cari', {
-			params:{
-				cari_menu:data_cari
-			}
-		})
-		.then(response => {
-			state.dataMenu  = response.data
-			state.isLoading = false
-		})
+		state.dataMenu = data_cari
 	},
 	[mutations.UBAH_MENU] (state,payload) {
 		state.menuInput.banyak_pesan = payload.item.banyak_pesan
@@ -67,6 +55,11 @@ export default {
 
   		state.dataPesanan.menu = removePesanan(dataPesanan,index_arr)
 	},
+	[mutations.CLEAR_PESAN_MENU] (state) {
+		state.menuInput.banyak_pesan = null
+		state.menuInput.keterangan   = null
+		state.menuInput.indexMenu    = null
+	},
 	// [mutations.CHECKOUT_PESANAN] (state) {
 		// if (state.dataPesanan.menu.length != 0) {
 		// 	state.showModal.modalBayar = true
@@ -76,32 +69,14 @@ export default {
 		// }
 	// },
 	[mutations.PROSES_BAYAR] (state) {
-		state.loadSend = true
-		axios.post('/data-menu/checkout',{
-			total_harga:state.dataPesanan.total_harga,
-			total_bayar:state.dataPesanan.total_bayar,
-			// kembalian:state.dataPesanan.kembalian,
-			keterangan:state.dataPesanan.keterangan,
-			menu:state.dataPesanan.menu
-		})
-		.then(response => {
-			state.dataPesanan.total_harga  = null
-			state.dataPesanan.total_bayar  = null
-			// state.dataPesanan.kembalian = null
-			state.dataPesanan.menu         = []
-			state.loadSend                 = false
-			console.log(response.data)
-		})
-		.catch(e => {
-			console.log(e)
-		})
+		state.dataPesanan.total_harga  = null
+		state.dataPesanan.total_bayar  = null
+		// state.dataPesanan.kembalian = null
+		state.dataPesanan.menu         = []
+		state.loadSend                 = false
 	},
-	[mutations.GET_PEMBAYARAN] (state) {
-		axios.get('/data-pembayaran')
-			 .then(response => {
-			 	state.dataPembayaran = response.data
-			 	state.isLoading = false
-			 })
+	[mutations.GET_PEMBAYARAN] (state,data_bayar) {
+		state.dataPembayaran = data_bayar
 	},
 	[mutations.OPEN_MODAL] (state) {
 		state.showModal = true
