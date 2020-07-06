@@ -68,12 +68,15 @@ export default {
 	},
 	prosesBayar(context,dataPesanan) {
 		context.dispatch('loadSend')
+		console.log(dataPesanan)
 
 		axios.post('/data-menu/checkout',{
 			total_harga:dataPesanan.total_harga,
 			total_bayar:dataPesanan.total_bayar,
 			// kembalian:dataPesanan.kembalian,
 			keterangan:dataPesanan.keterangan,
+			status_transaksi:dataPesanan.status_transaksi,
+			ket_bayar:dataPesanan.ket_bayar,
 			menu:dataPesanan.menu
 		})
 		.then(response => {

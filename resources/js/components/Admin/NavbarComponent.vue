@@ -14,14 +14,14 @@
         <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/admin/kasir" class="nav-link">Semua</router-link>
+            <router-link to="/admin/kasir" class="nav-link">Daftar Menu</router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link to="/admin/kasir/makanan" class="nav-link">Makanan</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/admin/kasir/minuman" class="nav-link">Minuman</router-link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <router-link to="/admin/kasir/pembayaran" class="nav-link">Pembayaran</router-link>
           </li>

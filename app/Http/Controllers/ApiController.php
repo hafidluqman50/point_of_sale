@@ -32,10 +32,12 @@ class ApiController extends Controller
 
     public function dataMenuCheckout(Request $request)
     {
-		$menu        = $request->menu;
-		$total_harga = $request->total_harga;
-		$total_bayar = $request->total_bayar;
-		$keterangan  = $request->keterangan;
+		$menu             = $request->menu;
+		$total_harga      = $request->total_harga;
+		$total_bayar      = $request->total_bayar;
+		$status_transaksi = $request->status_transaksi;
+		$ket_bayar        = $request->ket_bayar;
+		$keterangan       = $request->keterangan;
 		
 		$id_transaksi = (string)Str::uuid();
     	Transaksi::create([
@@ -43,6 +45,8 @@ class ApiController extends Controller
 			'tanggal_transaksi' => date('Y-m-d'),
 			'total_harga'		=> $total_harga,
 			'total_bayar'		=> $total_bayar,
+			'status_transaksi'	=> $status_transaksi,
+			'ket_bayar'			=> $ket_bayar,
 			'keterangan'		=> $keterangan,
 			'id_users'          => Auth::id()
     	]);

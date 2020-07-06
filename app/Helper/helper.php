@@ -5,6 +5,11 @@ function format_rupiah($rupiah) {
 	return $hasil_rupiah;
 }
 
+function unslug_str($str) {
+	$get = explode('-',$str);
+	return ucwords($get[0]).' '.ucwords($get[1]);
+}
+
 function remove_file($dir,$file) {
 	if (file_exists(public_path($dir.$file))) {
 		unlink(public_path($dir.$file));

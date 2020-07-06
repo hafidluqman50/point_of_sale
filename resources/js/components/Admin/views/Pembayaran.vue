@@ -11,7 +11,8 @@
 									<th>Tanggal Bayar</th>
 									<th>Total Harga</th>
 									<th>Total Bayar</th>
-									<!-- <th>Status</th> -->
+									<th>Ket Bayar</th>
+									<th>Status</th>
 									<th>Keterangan</th>
 									<th>#</th>
 								</tr>
@@ -33,17 +34,20 @@
 								</tr>
 								<tr v-for="(bayar,key) in dataPembayaran" v-else>
 									<td>{{ key+1 }}</td>
-									<td>{{ bayar.tanggal_transaksi }}</td>
+									<td>{{ bayar.tanggal_transaksi | formatDate }}</td>
 									<td>{{ bayar.total_harga | formatRupiah }}</td>
 									<td>{{ bayar.total_bayar | formatRupiah }}</td>
+									<td>{{ bayar.ket_bayar }}</td>
+									<td>{{ bayar.status_transaksi }}</td>
 									<td>{{ bayar.keterangan }}</td>
 									<td>
 										<!-- <router-link :to="{path:'/admin/kasir/pembayaran/detail/'+bayar.id_transaksi}"> -->
-											<button class="btn btn-success">Bayar</button>
+											<button class="btn btn-success" :disabled="bayar.status_transaksi == 'sudah-bayar'">Bayar</button>
 										<!-- </router-link> -->
 										<router-link :to="{path:'/admin/kasir/pembayaran/detail/'+bayar.id_transaksi}">
 											<button class="btn btn-info">Detail</button>
 										</router-link>
+										<button class="btn btn-danger">Batal</button>
 									</td>
 								</tr>
 							</tbody>
@@ -65,6 +69,40 @@
 						</table>
 					</div>
 				</div>
+				<!-- <vue-modal :idModal="'bayarMenu'">
+					<template v-slot:modal-header>
+						<div class="vue-modal-title">
+							<p><b>CHECKOUT</b></p>
+						</div>
+						<div class="vue-modal-close">
+							<button class="btn btn-dark" @click="closeModal('bayarMenu')">Close</button>
+						</div>
+					</template>
+					<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
+					<hr>
+					<div>
+						<label for="">Metode Bayar</label>
+						<div class="form-group">
+							<button class="btn btn-outline-primary active">Tunai</button>
+							<button class="btn btn-outline-primary">Kartu Debit/Kredit</button>
+						</div>
+						<hr>
+						<div class="form-group">
+							<label for="">Jumlah Bayar</label>
+							<input type="number" class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar">
+						</div>
+						<hr>
+						<div class="form-group">
+							<label for="">Keterangan</label>
+							<input type="text" name="ket_bayar" class="form-control" v-model="dataPesanan.keterangan">
+						</div>
+						<hr>
+					</div>
+					<template v-slot:modal-footer>
+						<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar(dataPesanan)">PROSES</button>
+						<div class="spinner-border" role="status" v-else></div>
+					</template>
+				</vue-modal> -->
 			</div>
 		</div>	
 	</div>

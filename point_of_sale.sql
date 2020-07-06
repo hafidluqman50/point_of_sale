@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Jun 18, 2020 at 05:47 PM
+-- Generation Time: Jul 06, 2020 at 05:16 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -221,6 +221,7 @@ CREATE TABLE `transaksi` (
   `total_bayar` int(11) NOT NULL,
   `id_users` varchar(36) NOT NULL,
   `status_transaksi` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `ket_bayar` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -230,13 +231,9 @@ CREATE TABLE `transaksi` (
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `total_bayar`, `id_users`, `status_transaksi`, `keterangan`, `created_at`, `updated_at`) VALUES
-('13f87a32-5385-4b0f-9684-34cef0a08fc0', '2020-04-18', 48000, 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', '-', '2020-03-28 22:17:00', '2020-03-28 22:17:00'),
-('356cc914-165d-4b3d-b08b-049b2ce5b0d5', '2020-06-11', 36000, 36000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', NULL, NULL, '2020-06-11 13:30:54', '2020-06-11 13:30:54'),
-('49b49150-9771-46e1-8d9c-4e0306a868c4', '2020-06-19', 24000, 24000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', NULL, NULL, '2020-06-19 01:44:35', '2020-06-19 01:44:35'),
-('7db0831d-0d01-49ed-a452-43eb5a41db43', '2020-04-18', 24000, 24000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', '-', '2020-04-03 21:40:55', '2020-04-03 21:40:55'),
-('aa29d0f6-f3b0-41a0-ba5b-5bbeffe21123', '2020-05-19', 24000, 24000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', NULL, NULL, '2020-05-16 22:16:59', '2020-05-16 22:16:59'),
-('e5b9dc92-8f98-4598-8250-0398d08067ea', '2020-06-19', 36000, 36000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', NULL, NULL, '2020-06-15 13:14:28', '2020-06-15 13:14:28');
+INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `total_bayar`, `id_users`, `status_transaksi`, `ket_bayar`, `keterangan`, `created_at`, `updated_at`) VALUES
+('52790729-1c53-4fd6-849e-8d29e8229b0a', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Meja No. 05', '2020-07-03 01:47:33', '2020-07-03 01:47:33'),
+('7b62f969-1621-463f-8998-988ce32a9e56', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Mamat', '2020-07-03 01:51:01', '2020-07-03 01:51:01');
 
 -- --------------------------------------------------------
 
@@ -260,18 +257,8 @@ CREATE TABLE `transaksi_detail` (
 --
 
 INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_menu_makan`, `banyak_pesan`, `sub_total`, `keterangan`, `created_at`, `updated_at`) VALUES
-('1331669a-ccca-4716-978b-7b13d81b73f4', '356cc914-165d-4b3d-b08b-049b2ce5b0d5', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, NULL, '2020-06-11 13:30:54', '2020-06-11 13:30:54'),
-('163483cd-af1e-4705-abbb-3d196a52f65c', '7db0831d-0d01-49ed-a452-43eb5a41db43', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-04-03 21:40:55', '2020-04-03 21:40:55'),
-('5f67c29f-30b8-40b4-b806-b6cb9e2abf54', 'aa29d0f6-f3b0-41a0-ba5b-5bbeffe21123', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '2020-05-16 22:16:59', '2020-05-16 22:16:59'),
-('6227a193-62d0-4523-a734-c7ed0b95bf1c', 'e5b9dc92-8f98-4598-8250-0398d08067ea', '107924bd-84af-4f77-9570-965b908938e3', 2, 24000, NULL, '2020-06-15 13:14:28', '2020-06-15 13:14:28'),
-('6a8bc1be-88b2-4b8a-914c-a055e0d517d2', 'e5b9dc92-8f98-4598-8250-0398d08067ea', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-06-15 13:14:28', '2020-06-15 13:14:28'),
-('92ecc1b4-60d3-4023-ade2-21763a85b854', '7db0831d-0d01-49ed-a452-43eb5a41db43', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '2020-04-03 21:40:55', '2020-04-03 21:40:55'),
-('9507ac39-7b2e-4303-a713-4e575e41ed37', 'aa29d0f6-f3b0-41a0-ba5b-5bbeffe21123', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '2020-05-16 22:16:59', '2020-05-16 22:16:59'),
-('997c9bf2-470c-4e05-943e-766c37346124', '49b49150-9771-46e1-8d9c-4e0306a868c4', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-06-19 01:44:35', '2020-06-19 01:44:35'),
-('a1b04e8d-3f3e-4610-aa5c-3b3fd178bd6a', '356cc914-165d-4b3d-b08b-049b2ce5b0d5', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '2020-06-11 13:30:54', '2020-06-11 13:30:54'),
-('ae24daaa-1e3a-4b39-bbb6-ebe268420c1f', '13f87a32-5385-4b0f-9684-34cef0a08fc0', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, 'Telor Setengah Matang', '2020-03-28 22:17:00', '2020-03-28 22:17:00'),
-('af808236-e205-4e8b-92bd-ac2360b17087', '49b49150-9771-46e1-8d9c-4e0306a868c4', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '2020-06-19 01:44:35', '2020-06-19 01:44:35'),
-('d2cb5913-85e0-4dc4-8525-6b8932259605', '13f87a32-5385-4b0f-9684-34cef0a08fc0', '107924bd-84af-4f77-9570-965b908938e3', 2, 24000, 'Pedesin', '2020-03-28 22:17:00', '2020-03-28 22:17:00');
+('c694bd3a-da00-450d-b982-74ad527e6969', '52790729-1c53-4fd6-849e-8d29e8229b0a', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-07-03 01:47:33', '2020-07-03 01:47:33'),
+('f63e66d6-8cdc-4b11-b7c0-34acba7eb6b5', '7b62f969-1621-463f-8998-988ce32a9e56', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-07-03 01:51:02', '2020-07-03 01:51:02');
 
 -- --------------------------------------------------------
 

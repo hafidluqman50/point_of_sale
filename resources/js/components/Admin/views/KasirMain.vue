@@ -102,8 +102,8 @@
 				</div>
 			</template>
 			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
-			<button class="btn btn-outline-success active">Bayar Sekarang</button>
-			<button class="btn btn-outline-info">Bayar Nanti</button>
+			<button :class="`btn btn-outline-success ${bayarNanti ? '' : 'active'}`" @click="inputAct(false)">Bayar Sekarang</button>
+			<button :class="`btn btn-outline-info ${bayarNanti ? 'active' : ''}`" @click="inputAct(true)">Bayar Nanti</button>
 			<hr>
 			<div :class="{'is-hide':bayarNanti}">
 				<label for="">Metode Bayar</label>
@@ -114,14 +114,23 @@
 				<hr>
 				<div class="form-group">
 					<label for="">Jumlah Bayar</label>
-					<input type="number" class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar">
+					<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money">
+					</money>
 				</div>
 				<hr>
-				<div class="form-group">
-					<label for="">Keterangan</label>
-					<input type="text" name="ket_bayar" class="form-control" v-model="dataPesanan.keterangan">
-				</div>
-				<hr>
+			</div>
+			<div class="form-group">
+				<label for="">Keterangan</label>
+				<input type="text" name="ket_bayar" class="form-control" v-model="dataPesanan.keterangan">
+			</div>
+			<hr>
+			<div v-if="bayarNanti">
+				<input type="hidden" :value="dataPesanan.ket_bayar = 'bayar-nanti'">
+				<input type="hidden" :value="dataPesanan.status_transaksi = 'belum-bayar'">
+			</div>
+			<div v-else>
+				<input type="hidden" :value=" dataPesanan.ket_bayar = 'bayar-sekarang'">
+				<input type="hidden" :value=" dataPesanan.status_transaksi = 'sudah-bayar'">
 			</div>
 			<template v-slot:modal-footer>
 				<button class="btn btn-primary float-md-right" v-if="loadSend == false" @click="prosesBayar(dataPesanan)">PROSES</button>
@@ -134,8 +143,22 @@
 <script>
 	import { mapGetters,mapActions } from 'vuex'
 	import { EventBus } from '../../../event-bus.js'
+	import {Money} from 'v-money'
 
 	export default {
+		components: {Money},
+		data() {
+			return {
+				bayarNanti:false,
+				money:{
+					decimal:',',
+					thousands:'.',
+					prefix:'Rp. ',
+					precision:2,
+					masked:false
+				}
+			}
+		},
 		computed: {
 			...mapGetters([
 				'dataMenu',
@@ -145,7 +168,7 @@
 				'singleData',
 				'dataPesanan',
 				'menuInput',
-				'bayarNanti'
+				// 'bayarNanti'
 			])
 		},
 		methods: {
@@ -171,10 +194,13 @@
 			},
 			ngetes:(index_arr) => {
 				console.log(index_arr)
+			},
+			inputAct:function(param) {
+				this.bayarNanti = param
 			}
 		},
 		mounted() {
 			this.tampilMenu()
-		}
+		},
 	}
 </script>

@@ -86,3 +86,7 @@
 .hide-btn {
 	display: none;
 }
+
+.is-hide {
+	display:none;
+}
