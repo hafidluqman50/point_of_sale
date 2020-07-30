@@ -14,14 +14,19 @@ export default {
 	[mutations.PILIH_MENU] (state,data_menu) {
 		state.singleData = data_menu
 	},
+	[mutations.LIST_PESANAN] (state,data_menu) {
+		state.dataPesanan.menu        = data_menu.list_menu
+		state.dataPesanan.total_harga = data_menu.total_harga
+	},
 	[mutations.PESAN_MENU] (state,data_menu) {
-		console.log(data_menu)
-		data_menu.banyak_pesan = state.menuInput.banyak_pesan
-		data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
-		data_menu.keterangan   = state.menuInput.keterangan
+		// data_menu.banyak_pesan = state.menuInput.banyak_pesan
+		// data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
+		// data_menu.keterangan   = state.menuInput.keterangan
 
 		state.dataPesanan.total_harga+=data_menu.sub_total
-		state.dataPesanan.menu.push(data_menu)
+		console.log(data_menu)
+		state.dataPesanan.menu.push(data_menu) 
+
 		console.log(state.dataPesanan.menu)
 	},
 	[mutations.CARI_MENU] (state,data_cari) {

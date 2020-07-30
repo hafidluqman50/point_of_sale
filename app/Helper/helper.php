@@ -5,6 +5,24 @@ function format_rupiah($rupiah) {
 	return $hasil_rupiah;
 }
 
+function session_expired() {
+	if (session()->has('data_session')) {
+		$data_session = session()->get('data_session');
+		if (array_key_exists('time_expired',$data_session)) {
+			if (time() > $data_session['time_expired']) {
+				session()->forget('data_session');
+			}
+		}
+	}
+}
+
+function generate_time($time) {
+	// using second
+	$generate = time() + ($time);
+
+	return $generate;
+}
+
 function unslug_str($str) {
 	$get = explode('-',$str);
 	return ucwords($get[0]).' '.ucwords($get[1]);

@@ -60,15 +60,38 @@
 				</div>
 			</template>
 			<div class="form-group">
+				<label for="">Varian</label>
+				<div class="d-flex flex-wrap align-items-center justify-content-center">
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
 				<label for="">Jumlah</label>
 				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu" v-model="menuInput.banyak_pesan">
 			</div>
+			<hr>
 			<div class="form-group">
 				<label for="">Keterangan</label>
 				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
+			<hr>
 			<template v-slot:modal-footer>
-				<button class="btn btn-primary float-md-right" @click="pesanMenu(singleData)">PESAN MENU</button>
+				<button class="btn btn-primary float-md-right" @click="pesanMenu({singleData,menuInput});">PESAN MENU</button>
 			</template>
 		</vue-modal>
 		<vue-modal :idModal="'modalEditMenu'">
@@ -81,13 +104,36 @@
 				</div>
 			</template>
 			<div class="form-group">
+				<label for="">Varian</label>
+				<div class="d-flex flex-wrap align-items-center justify-content-center">
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+					<div style="margin-right:3%;">
+						<button class="btn btn-md btn-primary">Telor Setengah Matang</button>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
 				<label for="">Jumlah</label>
 				<input type="number" name="jumlah" class="form-control" placeholder="Jumlah Menu" v-model="menuInput.banyak_pesan">
 			</div>
+			<hr>
 			<div class="form-group">
 				<label for="">Keterangan</label>
 				<input type="text" name="keterangan" class="form-control" placeholder="Keterangan Menu" v-model="menuInput.keterangan">
 			</div>
+			<hr>
 			<template v-slot:modal-footer>
 				<button class="btn btn-warning float-md-right" @click="updateMenu(singleData)">UBAH MENU</button>
 			</template>
@@ -149,6 +195,10 @@
 		components: {Money},
 		data() {
 			return {
+				// menu_input:{
+				// 	jumlah:null,
+				// 	keterangan:null
+				// },
 				bayarNanti:false,
 				money:{
 					decimal:',',
@@ -179,11 +229,16 @@
 				'tampilMenu',
 				'pesanMenu',
 				'checkoutPesanan',
+				'listPesanan',
 				'prosesBayar',
 				'ubahMenu',
 				'updateMenu',
 				'hapusMenu'
 			]),
+			// clearInputMenu() {
+			// 	this.menu_input.jumlah     = null
+			// 	this.menu_input.keterangan = null
+			// },
 			checkoutModal:function() {
 				if (this.dataPesanan.menu.length != 0) {
 					this.openModal('checkoutMenu')
@@ -201,6 +256,7 @@
 		},
 		mounted() {
 			this.tampilMenu()
+			this.listPesanan()
 		},
 	}
 </script>

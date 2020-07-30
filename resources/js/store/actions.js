@@ -31,9 +31,32 @@ export default {
 	pilihMenu(context,data_menu) {
 		context.commit(mutations.PILIH_MENU,data_menu)
 	},
-	pesanMenu(context,data_menu) {
+	listPesanan(context) {
+		axios.get('/list-menu')
+			 .then((response) => {
+			 	let list_menu = response.data
+				context.commit(mutations.LIST_PESANAN,list_menu)
+			 })
+	},
+	pesanMenu(context,data_input) {
+		let data_menu  = data_input.singleData
+		let menu_input = data_input.menuInput
+
+		data_menu.banyak_pesan = menu_input.banyak_pesan
+		data_menu.sub_total    = menu_input.banyak_pesan * data_menu.harga_menu
+		data_menu.keterangan   = menu_input.keterangan
+
+		console.log(menu_input);
+
+		axios.get('/tambah-list-menu', {
+			params:{
+				data_menu:data_menu
+			}
+		}).then((mantul) => {
+			console.log(mantul)
+		})
+
 		context.commit(mutations.PESAN_MENU,data_menu)
-		context.dispatch('clearPesanMenu')
 		context.dispatch('closeModal','modalMenuItem')
 	},
 	ubahMenu(context,payload) {
