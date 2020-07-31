@@ -23,9 +23,11 @@ export default {
 		// data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
 		// data_menu.keterangan   = state.menuInput.keterangan
 
+		let data_clone = {...data_menu}
+
 		state.dataPesanan.total_harga+=data_menu.sub_total
 		console.log(data_menu)
-		state.dataPesanan.menu.push(data_menu) 
+		state.dataPesanan.menu.push(data_clone) 
 
 		console.log(state.dataPesanan.menu)
 	},
@@ -36,11 +38,9 @@ export default {
 		state.menuInput.banyak_pesan = payload.item.banyak_pesan
 		state.menuInput.keterangan   = payload.item.keterangan
 		state.menuInput.harga_menu	 = payload.item.harga_menu
-		console.log(payload.index)
-		console.log(state.dataPesanan.menu)
 		state.menuInput.indexMenu	 = payload.index
 	},
-	[mutations.UPDATE_MENU] (state,menu) {
+	[mutations.UPDATE_MENU] (state) {
 		let indexMenu = state.menuInput.indexMenu
 
 		state.dataPesanan.menu[indexMenu].banyak_pesan = state.menuInput.banyak_pesan

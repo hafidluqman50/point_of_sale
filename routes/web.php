@@ -128,5 +128,7 @@ Route::get('/data-menu/cari',['uses' => 'ApiController@dataMenuCari']);
 Route::post('/data-menu/checkout',['uses' => 'ApiController@dataMenuCheckout']);
 Route::get('/list-menu',['uses' => 'ApiController@listMenu']);
 Route::get('/tambah-list-menu',['uses' => 'ApiController@tambahListMenu']);
+Route::get('/update-list-menu',['uses' => 'ApiController@updateListMenu']);
+Route::get('/hapus-list-menu',['uses' => 'ApiController@hapusListMenu']);
 Route::get('/data-pembayaran',['uses' => 'ApiController@dataPembayaran']);
 Route::get('/ajax/data-barang/{id}',['uses' => 'ApiController@ajaxDataBarang']);

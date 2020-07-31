@@ -9,7 +9,7 @@ function session_expired() {
 	if (session()->has('data_session')) {
 		$data_session = session()->get('data_session');
 		if (array_key_exists('time_expired',$data_session)) {
-			if (time() > $data_session['time_expired']) {
+			if ($data_session['time_expired'] != '' && time() > $data_session['time_expired']) {
 				session()->forget('data_session');
 			}
 		}

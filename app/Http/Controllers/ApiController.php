@@ -38,26 +38,28 @@ class ApiController extends Controller
 
     public function listMenu()
     {
-		// session_expired();
     	$get_menu = [];
     	if (session()->has('data_session')) {
     		$data_session = session()->get('data_session');
-
 			if (count($data_session['list_menu']) != count($get_menu)) {
 		    	for ($i=0; $i < count($data_session['list_menu']); $i++) {
-		    		$get_menu[$i] = $data_session['list_menu'][$i];
+	    			$get_menu[$i] = array_values($data_session['list_menu'])[$i];
 		    	}
 			}
 
 	    	$list_menu = [
-				'list_menu'   => $get_menu,
-				'total_harga' => $data_session['total_harga']
+				'list_menu'    => $get_menu,
+				'total_harga'  => $data_session['total_harga'],
+				'time_expired' => $data_session['time_expired'],
 	    	];
+
+	    	session()->put('data_session',$list_menu);
     	}
     	else {
     		$data_session = [
-    			'list_menu' => [],
-    			'total_harga' => 0,
+				'list_menu'    => [],
+				'total_harga'  => 0,
+				'time_expired' => '',
     		];
 
     		session()->put('data_session',$data_session);
@@ -75,17 +77,41 @@ class ApiController extends Controller
 
     	array_push($session['list_menu'],$data_menu);
 
-		$session['time_expired'] = generate_time(1*60);
-		$session['total_harga']  = $session['total_harga'] + $data_menu['sub_total'];
+		$session['time_expired'] = generate_time(60*60);
+		$session['total_harga']+=$data_menu['sub_total'];
 
     	session()->put('data_session',$session);
 
-    	return $this->listMenu();
+    	return session()->get('data_session');
     }
 
     public function updateListMenu(Request $request)
     {
-    	$session = session()->get('data_session');
+		$session       = session()->get('data_session');
+		$data_update   = json_decode($request->data_update,TRUE);
+		$index_arr     = $data_update['indexMenu'];
+		$get_sub_total = $session['list_menu'][$index_arr]['sub_total'];
+
+		$session['total_harga']-=$get_sub_total;
+
+		$session['list_menu'][$index_arr]['banyak_pesan'] = $data_update['banyak_pesan'];
+		$session['list_menu'][$index_arr]['keterangan']   = $data_update['keterangan'];
+		$session['list_menu'][$index_arr]['sub_total']    = $data_update['sub_total'];
+		$session['total_harga']+=$data_update['sub_total'];
+
+		session()->put('data_session',$session);
+    }
+
+    public function hapusListMenu(Request $request)
+    {
+		$index_arr              = $request->index_arr;
+
+		$session                = session()->get('data_session');
+
+		$session['total_harga']-=$session['list_menu'][$index_arr]['sub_total'];
+    	unset($session['list_menu'][$index_arr]);
+
+    	session()->put('data_session',$session);
     }
 
     public function dataMenuCheckout(Request $request)
@@ -123,6 +149,16 @@ class ApiController extends Controller
 		}
 
 		TransaksiDetail::insert($insert_data);
+
+		session()->forget('data_session');
+
+		$data_session = [
+			'list_menu'    => [],
+			'total_harga'  => 0,
+			'time_expired' => '',
+		];
+
+		session()->put('data_session',$data_session);
 
 		return response()->json(['message' => 'Berhasil Input Pesanan']);
     }

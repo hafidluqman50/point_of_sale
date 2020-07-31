@@ -39031,7 +39031,7 @@ var render = function() {
                       staticClass: "btn btn-warning float-md-right",
                       on: {
                         click: function($event) {
-                          return _vm.updateMenu(_vm.singleData)
+                          return _vm.updateMenu(_vm.menuInput)
                         }
                       }
                     },
@@ -57702,6 +57702,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mutations_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mutations-type */ "./resources/js/store/mutations-type.js");
 /* harmony import */ var _event_bus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../event-bus */ "./resources/js/event-bus.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -57739,12 +57745,13 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   pesanMenu: function pesanMenu(context, data_input) {
-    var data_menu = data_input.singleData;
-    var menu_input = data_input.menuInput;
+    var clone = _objectSpread({}, data_input);
+
+    var data_menu = clone.singleData;
+    var menu_input = clone.menuInput;
     data_menu.banyak_pesan = menu_input.banyak_pesan;
     data_menu.sub_total = menu_input.banyak_pesan * data_menu.harga_menu;
     data_menu.keterangan = menu_input.keterangan;
-    console.log(menu_input);
     axios.get('/tambah-list-menu', {
       params: {
         data_menu: data_menu
@@ -57753,18 +57760,32 @@ __webpack_require__.r(__webpack_exports__);
       console.log(mantul);
     });
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], data_menu);
+    context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalMenuItem');
   },
   ubahMenu: function ubahMenu(context, payload) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], payload);
     context.dispatch('openModal', 'modalEditMenu');
   },
-  updateMenu: function updateMenu(context, menu) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], menu);
+  updateMenu: function updateMenu(context, data_update) {
+    var clone = _objectSpread({}, data_update);
+
+    clone.sub_total = clone.harga_menu * clone.banyak_pesan;
+    axios.get('/update-list-menu', {
+      params: {
+        data_update: clone
+      }
+    });
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"]);
     context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalEditMenu');
   },
   hapusMenu: function hapusMenu(context, index_arr) {
+    axios.get('/hapus-list-menu', {
+      params: {
+        index_arr: index_arr
+      }
+    });
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], index_arr);
   },
   cariMenu: function cariMenu(context, input_cari) {
@@ -57956,6 +57977,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 var _mutations$LOAD_STATE;
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -57977,9 +58002,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   // data_menu.banyak_pesan = state.menuInput.banyak_pesan
   // data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
   // data_menu.keterangan   = state.menuInput.keterangan
+  var data_clone = _objectSpread({}, data_menu);
+
   state.dataPesanan.total_harga += data_menu.sub_total;
   console.log(data_menu);
-  state.dataPesanan.menu.push(data_menu);
+  state.dataPesanan.menu.push(data_clone);
   console.log(state.dataPesanan.menu);
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], function (state, data_cari) {
   state.dataMenu = data_cari;
@@ -57987,10 +58014,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.menuInput.banyak_pesan = payload.item.banyak_pesan;
   state.menuInput.keterangan = payload.item.keterangan;
   state.menuInput.harga_menu = payload.item.harga_menu;
-  console.log(payload.index);
-  console.log(state.dataPesanan.menu);
   state.menuInput.indexMenu = payload.index;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], function (state, menu) {
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], function (state) {
   var indexMenu = state.menuInput.indexMenu;
   state.dataPesanan.menu[indexMenu].banyak_pesan = state.menuInput.banyak_pesan;
   state.dataPesanan.menu[indexMenu].keterangan = state.menuInput.keterangan;

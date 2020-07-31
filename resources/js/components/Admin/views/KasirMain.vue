@@ -135,7 +135,7 @@
 			</div>
 			<hr>
 			<template v-slot:modal-footer>
-				<button class="btn btn-warning float-md-right" @click="updateMenu(singleData)">UBAH MENU</button>
+				<button class="btn btn-warning float-md-right" @click="updateMenu(menuInput)">UBAH MENU</button>
 			</template>
 		</vue-modal>
 		<vue-modal :idModal="'checkoutMenu'">

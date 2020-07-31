@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Jul 06, 2020 at 05:16 PM
+-- Generation Time: Jul 31, 2020 at 06:07 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -232,8 +232,12 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `total_bayar`, `id_users`, `status_transaksi`, `ket_bayar`, `keterangan`, `created_at`, `updated_at`) VALUES
+('030c99b3-1db9-494f-98bd-7db5ad253322', '2020-08-01', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-01 02:03:25', '2020-08-01 02:03:25'),
 ('52790729-1c53-4fd6-849e-8d29e8229b0a', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Meja No. 05', '2020-07-03 01:47:33', '2020-07-03 01:47:33'),
-('7b62f969-1621-463f-8998-988ce32a9e56', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Mamat', '2020-07-03 01:51:01', '2020-07-03 01:51:01');
+('5fb36f06-51bb-40f0-acef-f7bfbd5a48f1', '2020-07-11', 24000, 20000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', 'Mantap', '2020-07-11 21:00:25', '2020-07-11 21:00:25'),
+('664de9e6-dc7b-42fb-b23d-8b6e0d8f95eb', '2020-08-01', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-01 02:04:50', '2020-08-01 02:04:50'),
+('7b62f969-1621-463f-8998-988ce32a9e56', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Mamat', '2020-07-03 01:51:01', '2020-07-03 01:51:01'),
+('b8122506-d451-4ccf-9b31-c43dbb7708c8', '2020-08-01', 144000, 144000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-01 02:06:38', '2020-08-01 02:06:38');
 
 -- --------------------------------------------------------
 
@@ -257,8 +261,12 @@ CREATE TABLE `transaksi_detail` (
 --
 
 INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_menu_makan`, `banyak_pesan`, `sub_total`, `keterangan`, `created_at`, `updated_at`) VALUES
+('0efdc111-329d-4b75-b307-5c2b0dcc7f1a', '664de9e6-dc7b-42fb-b23d-8b6e0d8f95eb', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-08-01 02:04:50', '2020-08-01 02:04:50'),
+('1534bdcc-ded8-4bad-89e8-bb519b3eb55e', '030c99b3-1db9-494f-98bd-7db5ad253322', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-08-01 02:03:26', '2020-08-01 02:03:26'),
 ('c694bd3a-da00-450d-b982-74ad527e6969', '52790729-1c53-4fd6-849e-8d29e8229b0a', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-07-03 01:47:33', '2020-07-03 01:47:33'),
-('f63e66d6-8cdc-4b11-b7c0-34acba7eb6b5', '7b62f969-1621-463f-8998-988ce32a9e56', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-07-03 01:51:02', '2020-07-03 01:51:02');
+('e2c04059-3b55-4849-890e-97fcb64acefc', '5fb36f06-51bb-40f0-acef-f7bfbd5a48f1', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, 'Setengah Matang', '2020-07-11 21:00:25', '2020-07-11 21:00:25'),
+('f63e66d6-8cdc-4b11-b7c0-34acba7eb6b5', '7b62f969-1621-463f-8998-988ce32a9e56', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '2020-07-03 01:51:02', '2020-07-03 01:51:02'),
+('fbb01413-b184-4e5a-b920-773b7a0171a4', 'b8122506-d451-4ccf-9b31-c43dbb7708c8', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 12, 144000, NULL, '2020-08-01 02:06:38', '2020-08-01 02:06:38');
 
 -- --------------------------------------------------------
 

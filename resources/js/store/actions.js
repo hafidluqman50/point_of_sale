@@ -39,14 +39,13 @@ export default {
 			 })
 	},
 	pesanMenu(context,data_input) {
-		let data_menu  = data_input.singleData
-		let menu_input = data_input.menuInput
+		let clone      = {...data_input}
+		let data_menu  = clone.singleData
+		let menu_input = clone.menuInput
 
 		data_menu.banyak_pesan = menu_input.banyak_pesan
 		data_menu.sub_total    = menu_input.banyak_pesan * data_menu.harga_menu
 		data_menu.keterangan   = menu_input.keterangan
-
-		console.log(menu_input);
 
 		axios.get('/tambah-list-menu', {
 			params:{
@@ -57,18 +56,33 @@ export default {
 		})
 
 		context.commit(mutations.PESAN_MENU,data_menu)
+		context.dispatch('clearPesanMenu')
 		context.dispatch('closeModal','modalMenuItem')
 	},
 	ubahMenu(context,payload) {
 		context.commit(mutations.UBAH_MENU,payload)
 		context.dispatch('openModal','modalEditMenu')
 	},
-	updateMenu(context,menu) {
-		context.commit(mutations.UPDATE_MENU,menu)
+	updateMenu(context,data_update) {
+		let clone = {...data_update}
+
+		clone.sub_total = clone.harga_menu * clone.banyak_pesan
+		axios.get('/update-list-menu',{
+			params:{
+				data_update:clone
+			}
+		})
+
+		context.commit(mutations.UPDATE_MENU)
 		context.dispatch('clearPesanMenu')
 		context.dispatch('closeModal','modalEditMenu')
 	},
 	hapusMenu(context,index_arr) {
+		axios.get('/hapus-list-menu',{
+			params:{
+				index_arr:index_arr
+			}
+		})
 		context.commit(mutations.HAPUS_MENU,index_arr)
 	},
 	cariMenu(context,input_cari) {
