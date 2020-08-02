@@ -2220,6 +2220,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2234,6 +2239,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // 	keterangan:null
       // },
       bayarNanti: false,
+      isKredit: false,
       money: {
         decimal: ',',
         thousands: '.',
@@ -2246,10 +2252,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput' // 'bayarNanti'
   ])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilMenu', 'pesanMenu', 'checkoutPesanan', 'listPesanan', 'prosesBayar', 'ubahMenu', 'updateMenu', 'hapusMenu']), {
-    // clearInputMenu() {
-    // 	this.menu_input.jumlah     = null
-    // 	this.menu_input.keterangan = null
-    // },
     checkoutModal: function checkoutModal() {
       if (this.dataPesanan.menu.length != 0) {
         this.openModal('checkoutMenu');
@@ -2260,7 +2262,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     ngetes: function ngetes(index_arr) {
       console.log(index_arr);
     },
-    inputAct: function inputAct(param) {
+    bayarKartuAct: function bayarKartuAct(param) {
+      this.isKredit = param;
+    },
+    bayarNantiAct: function bayarNantiAct(param) {
       this.bayarNanti = param;
     }
   }),
@@ -38706,7 +38711,7 @@ var render = function() {
                     "table",
                     { attrs: { width: "100%" } },
                     _vm._l(_vm.dataPesanan.menu, function(item, index) {
-                      return _c("tr", [
+                      return _c("tr", { key: index }, [
                         _c(
                           "td",
                           {
@@ -38749,7 +38754,10 @@ var render = function() {
                               staticClass: "close",
                               on: {
                                 click: function($event) {
-                                  return _vm.hapusMenu(index)
+                                  return _vm.hapusMenu({
+                                    index: index,
+                                    item: item
+                                  })
                                 }
                               }
                             },
@@ -39232,7 +39240,7 @@ var render = function() {
                 "btn btn-outline-success " + (_vm.bayarNanti ? "" : "active"),
               on: {
                 click: function($event) {
-                  return _vm.inputAct(false)
+                  return _vm.bayarNantiAct(false)
                 }
               }
             },
@@ -39245,7 +39253,7 @@ var render = function() {
               class: "btn btn-outline-info " + (_vm.bayarNanti ? "active" : ""),
               on: {
                 click: function($event) {
-                  return _vm.inputAct(true)
+                  return _vm.bayarNantiAct(true)
                 }
               }
             },
@@ -39258,47 +39266,78 @@ var render = function() {
             _c("label", { attrs: { for: "" } }, [_vm._v("Metode Bayar")]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("button", { staticClass: "btn btn-outline-primary active" }, [
-                _vm._v("Tunai")
-              ]),
+              _c(
+                "button",
+                {
+                  class:
+                    "btn btn-outline-primary " + (_vm.isKredit ? "" : "active"),
+                  on: {
+                    click: function($event) {
+                      return _vm.bayarKartuAct(false)
+                    }
+                  }
+                },
+                [_vm._v("Tunai")]
+              ),
               _vm._v(" "),
-              _c("button", { staticClass: "btn btn-outline-primary" }, [
-                _vm._v("Kartu Debit/Kredit")
-              ])
+              _c(
+                "button",
+                {
+                  class:
+                    "btn btn-outline-primary " + (_vm.isKredit ? "active" : ""),
+                  on: {
+                    click: function($event) {
+                      return _vm.bayarKartuAct(true)
+                    }
+                  }
+                },
+                [_vm._v("Kartu Debit/Kredit")]
+              )
             ]),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-group" },
-              [
-                _c("label", { attrs: { for: "" } }, [_vm._v("Jumlah Bayar")]),
-                _vm._v(" "),
-                _c(
-                  "money",
-                  _vm._b(
-                    {
-                      staticClass: "form-control",
-                      attrs: { name: "jumlah_bayar" },
-                      model: {
-                        value: _vm.dataPesanan.total_bayar,
-                        callback: function($$v) {
-                          _vm.$set(_vm.dataPesanan, "total_bayar", $$v)
-                        },
-                        expression: "dataPesanan.total_bayar"
-                      }
-                    },
-                    "money",
-                    _vm.money,
-                    false
-                  )
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("hr")
+            _vm.isKredit == false
+              ? _c("div", [
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c("label", { attrs: { for: "" } }, [
+                        _vm._v("Jumlah Bayar")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "money",
+                        _vm._b(
+                          {
+                            staticClass: "form-control",
+                            attrs: { name: "jumlah_bayar" },
+                            model: {
+                              value: _vm.dataPesanan.total_bayar,
+                              callback: function($$v) {
+                                _vm.$set(_vm.dataPesanan, "total_bayar", $$v)
+                              },
+                              expression: "dataPesanan.total_bayar"
+                            }
+                          },
+                          "money",
+                          _vm.money,
+                          false
+                        )
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("hr")
+                ])
+              : _c("div", [
+                  _c("input", {
+                    attrs: { type: "hidden" },
+                    domProps: { value: _vm.dataPesanan.total_harga }
+                  })
+                ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
@@ -57741,6 +57780,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   listPesanan: function listPesanan(context) {
     axios.get('/list-menu').then(function (response) {
       var list_menu = response.data;
+      console.log(list_menu);
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_PESANAN"], list_menu);
     });
   },
@@ -57749,6 +57789,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     var data_menu = clone.singleData;
     var menu_input = clone.menuInput;
+    data_menu.id_list = '_' + Math.random().toString(36).substr(2, 9);
     data_menu.banyak_pesan = menu_input.banyak_pesan;
     data_menu.sub_total = menu_input.banyak_pesan * data_menu.harga_menu;
     data_menu.keterangan = menu_input.keterangan;
@@ -57764,6 +57805,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     context.dispatch('closeModal', 'modalMenuItem');
   },
   ubahMenu: function ubahMenu(context, payload) {
+    console.log(payload);
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], payload);
     context.dispatch('openModal', 'modalEditMenu');
   },
@@ -57780,13 +57822,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalEditMenu');
   },
-  hapusMenu: function hapusMenu(context, index_arr) {
+  hapusMenu: function hapusMenu(context, data) {
+    // console.log(data.item)
     axios.get('/hapus-list-menu', {
       params: {
-        index_arr: index_arr
+        id_list: data.item.id_list
       }
+    }).then(function (response) {
+      console.log(response.data);
     });
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], index_arr);
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], data.index);
   },
   cariMenu: function cariMenu(context, input_cari) {
     if (input_cari != null || input_cari !== undefined) {

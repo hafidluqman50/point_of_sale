@@ -104,12 +104,15 @@ class ApiController extends Controller
 
     public function hapusListMenu(Request $request)
     {
-		$index_arr              = $request->index_arr;
-
 		$session                = session()->get('data_session');
 
+		$index_arr              = array_search($request->id_list,array_column($session['list_menu'],'id_list'));
+
 		$session['total_harga']-=$session['list_menu'][$index_arr]['sub_total'];
+
     	unset($session['list_menu'][$index_arr]);
+
+    	$session['list_menu'] = array_values($session['list_menu']);
 
     	session()->put('data_session',$session);
     }

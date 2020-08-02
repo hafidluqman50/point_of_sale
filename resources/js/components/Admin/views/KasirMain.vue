@@ -28,7 +28,7 @@
 						</div>
 						<div class="card-body checkout">
 							<table width="100%">
-								<tr v-for="(item, index) in dataPesanan.menu">
+								<tr v-for="(item, index) in dataPesanan.menu" :key="index">
 									<td style="font-size:18px;" @click="ubahMenu({item,index})"><b>{{ item.nama_menu }}</b>
 										<tr v-if="item.keterangan != null || item.keterangan !== undefined">
 											<td style="font-size:15px;">{{ item.keterangan }}</td>
@@ -36,7 +36,7 @@
 									</td>
 									<td>{{ item.banyak_pesan}}x</td>
 									<td>{{ item.sub_total | formatRupiah }}</td>
-									<td><button class="close" @click="hapusMenu(index)">X</button></td>
+									<td><button class="close" @click="hapusMenu({index,item})">X</button></td>
 								</tr>
 							</table>
 						</div>
@@ -148,22 +148,27 @@
 				</div>
 			</template>
 			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
-			<button :class="`btn btn-outline-success ${bayarNanti ? '' : 'active'}`" @click="inputAct(false)">Bayar Sekarang</button>
-			<button :class="`btn btn-outline-info ${bayarNanti ? 'active' : ''}`" @click="inputAct(true)">Bayar Nanti</button>
+			<button :class="`btn btn-outline-success ${bayarNanti ? '' : 'active'}`" @click="bayarNantiAct(false)">Bayar Sekarang</button>
+			<button :class="`btn btn-outline-info ${bayarNanti ? 'active' : ''}`" @click="bayarNantiAct(true)">Bayar Nanti</button>
 			<hr>
 			<div :class="{'is-hide':bayarNanti}">
 				<label for="">Metode Bayar</label>
 				<div class="form-group">
-					<button class="btn btn-outline-primary active">Tunai</button>
-					<button class="btn btn-outline-primary">Kartu Debit/Kredit</button>
+					<button :class="`btn btn-outline-primary ${isKredit ? '' : 'active'}`" @click="bayarKartuAct(false)">Tunai</button>
+					<button :class="`btn btn-outline-primary ${isKredit ? 'active' : ''}`" @click="bayarKartuAct(true)">Kartu Debit/Kredit</button>
 				</div>
 				<hr>
-				<div class="form-group">
-					<label for="">Jumlah Bayar</label>
-					<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money">
-					</money>
+				<div v-if="isKredit == false">
+					<div class="form-group">
+						<label for="">Jumlah Bayar</label>
+						<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money">
+						</money>
+					</div>
+					<hr>
 				</div>
-				<hr>
+				<div v-else>
+					<input type="hidden" :value="dataPesanan.total_harga">
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="">Keterangan</label>
@@ -200,6 +205,7 @@
 				// 	keterangan:null
 				// },
 				bayarNanti:false,
+				isKredit:false,
 				money:{
 					decimal:',',
 					thousands:'.',
@@ -235,10 +241,6 @@
 				'updateMenu',
 				'hapusMenu'
 			]),
-			// clearInputMenu() {
-			// 	this.menu_input.jumlah     = null
-			// 	this.menu_input.keterangan = null
-			// },
 			checkoutModal:function() {
 				if (this.dataPesanan.menu.length != 0) {
 					this.openModal('checkoutMenu')
@@ -250,7 +252,10 @@
 			ngetes:(index_arr) => {
 				console.log(index_arr)
 			},
-			inputAct:function(param) {
+			bayarKartuAct:function(param) {
+				this.isKredit = param
+			},
+			bayarNantiAct:function(param) {
 				this.bayarNanti = param
 			}
 		},

@@ -35,6 +35,7 @@ export default {
 		axios.get('/list-menu')
 			 .then((response) => {
 			 	let list_menu = response.data
+			 	console.log(list_menu)
 				context.commit(mutations.LIST_PESANAN,list_menu)
 			 })
 	},
@@ -43,6 +44,7 @@ export default {
 		let data_menu  = clone.singleData
 		let menu_input = clone.menuInput
 
+		data_menu.id_list	   = '_' + Math.random().toString(36).substr(2, 9)
 		data_menu.banyak_pesan = menu_input.banyak_pesan
 		data_menu.sub_total    = menu_input.banyak_pesan * data_menu.harga_menu
 		data_menu.keterangan   = menu_input.keterangan
@@ -60,6 +62,7 @@ export default {
 		context.dispatch('closeModal','modalMenuItem')
 	},
 	ubahMenu(context,payload) {
+		console.log(payload)
 		context.commit(mutations.UBAH_MENU,payload)
 		context.dispatch('openModal','modalEditMenu')
 	},
@@ -77,13 +80,16 @@ export default {
 		context.dispatch('clearPesanMenu')
 		context.dispatch('closeModal','modalEditMenu')
 	},
-	hapusMenu(context,index_arr) {
+	hapusMenu(context,data) {
+		// console.log(data.item)
 		axios.get('/hapus-list-menu',{
 			params:{
-				index_arr:index_arr
+				id_list:data.item.id_list
 			}
+		}).then((response) => {
+			console.log(response.data)
 		})
-		context.commit(mutations.HAPUS_MENU,index_arr)
+		context.commit(mutations.HAPUS_MENU,data.index)
 	},
 	cariMenu(context,input_cari) {
 		if (input_cari != null || input_cari !== undefined) {
