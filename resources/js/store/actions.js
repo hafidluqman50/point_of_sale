@@ -131,16 +131,19 @@ export default {
 			console.log(e)
 		})
 	},
-	getPembayaran(context) {
+	getPembayaran(context,page) {
 		// let dataBayar = null
 		// if (dataBayar == null) {
+		console.log(page)
 		context.dispatch('loadState')
-		axios.get('/data-pembayaran')
-			 .then(response => {
-			 	// dataBayar = response.data
+		axios.get('/data-pembayaran',{
+			params:{
+				page:page
+			}
+		}).then(response => {
 			 	context.dispatch('loadState',false)
 				context.commit(mutations.GET_PEMBAYARAN,response.data)
-			 })
+			})
 		// }
 		// else {
 		// 	context.commit(mutations.GET_PEMBAYARAN,dataBayar)

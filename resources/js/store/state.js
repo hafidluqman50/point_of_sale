@@ -4,7 +4,10 @@ export default {
 	showModal:false,
 	// bayarNanti:false,
 	dataMenu:null,
-	dataPembayaran:[],
+	transaksi:{
+		count:null,
+		dataBayar:[]
+	},
 	dataPesanan:{
 		total_harga:0,
 		total_bayar:0,

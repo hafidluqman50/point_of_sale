@@ -74,14 +74,15 @@ export default {
 		// }
 	// },
 	[mutations.PROSES_BAYAR] (state) {
-		state.dataPesanan.total_harga  = null
-		state.dataPesanan.total_bayar  = null
+		state.dataPesanan.total_harga  = 0
+		state.dataPesanan.total_bayar  = 0
 		// state.dataPesanan.kembalian = null
 		state.dataPesanan.menu         = []
 		state.loadSend                 = false
 	},
 	[mutations.GET_PEMBAYARAN] (state,data_bayar) {
-		state.dataPembayaran = data_bayar
+		state.transaksi.dataBayar = data_bayar.pembayaran
+		state.transaksi.count     = data_bayar.count
 	},
 	[mutations.OPEN_MODAL] (state) {
 		state.showModal = true

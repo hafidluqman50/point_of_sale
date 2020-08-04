@@ -30,7 +30,7 @@
       <div class="card-body login-card-body">
         @if (session()->has('log'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('log') }}
+            {{ session()->get('log') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

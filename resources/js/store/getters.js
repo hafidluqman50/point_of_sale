@@ -26,7 +26,7 @@ export default {
 	bayarNanti: state => {
 		return state.bayarNanti
 	},
-	dataPembayaran: state => {
-		return state.dataPembayaran
+	transaksi: state => {
+		return state.transaksi
 	}
 }

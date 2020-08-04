@@ -15,7 +15,11 @@ class ApiController extends Controller
 {
 	public function __construct()
 	{
-		session_expired();
+		$this->middleware(function($request,$next){
+			session_expired();
+			
+			return $next($request);
+		});
 	}
 
     public function dataMenu()
@@ -72,7 +76,19 @@ class ApiController extends Controller
 
     public function tambahListMenu(Request $request)
     {
-		$session   = session()->get('data_session');
+		if (session()->has('data_session')) {
+			$session   = session()->get('data_session');
+		}
+		else {
+			$session = [
+				'list_menu'    => [],
+				'total_harga'  => 0,
+				'time_expired' => '',
+    		];
+
+    		session()->put('data_session',$session);
+		}
+
 		$data_menu = json_decode($request->data_menu,TRUE);
 
     	array_push($session['list_menu'],$data_menu);
@@ -166,11 +182,23 @@ class ApiController extends Controller
 		return response()->json(['message' => 'Berhasil Input Pesanan']);
     }
 
-    public function dataPembayaran() 
+    public function dataPembayaran(Request $request) 
     {
-    	$pembayaran = Transaksi::where('tanggal_transaksi',now()->toDateString())->get();
+		$page   = ($request->page - 1) * 5;
+		// $limit 	= $request->page * 5;
+		// $get_transaksi 	= Transaksi::where('tanggal_transaksi',now()->toDateString())
+		// 						->offset($page)
+		// 						->limit($limit);
 
-    	return response()->json($pembayaran);
+		$get_transaksi 	= Transaksi::offset($page)
+									->limit(5)
+									->orderBy('created_at','desc');
+
+		$count      = ceil(Transaksi::count()/5);
+		
+		$pembayaran = $get_transaksi->get();
+
+    	return response()->json(['count' => $count, 'pembayaran' => $pembayaran]);
     }
 
     public function ajaxDataBarang($id)
