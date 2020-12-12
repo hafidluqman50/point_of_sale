@@ -8,46 +8,49 @@ export default {
 	[mutations.LOAD_SEND] (state,param = true) {
 		state.loadSend = param
 	},
-	[mutations.TAMPIL_MENU] (state,data_menu) {
-		state.dataMenu = data_menu
+	[mutations.TAMPIL_ITEM_JUAL] (state,data_item_jual) {
+		state.listItem = data_item_jual
 	},
-	[mutations.PILIH_MENU] (state,data_menu) {
-		state.singleData = data_menu
+	[mutations.PILIH_ITEM] (state,data_item) {
+		state.singleData = data_item
+	},
+	[mutations.VARIAN_PUSH] (state,data_varian) {
+		state.menuInput.varian_pilih = data_varian
 	},
 	[mutations.LIST_PESANAN] (state,data_menu) {
-		state.dataPesanan.menu        = data_menu.list_menu
+		state.dataPesanan.menu        = data_menu.list_item
 		state.dataPesanan.total_harga = data_menu.total_harga
 	},
 	[mutations.PESAN_MENU] (state,data_menu) {
-		// data_menu.banyak_pesan = state.menuInput.banyak_pesan
-		// data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
-		// data_menu.keterangan   = state.menuInput.keterangan
-
 		let data_clone = {...data_menu}
 
 		state.dataPesanan.total_harga+=data_menu.sub_total
-		console.log(data_menu)
 		state.dataPesanan.menu.push(data_clone) 
 
 		console.log(state.dataPesanan.menu)
 	},
-	[mutations.CARI_MENU] (state,data_cari) {
-		state.dataMenu = data_cari
+	[mutations.CARI_ITEM] (state,data_cari) {
+		state.listItem = data_cari
 	},
 	[mutations.UBAH_MENU] (state,payload) {
+		state.singleData             = payload.item
 		state.menuInput.banyak_pesan = payload.item.banyak_pesan
+		state.menuInput.varian_pilih = payload.item.varian_pilih
 		state.menuInput.keterangan   = payload.item.keterangan
-		state.menuInput.harga_menu	 = payload.item.harga_menu
-		state.menuInput.indexMenu	 = payload.index
+		state.menuInput.harga_item   = payload.item.harga_item
+		state.menuInput.indexMenu    = payload.index
 	},
-	[mutations.UPDATE_MENU] (state) {
-		let indexMenu = state.menuInput.indexMenu
+	[mutations.UPDATE_MENU] (state,data_update) {
+		const {indexMenu,banyak_pesan,varian_pilih,keterangan,harga_item,sub_total} = data_update
 
-		state.dataPesanan.menu[indexMenu].banyak_pesan = state.menuInput.banyak_pesan
-		state.dataPesanan.menu[indexMenu].keterangan   = state.menuInput.keterangan
+		state.dataPesanan.menu[indexMenu].banyak_pesan = banyak_pesan
+		state.dataPesanan.menu[indexMenu].keterangan   = keterangan
+		state.dataPesanan.menu[indexMenu].varian_pilih = varian_pilih
+
 		state.dataPesanan.total_harga-=state.dataPesanan.menu[indexMenu].sub_total
 
-		state.dataPesanan.menu[indexMenu].sub_total    = state.menuInput.harga_menu * state.menuInput.banyak_pesan
+		state.dataPesanan.menu[indexMenu].sub_total = sub_total
+
 		state.dataPesanan.total_harga+=state.dataPesanan.menu[indexMenu].sub_total
 	},
 	[mutations.HAPUS_MENU] (state,index_arr) {
@@ -60,19 +63,18 @@ export default {
 
   		state.dataPesanan.menu = removePesanan(dataPesanan,index_arr)
 	},
+	[mutations.DESTROY_MENU_ACT] (state) {
+		state.dataPesanan.total_harga  = 0
+		// state.dataPesanan.kembalian = null
+		state.dataPesanan.menu         = []
+		state.loadSend                 = false
+	},
 	[mutations.CLEAR_PESAN_MENU] (state) {
 		state.menuInput.banyak_pesan = null
 		state.menuInput.keterangan   = null
 		state.menuInput.indexMenu    = null
+		state.menuInput.varian_pilih = null
 	},
-	// [mutations.CHECKOUT_PESANAN] (state) {
-		// if (state.dataPesanan.menu.length != 0) {
-		// 	state.showModal.modalBayar = true
-		// }
-		// else {
-		// 	console.log('kosong bos');
-		// }
-	// },
 	[mutations.PROSES_BAYAR] (state) {
 		state.dataPesanan.total_harga  = 0
 		state.dataPesanan.total_bayar  = 0
@@ -80,10 +82,20 @@ export default {
 		state.dataPesanan.menu         = []
 		state.loadSend                 = false
 	},
-	[mutations.GET_PEMBAYARAN] (state,data_bayar) {
-		state.transaksi.dataBayar = data_bayar.pembayaran
-		state.transaksi.count     = data_bayar.count
+	[mutations.PROSES_TAGIHAN] (state) {
+		state.dataPesanan.total_harga   = 0
+		// state.dataPesanan.kembalian  = null
+		state.dataPesanan.menu          = []
+		state.dataPesanan.nama_customer = null
+		state.loadSend                  = false
 	},
+	// [mutations.PROSES_TAGIHAN] (state) {
+	// 	state.data
+	// }
+	// [mutations.GET_PEMBAYARAN] (state,data_bayar) {
+	// 	state.transaksi.dataBayar = data_bayar.pembayaran
+	// 	state.transaksi.count     = data_bayar.count
+	// },
 	[mutations.OPEN_MODAL] (state) {
 		state.showModal = true
 	},

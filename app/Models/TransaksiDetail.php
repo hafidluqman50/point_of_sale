@@ -17,7 +17,7 @@ class TransaksiDetail extends Model
 
     public static function getData($id)
     {
-    	$db = self::join('menu_makan','transaksi_detail.id_menu_makan','=','menu_makan.id_menu_makan')
+    	$db = self::join('item_jual','transaksi_detail.id_item_jual','=','item_jual.id_item_jual')
     				->where('id_transaksi',$id)
     				->get();
 

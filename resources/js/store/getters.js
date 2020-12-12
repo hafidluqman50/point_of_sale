@@ -1,6 +1,6 @@
 export default {
-	dataMenu: state => {
-		return state.dataMenu
+	listItem: state => {
+		return state.listItem
 	},
 	isLoading: state => {
 		return state.isLoading

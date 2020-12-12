@@ -1936,7 +1936,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    escModal: function escModal() {// 
+    }
+  }
+});
 
 /***/ }),
 
@@ -1956,6 +1961,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
 //
 //
 //
@@ -2225,6 +2233,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2234,10 +2287,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      // menu_input:{
-      // 	jumlah:null,
-      // 	keterangan:null
-      // },
       bayarNanti: false,
       isKredit: false,
       money: {
@@ -2249,9 +2298,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['dataMenu', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput' // 'bayarNanti'
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['listItem', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput' // 'bayarNanti'
   ])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilMenu', 'pesanMenu', 'checkoutPesanan', 'listPesanan', 'prosesBayar', 'ubahMenu', 'updateMenu', 'hapusMenu']), {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilItemJual', 'pesanMenu', 'destroyMenuAct', 'varianPush', 'checkoutPesanan', 'listPesanan', 'prosesBayar', 'prosesTagihan', 'ubahMenu', 'updateMenu', 'hapusMenu'])), {}, {
     checkoutModal: function checkoutModal() {
       if (this.dataPesanan.menu.length != 0) {
         this.openModal('checkoutMenu');
@@ -2259,8 +2308,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log('Kosong Bos');
       }
     },
+    destroyMenu: function destroyMenu() {
+      this.destroyMenuAct();
+    },
     ngetes: function ngetes(index_arr) {
       console.log(index_arr);
+    },
+    VarianAct: function VarianAct(param) {
+      this.varianPush(param);
     },
     bayarKartuAct: function bayarKartuAct(param) {
       this.isKredit = param;
@@ -2270,7 +2325,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    this.tampilMenu();
+    this.tampilItemJual();
     this.listPesanan();
   }
 });
@@ -2617,8 +2672,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['menuMakan', 'targetModal'],
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['pilihMenu']), {
+  props: ['itemJual', 'targetModal'],
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['pilihItem']), {
     pesanModal: function pesanModal() {
       _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('modalOpen', this.$refs.menuItem.getAttribute('target-modal'));
     }
@@ -18126,7 +18181,7 @@ return jQuery;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.15';
+  var VERSION = '4.17.20';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -21833,8 +21888,21 @@ return jQuery;
      * @returns {Array} Returns the new sorted array.
      */
     function baseOrderBy(collection, iteratees, orders) {
+      if (iteratees.length) {
+        iteratees = arrayMap(iteratees, function(iteratee) {
+          if (isArray(iteratee)) {
+            return function(value) {
+              return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
+            }
+          }
+          return iteratee;
+        });
+      } else {
+        iteratees = [identity];
+      }
+
       var index = -1;
-      iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(getIteratee()));
+      iteratees = arrayMap(iteratees, baseUnary(getIteratee()));
 
       var result = baseMap(collection, function(value, key, collection) {
         var criteria = arrayMap(iteratees, function(iteratee) {
@@ -22091,6 +22159,10 @@ return jQuery;
         var key = toKey(path[index]),
             newValue = value;
 
+        if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+          return object;
+        }
+
         if (index != lastIndex) {
           var objValue = nested[key];
           newValue = customizer ? customizer(objValue, key, nested) : undefined;
@@ -22243,11 +22315,14 @@ return jQuery;
      *  into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
-      value = iteratee(value);
-
       var low = 0,
-          high = array == null ? 0 : array.length,
-          valIsNaN = value !== value,
+          high = array == null ? 0 : array.length;
+      if (high === 0) {
+        return 0;
+      }
+
+      value = iteratee(value);
+      var valIsNaN = value !== value,
           valIsNull = value === null,
           valIsSymbol = isSymbol(value),
           valIsUndefined = value === undefined;
@@ -23732,10 +23807,11 @@ return jQuery;
       if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
         return false;
       }
-      // Assume cyclic values are equal.
-      var stacked = stack.get(array);
-      if (stacked && stack.get(other)) {
-        return stacked == other;
+      // Check that cyclic values are equal.
+      var arrStacked = stack.get(array);
+      var othStacked = stack.get(other);
+      if (arrStacked && othStacked) {
+        return arrStacked == other && othStacked == array;
       }
       var index = -1,
           result = true,
@@ -23897,10 +23973,11 @@ return jQuery;
           return false;
         }
       }
-      // Assume cyclic values are equal.
-      var stacked = stack.get(object);
-      if (stacked && stack.get(other)) {
-        return stacked == other;
+      // Check that cyclic values are equal.
+      var objStacked = stack.get(object);
+      var othStacked = stack.get(other);
+      if (objStacked && othStacked) {
+        return objStacked == other && othStacked == object;
       }
       var result = true;
       stack.set(object, other);
@@ -27281,6 +27358,10 @@ return jQuery;
      * // The `_.property` iteratee shorthand.
      * _.filter(users, 'active');
      * // => objects for ['barney']
+     *
+     * // Combining several predicates using `_.overEvery` or `_.overSome`.
+     * _.filter(users, _.overSome([{ 'age': 36 }, ['age', 40]]));
+     * // => objects for ['fred', 'barney']
      */
     function filter(collection, predicate) {
       var func = isArray(collection) ? arrayFilter : baseFilter;
@@ -28030,15 +28111,15 @@ return jQuery;
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 40 },
+     *   { 'user': 'fred',   'age': 30 },
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, [function(o) { return o.user; }]);
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 30]]
      *
      * _.sortBy(users, ['user', 'age']);
-     * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
+     * // => objects for [['barney', 34], ['barney', 36], ['fred', 30], ['fred', 48]]
      */
     var sortBy = baseRest(function(collection, iteratees) {
       if (collection == null) {
@@ -32913,11 +32994,11 @@ return jQuery;
 
       // Use a sourceURL for easier debugging.
       // The sourceURL gets injected into the source that's eval-ed, so be careful
-      // with lookup (in case of e.g. prototype pollution), and strip newlines if any.
-      // A newline wouldn't be a valid sourceURL anyway, and it'd enable code injection.
+      // to normalize all kinds of whitespace, so e.g. newlines (and unicode versions of it) can't sneak in
+      // and escape the comment, thus injecting code that gets evaled.
       var sourceURL = '//# sourceURL=' +
         (hasOwnProperty.call(options, 'sourceURL')
-          ? (options.sourceURL + '').replace(/[\r\n]/g, ' ')
+          ? (options.sourceURL + '').replace(/\s/g, ' ')
           : ('lodash.templateSources[' + (++templateCounter) + ']')
         ) + '\n';
 
@@ -32950,8 +33031,6 @@ return jQuery;
 
       // If `variable` is not specified wrap a with-statement around the generated
       // code to add the data object to the top of the scope chain.
-      // Like with sourceURL, we take care to not check the option's prototype,
-      // as this configuration is a code injection vector.
       var variable = hasOwnProperty.call(options, 'variable') && options.variable;
       if (!variable) {
         source = 'with (obj) {\n' + source + '\n}\n';
@@ -33658,6 +33737,9 @@ return jQuery;
      * values against any array or object value, respectively. See `_.isEqual`
      * for a list of supported value comparisons.
      *
+     * **Note:** Multiple values can be checked by combining several matchers
+     * using `_.overSome`
+     *
      * @static
      * @memberOf _
      * @since 3.0.0
@@ -33673,6 +33755,10 @@ return jQuery;
      *
      * _.filter(objects, _.matches({ 'a': 4, 'c': 6 }));
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
+     *
+     * // Checking for several possible values
+     * _.filter(objects, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
+     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
       return baseMatches(baseClone(source, CLONE_DEEP_FLAG));
@@ -33686,6 +33772,9 @@ return jQuery;
      * **Note:** Partial comparisons will match empty array and empty object
      * `srcValue` values against any array or object value, respectively. See
      * `_.isEqual` for a list of supported value comparisons.
+     *
+     * **Note:** Multiple values can be checked by combining several matchers
+     * using `_.overSome`
      *
      * @static
      * @memberOf _
@@ -33703,6 +33792,10 @@ return jQuery;
      *
      * _.find(objects, _.matchesProperty('a', 4));
      * // => { 'a': 4, 'b': 5, 'c': 6 }
+     *
+     * // Checking for several possible values
+     * _.filter(objects, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
+     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
       return baseMatchesProperty(path, baseClone(srcValue, CLONE_DEEP_FLAG));
@@ -33926,6 +34019,10 @@ return jQuery;
      * Creates a function that checks if **all** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
+     * Following shorthands are possible for providing predicates.
+     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
+     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
+     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -33952,6 +34049,10 @@ return jQuery;
      * Creates a function that checks if **any** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
+     * Following shorthands are possible for providing predicates.
+     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
+     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
+     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -33971,6 +34072,9 @@ return jQuery;
      *
      * func(NaN);
      * // => false
+     *
+     * var matchesFunc = _.overSome([{ 'a': 1 }, { 'a': 2 }])
+     * var matchesPropertyFunc = _.overSome([['a', 1], ['a', 2]])
      */
     var overSome = createOver(arraySome);
 
@@ -38411,10 +38515,12 @@ var render = function() {
         "main-header navbar navbar-expand-md navbar-light navbar-white"
     },
     [
+      _vm._m(0),
+      _vm._v(" "),
       _c("div", { staticClass: "container" }, [
-        _vm._m(0),
-        _vm._v(" "),
         _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2),
         _vm._v(" "),
         _c(
           "div",
@@ -38423,38 +38529,9 @@ var render = function() {
             attrs: { id: "navbarCollapse" }
           },
           [
-            _c("ul", { staticClass: "navbar-nav" }, [
-              _c(
-                "li",
-                { staticClass: "nav-item" },
-                [
-                  _c(
-                    "router-link",
-                    { staticClass: "nav-link", attrs: { to: "/admin/kasir" } },
-                    [_vm._v("Daftar Menu")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "nav-item" },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { to: "/admin/kasir/pembayaran" }
-                    },
-                    [_vm._v("Pembayaran")]
-                  )
-                ],
-                1
-              )
-            ]),
+            _c("ul", { staticClass: "navbar-nav" }),
             _vm._v(" "),
-            _c("form", { staticClass: "form-inline ml-0 ml-md-3" }, [
+            _c("form", { staticClass: "form-inline ml-0 ml-md-5" }, [
               _c("div", { staticClass: "input-group input-group-sm" }, [
                 _c("input", {
                   directives: [
@@ -38470,7 +38547,8 @@ var render = function() {
                     name: "cari_menu",
                     type: "search",
                     placeholder: "Cari Menu",
-                    "aria-label": "Cari Menu"
+                    "aria-label": "Cari Menu",
+                    width: "100%"
                   },
                   domProps: { value: _vm.dataCari },
                   on: {
@@ -38507,6 +38585,15 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "menu-nav" }, [
+      _c("span", { staticClass: "fas fa-bars" }),
+      _vm._v(" MENU\n    ")
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -38588,7 +38675,7 @@ var render = function() {
                         "div",
                         { staticClass: "row" },
                         [
-                          _vm.dataMenu == null || _vm.dataMenu.length == 0
+                          _vm.listItem == null || _vm.listItem.length == 0
                             ? _c(
                                 "div",
                                 {
@@ -38598,10 +38685,10 @@ var render = function() {
                                 },
                                 [_vm._m(1)]
                               )
-                            : _vm._l(_vm.dataMenu, function(menuMakan) {
+                            : _vm._l(_vm.listItem, function(itemJual) {
                                 return _c("menu-item", {
-                                  key: menuMakan.id,
-                                  attrs: { menuMakan: menuMakan }
+                                  key: itemJual.id,
+                                  attrs: { itemJual: itemJual }
                                 })
                               })
                         ],
@@ -38613,7 +38700,27 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-md-3" }, [
               _c("div", { staticClass: "card m-0" }, [
-                _vm._m(2),
+                _c("div", { staticClass: "card-header bg-light" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-md-4 no-padding tagihan-menu",
+                        on: {
+                          click: function($event) {
+                            return _vm.openModal("tagihanModal")
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { staticClass: "fas fa-bars" }),
+                        _vm._v(" Tagihan\n\t\t\t\t\t\t\t")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(2)
+                  ])
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body checkout" }, [
                   _c(
@@ -38635,9 +38742,30 @@ var render = function() {
                             }
                           },
                           [
-                            _c("b", [_vm._v(_vm._s(item.nama_menu))]),
+                            _c("b", [_vm._v(_vm._s(item.nama_item))]),
                             _vm._v(" "),
-                            item.keterangan != null ||
+                            item.varian_pilih !== null &&
+                            item.varian_pilih !== undefined
+                              ? _c("tr", [
+                                  _c(
+                                    "td",
+                                    { staticStyle: { "font-size": "15px" } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(item.varian_pilih.namaVarian) +
+                                          " : " +
+                                          _vm._s(
+                                            _vm._f("formatRupiah")(
+                                              item.varian_pilih.hargaVarian
+                                            )
+                                          )
+                                      )
+                                    ]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            item.keterangan !== null ||
                             item.keterangan !== undefined
                               ? _c("tr", [
                                   _c(
@@ -38683,6 +38811,19 @@ var render = function() {
                   "div",
                   { staticClass: "card-footer", attrs: { align: "center" } },
                   [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.destroyMenu()
+                          }
+                        }
+                      },
+                      [_c("b", [_vm._v("Hapus Semua")])]
+                    ),
+                    _vm._v(" "),
                     _c("h5", [
                       _c("b", [
                         _vm._v(
@@ -38733,7 +38874,7 @@ var render = function() {
                         _vm._v(
                           _vm._s(
                             _vm.singleData != null
-                              ? _vm.singleData.nama_menu
+                              ? _vm.singleData.nama_item
                               : ""
                           )
                         )
@@ -38786,50 +38927,55 @@ var render = function() {
         },
         [
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Varian")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex flex-wrap align-items-center justify-content-center"
-              },
-              [
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("hr"),
+          _vm.singleData != null
+            ? _c("div", [
+                _vm.singleData.varian != null &&
+                _vm.singleData.varian.length != 0
+                  ? _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "" } }, [_vm._v("Varian")]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "d-flex flex-wrap" },
+                        _vm._l(_vm.singleData.varian, function(varian) {
+                          return _c(
+                            "div",
+                            { staticStyle: { "margin-right": "2%" } },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  class:
+                                    "btn btn-md btn" +
+                                    (_vm.menuInput.varian_pilih != null
+                                      ? _vm.menuInput.varian_pilih.namaVarian ==
+                                        varian.nama_varian
+                                        ? "-"
+                                        : "-outline-"
+                                      : "-outline-") +
+                                    "dark",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.VarianAct({
+                                        namaVarian: varian.nama_varian,
+                                        hargaVarian: varian.harga_varian
+                                      })
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(varian.nama_varian))]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("hr")
+                    ])
+                  : _vm._e()
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "" } }, [_vm._v("Jumlah")]),
@@ -38962,50 +39108,55 @@ var render = function() {
         },
         [
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Varian")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex flex-wrap align-items-center justify-content-center"
-              },
-              [
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-right": "3%" } }, [
-                  _c("button", { staticClass: "btn btn-md btn-primary" }, [
-                    _vm._v("Telor Setengah Matang")
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("hr"),
+          _vm.singleData != null
+            ? _c("div", [
+                _vm.singleData.varian != null &&
+                _vm.singleData.varian.length != 0
+                  ? _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "" } }, [_vm._v("Varian")]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "d-flex flex-wrap" },
+                        _vm._l(_vm.singleData.varian, function(varian) {
+                          return _c(
+                            "div",
+                            { staticStyle: { "margin-right": "2%" } },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  class:
+                                    "btn btn-md btn" +
+                                    (_vm.menuInput.varian_pilih != null
+                                      ? _vm.menuInput.varian_pilih.namaVarian ==
+                                        varian.nama_varian
+                                        ? "-"
+                                        : "-outline-"
+                                      : "-outline-") +
+                                    "dark",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.VarianAct({
+                                        namaVarian: varian.nama_varian,
+                                        hargaVarian: varian.harga_varian
+                                      })
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(varian.nama_varian))]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("hr")
+                    ])
+                  : _vm._e()
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "" } }, [_vm._v("Jumlah")]),
@@ -39109,18 +39260,33 @@ var render = function() {
               fn: function() {
                 return [
                   _vm.loadSend == false
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary float-md-right",
-                          on: {
-                            click: function($event) {
-                              return _vm.prosesBayar(_vm.dataPesanan)
-                            }
-                          }
-                        },
-                        [_vm._v("PROSES")]
-                      )
+                    ? _c("div", [
+                        _vm.bayarNanti == false
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary float-md-right",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.prosesBayar(_vm.dataPesanan)
+                                  }
+                                }
+                              },
+                              [_vm._v("Proses")]
+                            )
+                          : _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary float-md-right",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.prosesTagihan(_vm.dataPesanan)
+                                  }
+                                }
+                              },
+                              [_vm._v("Simpan Tagihan")]
+                            )
+                      ])
                     : _c("div", {
                         staticClass: "spinner-border",
                         attrs: { role: "status" }
@@ -39249,6 +39415,46 @@ var render = function() {
                 ])
           ]),
           _vm._v(" "),
+          _c(
+            "div",
+            {
+              class: "form-group " + (_vm.bayarNanti == false ? "is-hide" : "")
+            },
+            [
+              _c("label", { attrs: { for: "" } }, [_vm._v("Nama Customer")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.dataPesanan.nama_customer,
+                    expression: "dataPesanan.nama_customer"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "nama_customer",
+                  placeholder: "Isi Nama Customer"
+                },
+                domProps: { value: _vm.dataPesanan.nama_customer },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.dataPesanan,
+                      "nama_customer",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]
+          ),
+          _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "" } }, [_vm._v("Keterangan")]),
             _vm._v(" "),
@@ -39309,6 +39515,81 @@ var render = function() {
                 })
               ])
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "vue-modal",
+        {
+          attrs: { idModal: "tagihanModal" },
+          scopedSlots: _vm._u([
+            {
+              key: "modal-header",
+              fn: function() {
+                return [
+                  _c("div", { staticClass: "vue-modal-title" }, [
+                    _c("p", [_c("b", [_vm._v("TAGIHAN")])])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "vue-modal-close" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-dark",
+                        on: {
+                          click: function($event) {
+                            return _vm.closeModal("tagihanModal")
+                          }
+                        }
+                      },
+                      [_vm._v("Close")]
+                    )
+                  ])
+                ]
+              },
+              proxy: true
+            }
+          ])
+        },
+        [
+          _vm._v(" "),
+          _c("table", { staticClass: "table table-hover" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("No.")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tanggal Tagihan")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Nama Customer")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Total Tagihan")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("#")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("1")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("29 Oktober 2000")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Amat Sukimat")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Rp. 290.000,00-")]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("button", { staticClass: "btn btn-info" }, [
+                    _vm._v("\n\t\t\t\t\t\t\tLihat List Tagihan\n\t\t\t\t\t\t")
+                  ]),
+                  _vm._v(" "),
+                  _c("button", { staticClass: "btn btn-danger" }, [
+                    _vm._v("\n\t\t\t\t\t\t\tHapus\n\t\t\t\t\t\t")
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]
       )
     ],
     1
@@ -39339,7 +39620,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header bg-light" }, [
+    return _c("div", { staticClass: "col-md-8 no-padding" }, [
       _c(
         "p",
         {
@@ -40222,12 +40503,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-xl-2 col-lg-3 col-md-4" }, [
+  return _c("div", { staticClass: "col-xl-3 col-lg-3 col-md-4" }, [
     _c("div", { staticClass: "card" }, [
       _c("img", {
         staticClass: "card-img-top",
         attrs: {
-          src: "/assets/foto_menu/" + _vm.menuMakan.foto_menu,
+          src: "/assets/foto_item/" + _vm.itemJual.foto_item,
           alt: "Card image tap",
           draggable: "false"
         }
@@ -40235,7 +40516,7 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c("h5", { staticClass: "card-title" }, [
-          _c("b", [_vm._v(_vm._s(_vm.menuMakan.nama_menu))])
+          _c("b", [_vm._v(_vm._s(_vm.itemJual.nama_item))])
         ]),
         _vm._v(" "),
         _c(
@@ -40247,13 +40528,13 @@ var render = function() {
           [
             _vm._v(
               "\n\t\t\t\t" +
-                _vm._s(_vm._f("formatRupiah")(_vm.menuMakan.harga_menu)) +
+                _vm._s(_vm._f("formatRupiah")(_vm.itemJual.harga_item)) +
                 "\n\t\t\t"
             )
           ]
         ),
         _vm._v(" "),
-        _vm.menuMakan.status_menu == "tersedia"
+        _vm.itemJual.status_item == "tersedia"
           ? _c(
               "span",
               {
@@ -40281,7 +40562,7 @@ var render = function() {
           attrs: { "target-modal": "modalMenuItem" },
           on: {
             click: function($event) {
-              _vm.pilihMenu(_vm.menuMakan)
+              _vm.pilihItem(_vm.itemJual)
               _vm.pesanModal()
             }
           }
@@ -57378,63 +57659,83 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   clearPesanMenu: function clearPesanMenu(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"]);
   },
-  tampilMenu: function tampilMenu(context) {
+  tampilItemJual: function tampilItemJual(context) {
     context.dispatch('loadState');
-    axios.get('/data-menu').then(function (response) {
-      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"], response.data);
+    axios.get('/data-item-jual').then(function (response) {
+      console.log(response.data);
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], response.data);
       context.dispatch('loadState', false);
     });
   },
-  pilihMenu: function pilihMenu(context, data_menu) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], data_menu);
+  pilihItem: function pilihItem(context, data_menu) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_ITEM"], data_menu);
   },
   listPesanan: function listPesanan(context) {
-    axios.get('/list-menu').then(function (response) {
+    axios.get('/list-item').then(function (response) {
       var list_menu = response.data;
-      console.log(list_menu);
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_PESANAN"], list_menu);
     });
+  },
+  varianPush: function varianPush(context, param) {
+    var clone = _objectSpread({}, param);
+
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["VARIAN_PUSH"], clone);
   },
   pesanMenu: function pesanMenu(context, data_input) {
     var clone = _objectSpread({}, data_input);
 
-    var data_menu = clone.singleData;
+    var data_pesan = clone.singleData;
     var menu_input = clone.menuInput;
-    data_menu.id_list = '_' + Math.random().toString(36).substr(2, 9);
-    data_menu.banyak_pesan = menu_input.banyak_pesan;
-    data_menu.sub_total = menu_input.banyak_pesan * data_menu.harga_menu;
-    data_menu.keterangan = menu_input.keterangan;
+    data_pesan.id_list = '_' + Math.random().toString(36).substr(2, 9);
+    data_pesan.banyak_pesan = menu_input.banyak_pesan;
+    data_pesan.keterangan = menu_input.keterangan;
+    data_pesan.varian_pilih = menu_input.varian_pilih;
+
+    if (menu_input.varian_pilih != null || menu_input.varian_pilih != undefined) {
+      data_pesan.sub_total = menu_input.banyak_pesan * data_pesan.harga_item + menu_input.varian_pilih.hargaVarian;
+    } else {
+      data_pesan.sub_total = menu_input.banyak_pesan * data_pesan.harga_item;
+    }
+
     axios.get('/tambah-list-menu', {
       params: {
-        data_menu: data_menu
+        data_pesan: data_pesan
       }
     }).then(function (mantul) {
       console.log(mantul);
     });
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], data_menu);
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], data_pesan);
     context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalMenuItem');
   },
   ubahMenu: function ubahMenu(context, payload) {
-    console.log(payload);
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], payload);
     context.dispatch('openModal', 'modalEditMenu');
   },
   updateMenu: function updateMenu(context, data_update) {
     var clone = _objectSpread({}, data_update);
 
-    clone.sub_total = clone.harga_menu * clone.banyak_pesan;
+    var varian_pilih = clone.varian_pilih,
+        harga_item = clone.harga_item,
+        banyak_pesan = clone.banyak_pesan;
+
+    if (varian_pilih !== null && varian_pilih !== undefined) {
+      var hargaVarian = varian_pilih.hargaVarian;
+      clone.sub_total = harga_item * banyak_pesan + hargaVarian;
+    } else {
+      clone.sub_total = harga_item * banyak_pesan;
+    }
+
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], clone);
     axios.get('/update-list-menu', {
       params: {
         data_update: clone
       }
     });
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"]);
     context.dispatch('clearPesanMenu');
     context.dispatch('closeModal', 'modalEditMenu');
   },
   hapusMenu: function hapusMenu(context, data) {
-    // console.log(data.item)
     axios.get('/hapus-list-menu', {
       params: {
         id_list: data.item.id_list
@@ -57444,16 +57745,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     });
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], data.index);
   },
+  destroyMenuAct: function destroyMenuAct(context) {
+    axios.get('/destroy-list-menu').then(function (response) {
+      console.log(response.data);
+    })["catch"](function (e) {
+      console.log(e);
+    });
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["DESTROY_MENU_ACT"]);
+  },
   cariMenu: function cariMenu(context, input_cari) {
     if (input_cari != null || input_cari !== undefined) {
       context.dispatch('loadState');
-      axios.get('/data-menu/cari', {
+      axios.get('/data-item-jual/cari', {
         params: {
-          cari_menu: input_cari
+          cari_item: input_cari
         }
       }).then(function (response) {
         context.dispatch('loadState', false);
-        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], response.data);
+        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], response.data);
       });
     }
   },
@@ -57463,8 +57772,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   prosesBayar: function prosesBayar(context, dataPesanan) {
     context.dispatch('loadSend');
-    console.log(dataPesanan);
-    axios.post('/data-menu/checkout', {
+    axios.post('/data-item-jual/checkout', {
       total_harga: dataPesanan.total_harga,
       total_bayar: dataPesanan.total_bayar,
       // kembalian:dataPesanan.kembalian,
@@ -57474,6 +57782,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       menu: dataPesanan.menu
     }).then(function (response) {
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"]);
+      context.dispatch('loadSend', false);
+      context.dispatch('closeModal', 'checkoutMenu');
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  },
+  prosesTagihan: function prosesTagihan(context, dataPesanan) {
+    context.dispatch('loadSend');
+    axios.post('/data-item-jual/tagihan-proses', {
+      total_harga: dataPesanan.total_harga,
+      nama_customer: dataPesanan.nama_customer,
+      keterangan: dataPesanan.keterangan,
+      menu: dataPesanan.menu
+    }).then(function (response) {
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_TAGIHAN"]);
       context.dispatch('loadSend', false);
       context.dispatch('closeModal', 'checkoutMenu');
     })["catch"](function (e) {
@@ -57512,8 +57835,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  dataMenu: function dataMenu(state) {
-    return state.dataMenu;
+  listItem: function listItem(state) {
+    return state.listItem;
   },
   isLoading: function isLoading(state) {
     return state.isLoading;
@@ -57582,7 +57905,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_STATE, LOAD_SEND, TAMPIL_MENU, PILIH_MENU, LIST_PESANAN, PESAN_MENU, CARI_MENU, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, PROSES_BAYAR, CLEAR_PESAN_MENU, GET_PEMBAYARAN, CLOSE_PESAN */
+/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_STATE, LOAD_SEND, TAMPIL_ITEM_JUAL, PILIH_ITEM, VARIAN_PUSH, LIST_PESANAN, PESAN_MENU, CARI_ITEM, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, DESTROY_MENU_ACT, PROSES_BAYAR, PROSES_TAGIHAN, CLEAR_PESAN_MENU, GET_PEMBAYARAN, CLOSE_PESAN */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57591,15 +57914,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_STATE", function() { return LOAD_STATE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_SEND", function() { return LOAD_SEND; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_MENU", function() { return TAMPIL_MENU; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_MENU", function() { return PILIH_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_ITEM_JUAL", function() { return TAMPIL_ITEM_JUAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_ITEM", function() { return PILIH_ITEM; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VARIAN_PUSH", function() { return VARIAN_PUSH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIST_PESANAN", function() { return LIST_PESANAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PESAN_MENU", function() { return PESAN_MENU; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CARI_MENU", function() { return CARI_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CARI_ITEM", function() { return CARI_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UBAH_MENU", function() { return UBAH_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_MENU", function() { return UPDATE_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAPUS_MENU", function() { return HAPUS_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DESTROY_MENU_ACT", function() { return DESTROY_MENU_ACT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_BAYAR", function() { return PROSES_BAYAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_TAGIHAN", function() { return PROSES_TAGIHAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLEAR_PESAN_MENU", function() { return CLEAR_PESAN_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_PEMBAYARAN", function() { return GET_PEMBAYARAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_PESAN", function() { return CLOSE_PESAN; });
@@ -57607,15 +57933,18 @@ var OPEN_MODAL = 'OPEN_MODAL';
 var CLOSE_MODAL = 'CLOSE_MODAL';
 var LOAD_STATE = 'LOAD_STATE';
 var LOAD_SEND = 'LOAD_SEND';
-var TAMPIL_MENU = 'TAMPIL_MENU';
-var PILIH_MENU = 'PILIH_MENU';
+var TAMPIL_ITEM_JUAL = 'TAMPIL_ITEM_JUAL';
+var PILIH_ITEM = 'PILIH_ITEM';
+var VARIAN_PUSH = 'VARIAN_PUSH';
 var LIST_PESANAN = 'LIST_PESANAN';
 var PESAN_MENU = 'PESAN_MENU';
-var CARI_MENU = 'CARI_MENU';
+var CARI_ITEM = 'CARI_ITEM';
 var UBAH_MENU = 'UBAH_MENU';
 var UPDATE_MENU = 'UPDATE_MENU';
 var HAPUS_MENU = 'HAPUS_MENU';
+var DESTROY_MENU_ACT = 'DESTROY_MENU_ACT';
 var PROSES_BAYAR = 'PROSES_BAYAR';
+var PROSES_TAGIHAN = 'PROSES_TAGIHAN';
 var CLEAR_PESAN_MENU = 'CLEAR_PESAN_MENU';
 var GET_PEMBAYARAN = 'GET_PEMBAYARAN';
 var CLOSE_PESAN = 'CLOSE_PESAN';
@@ -57650,36 +57979,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_SEND"], function (state) {
   var param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   state.loadSend = param;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_MENU"], function (state, data_menu) {
-  state.dataMenu = data_menu;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_MENU"], function (state, data_menu) {
-  state.singleData = data_menu;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], function (state, data_item_jual) {
+  state.listItem = data_item_jual;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_ITEM"], function (state, data_item) {
+  state.singleData = data_item;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["VARIAN_PUSH"], function (state, data_varian) {
+  state.menuInput.varian_pilih = data_varian;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_PESANAN"], function (state, data_menu) {
-  state.dataPesanan.menu = data_menu.list_menu;
+  state.dataPesanan.menu = data_menu.list_item;
   state.dataPesanan.total_harga = data_menu.total_harga;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], function (state, data_menu) {
-  // data_menu.banyak_pesan = state.menuInput.banyak_pesan
-  // data_menu.sub_total    = state.menuInput.banyak_pesan * data_menu.harga_menu
-  // data_menu.keterangan   = state.menuInput.keterangan
   var data_clone = _objectSpread({}, data_menu);
 
   state.dataPesanan.total_harga += data_menu.sub_total;
-  console.log(data_menu);
   state.dataPesanan.menu.push(data_clone);
   console.log(state.dataPesanan.menu);
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_MENU"], function (state, data_cari) {
-  state.dataMenu = data_cari;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], function (state, data_cari) {
+  state.listItem = data_cari;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], function (state, payload) {
+  state.singleData = payload.item;
   state.menuInput.banyak_pesan = payload.item.banyak_pesan;
+  state.menuInput.varian_pilih = payload.item.varian_pilih;
   state.menuInput.keterangan = payload.item.keterangan;
-  state.menuInput.harga_menu = payload.item.harga_menu;
+  state.menuInput.harga_item = payload.item.harga_item;
   state.menuInput.indexMenu = payload.index;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], function (state) {
-  var indexMenu = state.menuInput.indexMenu;
-  state.dataPesanan.menu[indexMenu].banyak_pesan = state.menuInput.banyak_pesan;
-  state.dataPesanan.menu[indexMenu].keterangan = state.menuInput.keterangan;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], function (state, data_update) {
+  var indexMenu = data_update.indexMenu,
+      banyak_pesan = data_update.banyak_pesan,
+      varian_pilih = data_update.varian_pilih,
+      keterangan = data_update.keterangan,
+      harga_item = data_update.harga_item,
+      sub_total = data_update.sub_total;
+  state.dataPesanan.menu[indexMenu].banyak_pesan = banyak_pesan;
+  state.dataPesanan.menu[indexMenu].keterangan = keterangan;
+  state.dataPesanan.menu[indexMenu].varian_pilih = varian_pilih;
   state.dataPesanan.total_harga -= state.dataPesanan.menu[indexMenu].sub_total;
-  state.dataPesanan.menu[indexMenu].sub_total = state.menuInput.harga_menu * state.menuInput.banyak_pesan;
+  state.dataPesanan.menu[indexMenu].sub_total = sub_total;
   state.dataPesanan.total_harga += state.dataPesanan.menu[indexMenu].sub_total;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], function (state, index_arr) {
   var dataPesanan = state.dataPesanan.menu;
@@ -57690,19 +58025,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   };
 
   state.dataPesanan.menu = removePesanan(dataPesanan, index_arr);
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["DESTROY_MENU_ACT"], function (state) {
+  state.dataPesanan.total_harga = 0; // state.dataPesanan.kembalian = null
+
+  state.dataPesanan.menu = [];
+  state.loadSend = false;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"], function (state) {
   state.menuInput.banyak_pesan = null;
   state.menuInput.keterangan = null;
   state.menuInput.indexMenu = null;
+  state.menuInput.varian_pilih = null;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"], function (state) {
   state.dataPesanan.total_harga = 0;
   state.dataPesanan.total_bayar = 0; // state.dataPesanan.kembalian = null
 
   state.dataPesanan.menu = [];
   state.loadSend = false;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["GET_PEMBAYARAN"], function (state, data_bayar) {
-  state.transaksi.dataBayar = data_bayar.pembayaran;
-  state.transaksi.count = data_bayar.count;
+}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_TAGIHAN"], function (state) {
+  state.dataPesanan.total_harga = 0; // state.dataPesanan.kembalian  = null
+
+  state.dataPesanan.menu = [];
+  state.dataPesanan.nama_customer = null;
+  state.loadSend = false;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"], function (state) {
   state.showModal = true;
 }), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
@@ -57728,7 +58072,7 @@ __webpack_require__.r(__webpack_exports__);
   loadSend: false,
   showModal: false,
   // bayarNanti:false,
-  dataMenu: null,
+  listItem: null,
   transaksi: {
     count: null,
     dataBayar: []
@@ -57740,12 +58084,14 @@ __webpack_require__.r(__webpack_exports__);
     keterangan: null,
     ket_bayar: null,
     status_transaksi: null,
+    nama_customer: null,
     menu: []
   },
   menuInput: {
-    varian: [],
+    varian_pilih: null,
     banyak_pesan: null,
     keterangan: null,
+    sub_total: null,
     indexMenu: null
   },
   singleData: null

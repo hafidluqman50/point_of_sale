@@ -3,7 +3,7 @@ export default {
 	loadSend:false,
 	showModal:false,
 	// bayarNanti:false,
-	dataMenu:null,
+	listItem:null,
 	transaksi:{
 		count:null,
 		dataBayar:[]
@@ -15,12 +15,14 @@ export default {
 		keterangan:null,
 		ket_bayar:null,
 		status_transaksi:null,
+		nama_customer:null,
 		menu:[],
 	},
 	menuInput:{
-		varian:[],
+		varian_pilih:null,
 		banyak_pesan:null,
 		keterangan:null,
+		sub_total:null,
 		indexMenu:null,
 	},
 	singleData:null

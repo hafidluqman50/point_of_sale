@@ -1,20 +1,20 @@
 <template>
-	<div class="col-xl-2 col-lg-3 col-md-4">
+	<div class="col-xl-3 col-lg-3 col-md-4">
 		<div class="card">
-			<img class="card-img-top" :src="'/assets/foto_menu/'+menuMakan.foto_menu" alt="Card image tap" draggable="false">
+			<img class="card-img-top" :src="'/assets/foto_item/'+itemJual.foto_item" alt="Card image tap" draggable="false">
 			<div class="card-body">
-				<h5 class="card-title"><b>{{ menuMakan.nama_menu }}</b></h5>
+				<h5 class="card-title"><b>{{ itemJual.nama_item }}</b></h5>
 				<p class="card-text" style="margin-top:5px; margin-bottom:5px;">
-					{{ menuMakan.harga_menu | formatRupiah }}
+					{{ itemJual.harga_item | formatRupiah }}
 				</p>
-				<span class="badge badge-success" v-if="menuMakan.status_menu == 'tersedia'" style="font-size:14px;">
+				<span class="badge badge-success" v-if="itemJual.status_item == 'tersedia'" style="font-size:14px;">
 					Tersedia
 				</span>
 				<span class="badge badge-danger" v-else style="font-size:14px;">
 					Kosong
 				</span>
 			</div>
-			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" ref="menuItem" target-modal="modalMenuItem" v-on:click="pilihMenu(menuMakan); pesanModal()">
+			<div class="d-flex justify-content-center card-footer bg-primary checkout-div" ref="menuItem" target-modal="modalMenuItem" v-on:click="pilihItem(itemJual); pesanModal()">
 				<p class="card-text">
 					<b>PESAN</b>
 				</p>
@@ -29,12 +29,12 @@
 
 	export default {
 		props:[
-			'menuMakan',
+			'itemJual',
 			'targetModal'
 		],
 		methods: {
 			...mapActions([
-				'pilihMenu'
+				'pilihItem'
 			]),
 			pesanModal:function() {
 				EventBus.$emit('modalOpen',this.$refs.menuItem.getAttribute('target-modal'))

@@ -5,18 +5,18 @@ $(() => {
     var getUrlHost = window.location.origin
     var urlSegment = window.location.pathname.split('/')
 
-    let menu_makan = $('#menu-makan').DataTable({
+    let item_jual = $('#item-jual').DataTable({
         processing:true,
         serverSide:true,
-        ajax:getUrlHost+'/datatables/menu-makan',
+        ajax:getUrlHost+'/datatables/item-jual',
         columns:[
-            {data:'id_menu_makan',searchable:false,render:(data,type,row,meta) => {
+            {data:'id_item_jual',searchable:false,render:(data,type,row,meta) => {
                 return meta.row + meta.settings._iDisplayStart+1;
             }},
-            {data:'nama_menu',name:'nama_menu'},
-            {data:'harga_menu',name:'harga_menu'},
-            {data:'foto_menu',name:'foto_menu'},
-            {data:'status_menu',name:'status_menu'},
+            {data:'nama_item',name:'nama_item'},
+            {data:'harga_item',name:'harga_item'},
+            {data:'foto_item',name:'foto_item'},
+            {data:'status_item',name:'status_item'},
             {data:'action',name:'action',searchable:false,orderable:false}
         ],
         scrollCollapse: true,
@@ -24,13 +24,13 @@ $(() => {
         sortable: true,
         "class": "index",
         }],
+        ordering:false,
         scrollX:true,
-        order: [[ 0, 'desc' ]],
         responsive:true,
         fixedColumns: true
     })
-    menu_makan.on( 'order.dt search.dt',() => {
-        menu_makan.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
+    item_jual.on( 'order.dt search.dt',() => {
+        item_jual.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
         	cell.innerHTML = i+1;
         })
     }).draw()
@@ -215,7 +215,7 @@ $(() => {
         serverSide:true,
         ajax:getUrlHost+'/datatables/data-transaksi',
         columns:[
-            {data:'id_transaksi',searchable:false,render:(data,type,row,meta) => {
+            {data:'id_transaksi',searchable:false,orderable:false,render:(data,type,row,meta) => {
                 return meta.row + meta.settings._iDisplayStart+1;
             }},
             {data:'tanggal_transaksi',name:'tanggal_transaksi'},
@@ -231,7 +231,7 @@ $(() => {
         "class": "index",
         }],
         scrollX:true,
-        order: [[ 1, 'asc' ]],
+        order: [[ 0, 'desc' ]],
         responsive:true,
         fixedColumns: true
     })
@@ -249,7 +249,7 @@ $(() => {
             {data:'id_transaksi_detail',searchable:false,render:(data,type,row,meta) => {
                 return meta.row + meta.settings._iDisplayStart+1;
             }},
-            {data:'nama_menu',name:'nama_menu'},
+            {data:'nama_item',name:'nama_item'},
             {data:'banyak_pesan',name:'banyak_pesan'},
             {data:'sub_total',name:'sub_total'},
             {data:'keterangan',name:'keterangan'},
@@ -377,4 +377,34 @@ $(() => {
         }
     })
 
+    $('.btn-input-varian').click(() => {
+        if ($('.btn-varian-tambah').hasClass('is-hide')) {
+            $('.btn-varian-tambah').removeClass('is-hide')
+            $('#form-varian').removeClass('is-hide')
+            $('.form-varian').find('input').attr('required','required')
+        }
+        else {
+            $('.btn-varian-tambah').addClass('is-hide')
+            $('#form-varian').addClass('is-hide')
+            $('.form-varian').find('input').removeAttr('required')
+        }
+    })
+
+    $('.btn-varian-tambah').click(() => {
+        $('#form-varian').clone().appendTo($('#form-varian-layout'))
+        if ($('.form-varian').length > 1) {
+            $('.btn-varian-hapus').removeClass('is-hide')
+        }
+        // $('#form-varian').clone().appendTo()
+    })
+
+    $('.btn-varian-hapus').click(() => {
+        $('#form-varian').remove().eq(1)
+
+        if ($('.form-varian').length == 1) {
+            console.log('okay')
+            $('.btn-varian-hapus').addClass('is-hide')
+        }
+        // $('#form-varian').
+    })
 })

@@ -10,5 +10,11 @@
 </template>
 
 <script>
-	export default {}
+	export default {
+		methods: {
+			escModal() {
+				// 
+			}
+		}
+	}
 </script>

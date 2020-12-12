@@ -90,10 +90,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('/admin/menu-makan') }}" class="nav-link {{ $page == 'menu-makan' ? 'active' : '' }}">
+            <a href="{{ url('/admin/item-jual') }}" class="nav-link {{ $page == 'item-jual' ? 'active' : '' }}">
               <i class="nav-icon fas fa-clipboard"></i>
               <p>
-                Menu Makan
+                Item Jual
               </p>
             </a>
           </li>
@@ -148,6 +148,14 @@
               <i class="nav-icon fas fa-money-check"></i>
               <p>
                 Transaksi
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/tagihan') }}" class="nav-link {{ $page == 'tagihan' ? 'active' : '' }}">
+              <i class="nav-icon fas fa-money-bill-wave"></i>
+              <p>
+                Tagihan
               </p>
             </a>
           </li>

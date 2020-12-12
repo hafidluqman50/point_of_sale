@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MenuMakan;
+use App\Models\ItemJual;
 use App\Models\JenisBarang;
 use App\Models\Barang;
 use App\Models\Supplier;
@@ -18,26 +18,29 @@ use DataTables;
 
 class DataTablesController extends Controller
 {
-    public function dataMenuMakan()
+    public function dataItemJual()
     {
-    	$menu_makan = MenuMakan::where('status_delete',0)->get();
-    	$datatables = DataTables::of($menu_makan)->addColumn('action',function($action){
-    		$column = '<a href="'.url("/admin/menu-makan/edit/$action->id_menu_makan").'">
-    					  <button class="btn btn-warning"> Edit </button>
+        $item_jual  = ItemJual::where('status_delete',0)->orderBy('created_at','DESC')->get();
+        $datatables = DataTables::of($item_jual)->addColumn('action',function($action){
+    		$column = '<a href="'.url("/admin/item-jual/edit/$action->id_item_jual").'">
+    				        <button class="btn btn-warning"> Edit </button>
 					   </a>
-                       <form action="'.url("/admin/menu-makan/delete/$action->id_menu_makan").'" method="POST">
+                       <a href="'.url("/admin/item-jual/detail/$action->id_item_jual").'">
+                            <button class="btn btn-info"> Detail </button>
+                       </a>
+                       <form action="'.url("/admin/item-jual/delete/$action->id_item_jual").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
                        </form>
     				';
     		return $column;
-    	})->editColumn('harga_menu',function($edit){
-    		return format_rupiah($edit->harga_menu);
-    	})->editColumn('foto_menu',function($edit){
-    		return '<img src="'.asset("assets/foto_menu/$edit->foto_menu").'" class="img-fluid">';
-    	})->editColumn('status_menu',function($edit){
-    		if ($edit->status_menu == 'tersedia') 
+    	})->editColumn('harga_item',function($edit){
+    		return format_rupiah($edit->harga_item);
+    	})->editColumn('foto_item',function($edit){
+    		return '<img src="'.asset("assets/foto_item/$edit->foto_item").'" class="img-fluid">';
+    	})->editColumn('status_item',function($edit){
+    		if ($edit->status_item == 'tersedia') 
     		{
     			return '<span class="badge badge-success"> Tersedia </span>';
     		}
@@ -45,7 +48,7 @@ class DataTablesController extends Controller
     		{
     			return '<span class="badge badge-danger"> Kosong </span';
     		}
-    	})->rawColumns(['action','foto_menu','status_menu'])->make(true);
+    	})->rawColumns(['action','foto_item','status_item'])->make(true);
 
         return $datatables;
     }

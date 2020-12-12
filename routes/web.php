@@ -21,7 +21,7 @@ Route::group(['middleware' => 'has.auth'],function(){
 Route::get('/logout',['uses' => 'AuthController@logout']);
 
 Route::group(['prefix' => 'datatables'],function(){
-	Route::get('/menu-makan',['uses' => 'DataTablesController@dataMenuMakan']);
+	Route::get('/item-jual',['uses' => 'DataTablesController@dataItemJual']);
 	Route::get('/data-jenis-barang',['uses' => 'DataTablesController@dataJenisBarang']);
 	Route::get('/data-barang',['uses' => 'DataTablesController@dataBarang']);
 	Route::get('/data-supplier',['uses' => 'DataTablesController@dataSupplier']);
@@ -37,12 +37,12 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/dashboard',['uses' => 'Admin\DashboardController@index']);
 
 	// ROUTE MENU MAKAN //
-	Route::get('/menu-makan',['uses' => 'Admin\MenuMakanController@index']);
-	Route::get('/menu-makan/tambah',['uses' => 'Admin\MenuMakanController@tambah']);
-	Route::post('/menu-makan/save',['uses' => 'Admin\MenuMakanController@save']);
-	Route::get('/menu-makan/edit/{id}',['uses' => 'Admin\MenuMakanController@edit']);
-	Route::put('/menu-makan/update/{id}',['uses' => 'Admin\MenuMakanController@update']);
-	Route::delete('/menu-makan/delete/{id}',['uses' => 'Admin\MenuMakanController@delete']);
+	Route::get('/item-jual',['uses' => 'Admin\ItemJualController@index']);
+	Route::get('/item-jual/tambah',['uses' => 'Admin\ItemJualController@tambah']);
+	Route::post('/item-jual/save',['uses' => 'Admin\ItemJualController@save']);
+	Route::get('/item-jual/edit/{id}',['uses' => 'Admin\ItemJualController@edit']);
+	Route::put('/item-jual/update/{id}',['uses' => 'Admin\ItemJualController@update']);
+	Route::delete('/item-jual/delete/{id}',['uses' => 'Admin\ItemJualController@delete']);
 	// END ROUTE MENU MAKAN //
 
 	// ROUTE BARANG //
@@ -123,12 +123,14 @@ Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
 	Route::get('/{any}',['uses' => 'Kasir\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 });
 
-Route::get('/data-menu',['uses' => 'ApiController@dataMenu']);
-Route::get('/data-menu/cari',['uses' => 'ApiController@dataMenuCari']);
-Route::post('/data-menu/checkout',['uses' => 'ApiController@dataMenuCheckout']);
-Route::get('/list-menu',['uses' => 'ApiController@listMenu']);
+Route::get('/data-item-jual',['uses' => 'ApiController@dataItemJual']);
+Route::get('/data-item-jual/cari',['uses' => 'ApiController@dataItemJualCari']);
+Route::post('/data-item-jual/checkout',['uses' => 'ApiController@dataItemJualCheckout']);
+Route::post('/data-item-jual/tagihan-proses',['uses' => 'ApiController@tagihanProses']);
+Route::get('/list-item',['uses' => 'ApiController@listItem']);
 Route::get('/tambah-list-menu',['uses' => 'ApiController@tambahListMenu']);
 Route::get('/update-list-menu',['uses' => 'ApiController@updateListMenu']);
 Route::get('/hapus-list-menu',['uses' => 'ApiController@hapusListMenu']);
+Route::get('/destroy-list-menu',['uses' => 'ApiController@destroyListMenu']);
 Route::get('/data-pembayaran',['uses' => 'ApiController@dataPembayaran']);
 Route::get('/ajax/data-barang/{id}',['uses' => 'ApiController@ajaxDataBarang']);

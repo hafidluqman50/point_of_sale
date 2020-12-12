@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
-use App\Models\MenuMakan;
+use App\Models\ItemJual;
+use App\Models\ItemJualDetail;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
+use App\Models\Tagihan;
+use App\Models\TagihanDetail;
 use App\Models\Barang;
 use Auth;
 use Str;
@@ -22,56 +25,73 @@ class ApiController extends Controller
 		});
 	}
 
-    public function dataMenu()
+    public function dataItemJual()
     {
-    	$menu_makan = MenuMakan::where('status_delete',0)->get();
+		$item_jual   = ItemJual::where('status_delete',0)->orderBy('created_at','DESC');
+		$count       = $item_jual->count();
+		$data_item[] = [];
 
-    	return response()->json($menu_makan);
+    	foreach ($item_jual->get() as $key => $value) {
+    		$item_detail_jual = ItemJualDetail::where('id_item_jual',$value->id_item_jual)->get();
+    		$data_item[$key] = [
+				'id_item_jual' => $value->id_item_jual,
+				'nama_item'    => $value->nama_item,
+				'harga_item'   => $value->harga_item,
+				'foto_item'    => $value->foto_item,
+				'status_item'  => $value->status_item,
+				'varian'       => []
+    		];
+    		foreach ($item_detail_jual as $i => $j) {
+    			array_push($data_item[$key]['varian'],['nama_varian' => $j->nama_varian,'harga_varian' => $j->harga_varian]);
+    		}
+    	}
+
+    	return response()->json($data_item);
     }
 
-    public function dataMenuCari(Request $request)
+    public function dataItemJualCari(Request $request)
     {
-    	$cari_menu = $request->cari_menu;
+    	$cari_item = $request->cari_item;
 
-    	$data_cari = MenuMakan::where('nama_menu','like','%'.$cari_menu.'%')
+    	$data_cari = ItemJual::where('nama_item','like','%'.$cari_item.'%')
     						  ->where('status_delete',0)
 			    			  ->get();
 
     	return response()->json($data_cari);
     }
 
-    public function listMenu()
+    public function listItem()
     {
-    	$get_menu = [];
+    	$get_item = [];
     	if (session()->has('data_session')) {
     		$data_session = session()->get('data_session');
-			if (count($data_session['list_menu']) != count($get_menu)) {
-		    	for ($i=0; $i < count($data_session['list_menu']); $i++) {
-	    			$get_menu[$i] = array_values($data_session['list_menu'])[$i];
+			if (count($data_session['list_item']) != count($get_item)) {
+		    	for ($i=0; $i < count($data_session['list_item']); $i++) {
+	    			$get_item[$i] = array_values($data_session['list_item'])[$i];
 		    	}
 			}
 
-	    	$list_menu = [
-				'list_menu'    => $get_menu,
+	    	$list_item = [
+				'list_item'    => $get_item,
 				'total_harga'  => $data_session['total_harga'],
 				'time_expired' => $data_session['time_expired'],
 	    	];
 
-	    	session()->put('data_session',$list_menu);
+	    	session()->put('data_session',$list_item);
     	}
     	else {
     		$data_session = [
-				'list_menu'    => [],
+				'list_item'    => [],
 				'total_harga'  => 0,
 				'time_expired' => '',
     		];
 
     		session()->put('data_session',$data_session);
 
-    		$list_menu = $data_session;
+    		$list_item = $data_session;
     	}
 
-    	return $list_menu;
+    	return $list_item;
     }
 
     public function tambahListMenu(Request $request)
@@ -81,7 +101,7 @@ class ApiController extends Controller
 		}
 		else {
 			$session = [
-				'list_menu'    => [],
+				'list_item'    => [],
 				'total_harga'  => 0,
 				'time_expired' => '',
     		];
@@ -89,12 +109,12 @@ class ApiController extends Controller
     		session()->put('data_session',$session);
 		}
 
-		$data_menu = json_decode($request->data_menu,TRUE);
+		$data_pesan = json_decode($request->data_pesan,TRUE);
 
-    	array_push($session['list_menu'],$data_menu);
+    	array_push($session['list_item'],$data_pesan);
 
 		$session['time_expired'] = generate_time(60*60);
-		$session['total_harga']+=$data_menu['sub_total'];
+		$session['total_harga']+=$data_pesan['sub_total'];
 
     	session()->put('data_session',$session);
 
@@ -106,13 +126,16 @@ class ApiController extends Controller
 		$session       = session()->get('data_session');
 		$data_update   = json_decode($request->data_update,TRUE);
 		$index_arr     = $data_update['indexMenu'];
-		$get_sub_total = $session['list_menu'][$index_arr]['sub_total'];
+		$get_sub_total = $session['list_item'][$index_arr]['sub_total'];
 
 		$session['total_harga']-=$get_sub_total;
 
-		$session['list_menu'][$index_arr]['banyak_pesan'] = $data_update['banyak_pesan'];
-		$session['list_menu'][$index_arr]['keterangan']   = $data_update['keterangan'];
-		$session['list_menu'][$index_arr]['sub_total']    = $data_update['sub_total'];
+		$session['list_item'][$index_arr]['banyak_pesan'] = $data_update['banyak_pesan'];
+		$session['list_item'][$index_arr]['keterangan']   = $data_update['keterangan'];
+		$session['list_item'][$index_arr]['sub_total']    = $data_update['sub_total'];
+		if (isset($session['list_item'][$index_arr]['varian_pilih'])) {
+			$session['list_item'][$index_arr]['varian_pilih'] = $data_update['varian_pilih'];
+		}
 		$session['total_harga']+=$data_update['sub_total'];
 
 		session()->put('data_session',$session);
@@ -122,18 +145,33 @@ class ApiController extends Controller
     {
 		$session                = session()->get('data_session');
 
-		$index_arr              = array_search($request->id_list,array_column($session['list_menu'],'id_list'));
+		$index_arr              = array_search($request->id_list,array_column($session['list_item'],'id_list'));
 
-		$session['total_harga']-=$session['list_menu'][$index_arr]['sub_total'];
+		$session['total_harga']-=$session['list_item'][$index_arr]['sub_total'];
 
-    	unset($session['list_menu'][$index_arr]);
+    	unset($session['list_item'][$index_arr]);
 
-    	$session['list_menu'] = array_values($session['list_menu']);
+    	$session['list_item'] = array_values($session['list_item']);
 
     	session()->put('data_session',$session);
     }
 
-    public function dataMenuCheckout(Request $request)
+    public function destroyListMenu(Request $request)
+    {
+		session()->forget('data_session');
+
+		$data_session = [
+			'list_item'    => [],
+			'total_harga'  => 0,
+			'time_expired' => '',
+		];
+
+		session()->put('data_session',$data_session);
+
+		return response()->json(['message'=>'Berhasil Destroy Menu']);
+    }
+
+    public function dataItemJualCheckout(Request $request)
     {
 		$menu             = $request->menu;
 		$total_harga      = $request->total_harga;
@@ -154,14 +192,21 @@ class ApiController extends Controller
 			'id_users'          => Auth::id()
     	]);
 
-		for ($i=0; $i < count($menu); $i++) { 
+		for ($i=0; $i < count($menu); $i++) {
+			if (isset($menu[$i]['varian_pilih'])) {
+				$varian = $menu[$i]['varian_pilih']['namaVarian'].' : '.$menu[$i]['varian_pilih']['hargaVarian'];
+			 }
+			 else {
+			 	$varian = '';
+			 }
 			$insert_data[] = [
 				'id_transaksi_detail' => (string)Str::uuid(),
 				'id_transaksi'        => $id_transaksi,
-				'id_menu_makan'       => $menu[$i]['id_menu_makan'],
+				'id_item_jual'        => $menu[$i]['id_item_jual'],
 				'banyak_pesan'        => $menu[$i]['banyak_pesan'],
 				'sub_total'           => $menu[$i]['sub_total'],
 				'keterangan'          => $menu[$i]['keterangan'],
+				'varian'			  => $varian,
 				'created_at'          => date('Y-m-d H:i:s'),
 				'updated_at'          => date('Y-m-d H:i:s'),
 			];
@@ -172,7 +217,7 @@ class ApiController extends Controller
 		session()->forget('data_session');
 
 		$data_session = [
-			'list_menu'    => [],
+			'list_item'    => [],
 			'total_harga'  => 0,
 			'time_expired' => '',
 		];
@@ -180,6 +225,59 @@ class ApiController extends Controller
 		session()->put('data_session',$data_session);
 
 		return response()->json(['message' => 'Berhasil Input Pesanan']);
+    }
+
+    public function tagihanProses(Request $request)
+    {
+		$menu            = $request->menu;
+		$tanggal_tagihan = date('Y-m-d');
+		$total_tagihan   = $request->total_harga;
+		$nama_customer   = $request->nama_customer;
+		$keterangan      = $request->keterangan;
+		
+		$id_tagihan    = (string)Str::uuid();
+		Tagihan::create([
+			'id_tagihan'      => $id_tagihan,
+			'tanggal_tagihan' => $tanggal_tagihan,
+			'nama_customer'   => $nama_customer,
+			'total_tagihan'   => $total_tagihan,
+			'keterangan'      => $keterangan,
+			'id_users'          => Auth::id()
+		]);
+
+		for ($i=0; $i < count($menu); $i++) {
+			if (isset($menu[$i]['varian_pilih'])) {
+				$varian = $menu[$i]['varian_pilih']['namaVarian'].' : '.$menu[$i]['varian_pilih']['hargaVarian'];
+			 }
+			 else {
+			 	$varian = '';
+			 }
+			$insert_data[] = [
+				'id_tagihan_detail' => (string)Str::uuid(),
+				'id_tagihan'        => $id_tagihan,
+				'id_item_jual'        => $menu[$i]['id_item_jual'],
+				'banyak_pesan'        => $menu[$i]['banyak_pesan'],
+				'sub_total'           => $menu[$i]['sub_total'],
+				'keterangan'          => $menu[$i]['keterangan'],
+				'varian'			  => $varian,
+				'created_at'          => date('Y-m-d H:i:s'),
+				'updated_at'          => date('Y-m-d H:i:s'),
+			];
+		}
+
+		TagihanDetail::insert($insert_data);
+
+		session()->forget('data_session');
+
+		$data_session = [
+			'list_item'    => [],
+			'total_harga'  => 0,
+			'time_expired' => '',
+		];
+
+		session()->put('data_session',$data_session);
+
+		return response()->json(['message' => 'Berhasil Input Tagihan']);
     }
 
     public function dataPembayaran(Request $request) 

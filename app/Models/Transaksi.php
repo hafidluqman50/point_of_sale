@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\UuidInsert;
+use DB;
 
 class Transaksi extends Model
 {
@@ -18,7 +19,8 @@ class Transaksi extends Model
    	public static function getData()
    	{
    		$db = self::join('users','transaksi.id_users','=','users.id_users')
-   					    ->get();
+   					    ->orderBy('created_at','DESC')
+                ->get();
 
    		return $db;
    	}	
