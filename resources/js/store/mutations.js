@@ -2,11 +2,23 @@ import * as mutations from './mutations-type'
 import axios from 'axios'
 
 export default {
-	[mutations.LOAD_STATE] (state,param = true) {
-		state.isLoading = param
+	[mutations.LOAD_ITEM] (state,param = true) {
+		state.loadItem = param
 	},
 	[mutations.LOAD_SEND] (state,param = true) {
 		state.loadSend = param
+	},
+	[mutations.LOAD_BILL] (state,param = true) {
+		state.loadBill = param
+	},
+	[mutations.LOAD_DETAIL_BILL] (state,param) {
+		state.loadDetailBill = param
+	},
+	[mutations.SHOW_DETAIL_BILL] (state) {
+		state.showDetailBill = true
+	},
+	[mutations.HIDE_DETAIL_BILL] (state) {
+		state.showDetailBill = false
 	},
 	[mutations.TAMPIL_ITEM_JUAL] (state,data_item_jual) {
 		state.listItem = data_item_jual
@@ -25,7 +37,7 @@ export default {
 		let data_clone = {...data_menu}
 
 		state.dataPesanan.total_harga+=data_menu.sub_total
-		state.dataPesanan.menu.push(data_clone) 
+		state.dataPesanan.menu.push(data_clone)
 
 		console.log(state.dataPesanan.menu)
 	},
@@ -88,6 +100,32 @@ export default {
 		state.dataPesanan.menu          = []
 		state.dataPesanan.nama_customer = null
 		state.loadSend                  = false
+	},
+	[mutations.LIST_TAGIHAN] (state,data_tagihan) {
+		state.dataTagihan = data_tagihan
+	},
+	[mutations.TAGIHAN_DETAIL] (state,data_detail_tagihan) {
+		state.dataDetailTagihan = data_detail_tagihan
+	},
+	[mutations.BAYAR_TAGIHAN] (state,data_detail_tagihan) {
+		state.dataPesanan.total_harga+=data_detail_tagihan.sub_total
+		state.dataPesanan.menu.push(data_detail_tagihan)
+	},
+	[mutations.HAPUS_TAGIHAN] (state,id_tagihan) {
+		// const dataPesanan = state.dataPesanan.menu
+		// BELUM SELESAI
+		const removePesanan = (data,index) => {
+			state.dataPesanan.total_harga-=data[index].sub_total
+			return data.slice(0,index).concat(data.slice(index+1,data.length))
+		}
+
+  		state.dataPesanan.menu = removePesanan(dataPesanan,index_arr)
+	},
+	[mutations.HAPUS_TAGIHAN_DETAIL] (state,id_tagihan_detail) {
+		
+	},
+	[mutations.CLEAR_MODAL_TAGIHAN] (state) {
+		state.dataTagihan = [];
 	},
 	// [mutations.PROSES_TAGIHAN] (state) {
 	// 	state.data

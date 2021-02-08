@@ -1,6 +1,9 @@
 export default {
-	isLoading:false,
+	loadItem:false,
 	loadSend:false,
+	loadBill:false,
+	loadDetailBill:null,
+	showDetailBill:false,
 	showModal:false,
 	// bayarNanti:false,
 	listItem:null,
@@ -18,6 +21,8 @@ export default {
 		nama_customer:null,
 		menu:[],
 	},
+	dataTagihan:[],
+	dataDetailTagihan:[],
 	menuInput:{
 		varian_pilih:null,
 		banyak_pesan:null,

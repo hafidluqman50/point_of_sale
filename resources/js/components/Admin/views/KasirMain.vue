@@ -5,7 +5,7 @@
 				<div class="col-md-9">
 					<div class="card m-0">
 						<div class="card-body scrollable-content">
-		        			<div class="d-flex justify-content-center align-items-center" style="height:100%" v-if="isLoading">
+		        			<div class="d-flex justify-content-center align-items-center" style="height:100%" v-if="loadItem">
 								<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
 									<span class="sr-only">Loading...</span>
 								</div>
@@ -25,7 +25,7 @@
 					<div class="card m-0">
 						<div class="card-header bg-light">
 							<div class="row">
-								<div class="col-md-4 no-padding tagihan-menu" @click="openModal('tagihanModal')">
+								<div class="col-md-4 no-padding tagihan-menu" @click="openModal('tagihanModal'); listTagihan()">
 									<span class="fas fa-bars"></span> Tagihan
 								</div>
 								<div class="col-md-8 no-padding">
@@ -201,36 +201,105 @@
 					<p><b>TAGIHAN</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeModal('tagihanModal')">Close</button>
+					<button class="btn btn-dark" @click="closeModal('tagihanModal');">Close</button>
 				</div>
 			</template>
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>No.</th>
-						<th>Tanggal Tagihan</th>
-						<th>Nama Customer</th>
-						<th>Total Tagihan</th>
-						<th>#</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>29 Oktober 2000</td>
-						<td>Amat Sukimat</td>
-						<td>Rp. 290.000,00-</td>
-						<td>
-							<button class="btn btn-info">
-								Lihat List Tagihan
-							</button>
-							<button class="btn btn-danger">
-								Hapus
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div :class="`${showDetailBill ? 'is-hide' : ''}`">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Nama Customer</th>
+							<th>Total Tagihan</th>
+							<th>#</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-if="loadBill">
+							<td align="center" colspan="5">
+			        			<div class="d-flex justify-content-center align-items-center" style="height:100%">
+									<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+										<span class="sr-only">Loading...</span>
+									</div>
+			        			</div>
+							</td>
+						</tr>
+						<tr v-else-if="dataTagihan.length == 0 && loadBill == false">
+							<td align="center" colspan="5">
+								Tidak Ada Data
+							</td>
+						</tr>
+						<tr v-for="(item,index) in dataTagihan" :key="index">
+							<td>{{ index+1 }}</td>
+							<td>{{ item.nama_customer }}</td>
+							<td>{{ item.total_tagihan | formatRupiah }}</td>
+							<td>
+								<button class="btn btn-info" disabled="disabled" v-if="loadDetailBill == item.id_tagihan">
+  									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  									Loading...
+								</button>
+								<button class="btn btn-info" @click="tagihanDetail(item.id_tagihan)" v-else>
+									Lihat List Tagihan
+								</button>
+								<button class="btn btn-danger">
+									Hapus
+								</button>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4" align="right">
+								<nav aria-label="Page navigation example">
+								  <ul class="pagination">
+									 <li class="page-item"><button class="page-link" href="#">Previous</button></li>
+								  	<div>
+									    <li class="page-item active"><button class="page-link" href="#">1</button></li>
+								  	</div>
+									<li class="page-item"><button class="page-link" href="#">Next</button></li>
+								  </ul>
+								</nav>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<div :class="`${showDetailBill ? '' : 'is-hide'}`">
+				<button class="btn btn-default" @click="hideDetailBill()"><span class="fa fa-arrow-left"></span> Kembali</button>
+				<!-- <hr> -->
+				<!-- <h6>Total Tagihan : </h6> -->
+				<hr>
+				<button class="btn btn-success" style="margin-bottom:10px;">Bayar Semua</button>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Tanggal Tagihan</th>
+							<th>Nama Item</th>
+							<th>Banyak Pesan</th>
+							<th>Sub Total</th>
+							<th>Varian</th>
+							<th>Keterangan</th>
+							<th>#</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item,index) in dataDetailTagihan" :key="index">
+							<td>{{ index+1 }}</td>
+							<td>{{ item.tgl_tagihan | formatDate }}</td>
+							<td>{{ item.nama_item }}</td>
+							<td>{{ item.banyak_pesan }}</td>
+							<td>{{ item.sub_total | formatRupiah }}</td>
+							<td>{{ item.varian }}</td>
+							<td>{{ item.keterangan }}</td>
+							<td>
+								<button class="btn btn-success" @click="bayarTagihan(item)">Bayar</button>
+								<button class="btn btn-danger">Delete</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</vue-modal>
 		<!-- END MODAL TAGIHAN -->
 	</div>
@@ -259,13 +328,17 @@
 		computed: {
 			...mapGetters([
 				'listItem',
-				'isLoading',
+				'loadItem',
 				'loadSend',
+				'loadBill',
+				'loadDetailBill',
+				'showDetailBill',
 				'showModal',
 				'singleData',
 				'dataPesanan',
 				'menuInput',
-				// 'bayarNanti'
+				'dataTagihan',
+				'dataDetailTagihan'
 			])
 		},
 		methods: {
@@ -279,8 +352,13 @@
 				'varianPush',
 				'checkoutPesanan',
 				'listPesanan',
+				'listTagihan',
+				'clearModalTagihan',
 				'prosesBayar',
 				'prosesTagihan',
+				'tagihanDetail',
+				'hideDetailBill',
+				'bayarTagihan',
 				'ubahMenu',
 				'updateMenu',
 				'hapusMenu'

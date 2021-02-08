@@ -189,7 +189,7 @@ $(() => {
             {data:'id_barang_keluar',searchable:false,render:(data,type,row,meta) => {
                 return meta.row + meta.settings._iDisplayStart+1;
             }},
-            {data:'tanggal_barang_keluar',name:'tanggal_barang_keluar'},
+            {data:'tanggal_keluar',name:'tanggal_keluar'},
             {data:'keterangan',name:'keterangan'},
             {data:'name',name:'name'},
             {data:'action',name:'action',searchable:false,orderable:false}
@@ -206,6 +206,35 @@ $(() => {
     })
     barang_keluar.on( 'order.dt search.dt',() => {
         barang_keluar.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
+            cell.innerHTML = i+1;
+        })
+    }).draw()
+
+    let barang_keluar_detail = $('#data-barang-keluar-detail').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-barang-keluar/detail/'+urlSegment[4],
+        columns:[
+            {data:'id_barang_keluar_detail',searchable:false,render:(data,type,row,meta) => {
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_jenis',name:'nama_jenis'},
+            {data:'nama_barang',name:'nama_barang'},
+            {data:'jumlah_barang',name:'jumlah_barang'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    })
+    barang_keluar_detail.on( 'order.dt search.dt',() => {
+        barang_keluar_detail.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
             cell.innerHTML = i+1;
         })
     }).draw()
@@ -267,6 +296,69 @@ $(() => {
     })
     transaksi_detail.on( 'order.dt search.dt',() => {
         transaksi_detail.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
+            cell.innerHTML = i+1;
+        })
+    }).draw()
+
+    let tagihan = $('#tagihan').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-tagihan',
+        columns:[
+            {data:'id_tagihan',searchable:false,orderable:false,render:(data,type,row,meta) => {
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_customer',name:'nama_customer'},
+            {data:'total_tagihan',name:'total_tagihan'},
+            {data:'keterangan',name:'keterangan'},
+            {data:'status_tagihan',name:'status_tagihan'},
+            {data:'name',name:'name'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    })
+    tagihan.on( 'order.dt search.dt',() => {
+        tagihan.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
+            cell.innerHTML = i+1;
+        })
+    }).draw()
+
+    let tagihan_detail = $('#tagihan-detail').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-tagihan/detail/'+urlSegment[4],
+        columns:[
+            {data:'id_tagihan_detail',searchable:false,render:(data,type,row,meta) => {
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_item',name:'nama_item'},
+            {data:'banyak_pesan',name:'banyak_pesan'},
+            {data:'sub_total',name:'sub_total'},
+            {data:'varian',name:'varian'},
+            {data:'keterangan',name:'keterangan'},
+            {data:'status_tagihan_detail',name:'status_tagihan_detail'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    })
+    tagihan_detail.on( 'order.dt search.dt',() => {
+        tagihan_detail.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
             cell.innerHTML = i+1;
         })
     }).draw()

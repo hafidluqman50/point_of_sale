@@ -2278,6 +2278,75 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2298,9 +2367,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['listItem', 'isLoading', 'loadSend', 'showModal', 'singleData', 'dataPesanan', 'menuInput' // 'bayarNanti'
-  ])),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilItemJual', 'pesanMenu', 'destroyMenuAct', 'varianPush', 'checkoutPesanan', 'listPesanan', 'prosesBayar', 'prosesTagihan', 'ubahMenu', 'updateMenu', 'hapusMenu'])), {}, {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['listItem', 'loadItem', 'loadSend', 'loadBill', 'loadDetailBill', 'showDetailBill', 'showModal', 'singleData', 'dataPesanan', 'menuInput', 'dataTagihan', 'dataDetailTagihan'])),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilItemJual', 'pesanMenu', 'destroyMenuAct', 'varianPush', 'checkoutPesanan', 'listPesanan', 'listTagihan', 'clearModalTagihan', 'prosesBayar', 'prosesTagihan', 'tagihanDetail', 'hideDetailBill', 'bayarTagihan', 'ubahMenu', 'updateMenu', 'hapusMenu'])), {}, {
     checkoutModal: function checkoutModal() {
       if (this.dataPesanan.menu.length != 0) {
         this.openModal('checkoutMenu');
@@ -38661,7 +38729,7 @@ var render = function() {
             _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "card m-0" }, [
                 _c("div", { staticClass: "card-body scrollable-content" }, [
-                  _vm.isLoading
+                  _vm.loadItem
                     ? _c(
                         "div",
                         {
@@ -38708,13 +38776,14 @@ var render = function() {
                         staticClass: "col-md-4 no-padding tagihan-menu",
                         on: {
                           click: function($event) {
-                            return _vm.openModal("tagihanModal")
+                            _vm.openModal("tagihanModal")
+                            _vm.listTagihan()
                           }
                         }
                       },
                       [
                         _c("span", { staticClass: "fas fa-bars" }),
-                        _vm._v(" Tagihan\n\t\t\t\t\t\t\t")
+                        _vm._v(" Tagihan\n\t\t\t\t\t\t\t\t")
                       ]
                     ),
                     _vm._v(" "),
@@ -39552,41 +39621,269 @@ var render = function() {
         },
         [
           _vm._v(" "),
-          _c("table", { staticClass: "table table-hover" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("No.")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Tanggal Tagihan")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Nama Customer")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Total Tagihan")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("#")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("29 Oktober 2000")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Amat Sukimat")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Rp. 290.000,00-")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("button", { staticClass: "btn btn-info" }, [
-                    _vm._v("\n\t\t\t\t\t\t\tLihat List Tagihan\n\t\t\t\t\t\t")
-                  ]),
+          _c("div", { class: "" + (_vm.showDetailBill ? "is-hide" : "") }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("No.")]),
                   _vm._v(" "),
-                  _c("button", { staticClass: "btn btn-danger" }, [
-                    _vm._v("\n\t\t\t\t\t\t\tHapus\n\t\t\t\t\t\t")
+                  _c("th", [_vm._v("Nama Customer")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Total Tagihan")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("#")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                [
+                  _vm.loadBill
+                    ? _c("tr", [
+                        _c("td", { attrs: { align: "center", colspan: "5" } }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "d-flex justify-content-center align-items-center",
+                              staticStyle: { height: "100%" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "spinner-border",
+                                  staticStyle: {
+                                    width: "3rem",
+                                    height: "3rem"
+                                  },
+                                  attrs: { role: "status" }
+                                },
+                                [
+                                  _c("span", { staticClass: "sr-only" }, [
+                                    _vm._v("Loading...")
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        ])
+                      ])
+                    : _vm.dataTagihan.length == 0 && _vm.loadBill == false
+                    ? _c("tr", [
+                        _c("td", { attrs: { align: "center", colspan: "5" } }, [
+                          _vm._v(
+                            "\n\t\t\t\t\t\t\t\tTidak Ada Data\n\t\t\t\t\t\t\t"
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm._l(_vm.dataTagihan, function(item, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(_vm._s(index + 1))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(item.nama_customer))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          _vm._s(_vm._f("formatRupiah")(item.total_tagihan))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm.loadDetailBill == item.id_tagihan
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info",
+                                attrs: { disabled: "disabled" }
+                              },
+                              [
+                                _c("span", {
+                                  staticClass:
+                                    "spinner-border spinner-border-sm",
+                                  attrs: {
+                                    role: "status",
+                                    "aria-hidden": "true"
+                                  }
+                                }),
+                                _vm._v(
+                                  "\n  \t\t\t\t\t\t\t\t\tLoading...\n\t\t\t\t\t\t\t\t"
+                                )
+                              ]
+                            )
+                          : _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.tagihanDetail(item.id_tagihan)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n\t\t\t\t\t\t\t\t\tLihat List Tagihan\n\t\t\t\t\t\t\t\t"
+                                )
+                              ]
+                            ),
+                        _vm._v(" "),
+                        _c("button", { staticClass: "btn btn-danger" }, [
+                          _vm._v("\n\t\t\t\t\t\t\t\t\tHapus\n\t\t\t\t\t\t\t\t")
+                        ])
+                      ])
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("tfoot", [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "4", align: "right" } }, [
+                    _c(
+                      "nav",
+                      { attrs: { "aria-label": "Page navigation example" } },
+                      [
+                        _c("ul", { staticClass: "pagination" }, [
+                          _c("li", { staticClass: "page-item" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "page-link",
+                                attrs: { href: "#" }
+                              },
+                              [_vm._v("Previous")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", [
+                            _c("li", { staticClass: "page-item active" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { href: "#" }
+                                },
+                                [_vm._v("1")]
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("li", { staticClass: "page-item" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "page-link",
+                                attrs: { href: "#" }
+                              },
+                              [_vm._v("Next")]
+                            )
+                          ])
+                        ])
+                      ]
+                    )
                   ])
                 ])
               ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { class: "" + (_vm.showDetailBill ? "" : "is-hide") }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-default",
+                on: {
+                  click: function($event) {
+                    return _vm.hideDetailBill()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "fa fa-arrow-left" }),
+                _vm._v(" Kembali")
+              ]
+            ),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                staticStyle: { "margin-bottom": "10px" }
+              },
+              [_vm._v("Bayar Semua")]
+            ),
+            _vm._v(" "),
+            _c("table", { staticClass: "table table-hover" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("No.")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Tanggal Tagihan")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Nama Item")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Banyak Pesan")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Sub Total")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Varian")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Keterangan")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("#")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.dataDetailTagihan, function(item, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("formatDate")(item.tgl_tagihan)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.nama_item))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.banyak_pesan))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("formatRupiah")(item.sub_total)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.varian))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.keterangan))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          on: {
+                            click: function($event) {
+                              return _vm.bayarTagihan(item)
+                            }
+                          }
+                        },
+                        [_vm._v("Bayar")]
+                      ),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn btn-danger" }, [
+                        _vm._v("Delete")
+                      ])
+                    ])
+                  ])
+                }),
+                0
+              )
             ])
           ])
         ]
@@ -56868,7 +57165,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App */ "./resources/js/App.vue");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /* harmony import */ var _router_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router.js */ "./resources/js/router.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 /* harmony import */ var _filters_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./filters.js */ "./resources/js/filters.js");
@@ -56908,7 +57205,7 @@ Vue.component('vue-modal', __webpack_require__(/*! ./components/VueModal.vue */ 
 var app = new Vue({
   el: '#app',
   components: {
-    App: _App__WEBPACK_IMPORTED_MODULE_0__["default"]
+    App: _App_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   store: _store__WEBPACK_IMPORTED_MODULE_2__["default"],
   router: _router_js__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -57642,11 +57939,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  loadState: function loadState(context, param) {
-    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_STATE"], param);
+  loadItem: function loadItem(context, param) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_ITEM"], param);
   },
   loadSend: function loadSend(context, param) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_SEND"], param);
+  },
+  loadBill: function loadBill(context, param) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_BILL"], param);
+  },
+  loadDetailBill: function loadDetailBill(context, param) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_DETAIL_BILL"], param);
+  },
+  showDetailBill: function showDetailBill(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_DETAIL_BILL"]);
+  },
+  hideDetailBill: function hideDetailBill(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HIDE_DETAIL_BILL"]);
   },
   openModal: function openModal(context, target_modal) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"]);
@@ -57660,11 +57969,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"]);
   },
   tampilItemJual: function tampilItemJual(context) {
-    context.dispatch('loadState');
+    context.dispatch('loadItem');
     axios.get('/data-item-jual').then(function (response) {
-      console.log(response.data);
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], response.data);
-      context.dispatch('loadState', false);
+      context.dispatch('loadItem', false);
     });
   },
   pilihItem: function pilihItem(context, data_menu) {
@@ -57697,6 +58005,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       data_pesan.sub_total = menu_input.banyak_pesan * data_pesan.harga_item;
     }
 
+    console.log(data_pesan);
     axios.get('/tambah-list-menu', {
       params: {
         data_pesan: data_pesan
@@ -57746,8 +58055,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], data.index);
   },
   destroyMenuAct: function destroyMenuAct(context) {
-    axios.get('/destroy-list-menu').then(function (response) {
-      console.log(response.data);
+    axios.get('/destroy-list-menu').then(function (response) {// console.log(response.data)
     })["catch"](function (e) {
       console.log(e);
     });
@@ -57755,13 +58063,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   cariMenu: function cariMenu(context, input_cari) {
     if (input_cari != null || input_cari !== undefined) {
-      context.dispatch('loadState');
+      context.dispatch('loadItem');
       axios.get('/data-item-jual/cari', {
         params: {
           cari_item: input_cari
         }
       }).then(function (response) {
-        context.dispatch('loadState', false);
+        context.dispatch('loadItem', false);
         context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], response.data);
       });
     }
@@ -57788,6 +58096,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(e);
     });
   },
+  listTagihan: function listTagihan(context) {
+    axios.get('/data-item-jual/list-tagihan').then(function (response) {
+      context.dispatch('loadBill', false);
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_TAGIHAN"], response.data);
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  },
+  clearModalTagihan: function clearModalTagihan(context) {
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_MODAL_TAGIHAN"]);
+  },
+  tagihanDetail: function tagihanDetail(context, id_tagihan) {
+    context.dispatch('loadDetailBill', id_tagihan);
+    axios.get('/data-item-jual/list-tagihan/detail/' + id_tagihan).then(function (response) {
+      context.dispatch('loadDetailBill', null);
+      context.dispatch('showDetailBill');
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAGIHAN_DETAIL"], response.data);
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  },
   prosesTagihan: function prosesTagihan(context, dataPesanan) {
     context.dispatch('loadSend');
     axios.post('/data-item-jual/tagihan-proses', {
@@ -57799,6 +58128,75 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_TAGIHAN"]);
       context.dispatch('loadSend', false);
       context.dispatch('closeModal', 'checkoutMenu');
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  },
+  bayarTagihan: function bayarTagihan(context, data_tagihan) {
+    var clone = _objectSpread({}, data_tagihan);
+
+    var id_tagihan_detail = clone.id_tagihan_detail,
+        id_item_jual = clone.id_item_jual,
+        banyak_pesan = clone.banyak_pesan,
+        nama_item = clone.nama_item,
+        sub_total = clone.sub_total;
+    var id_list = '_' + Math.random().toString(36).substr(2, 9);
+    var split_varian = clone.varian.split(":");
+    var varian_pilih = {
+      namaVarian: split_varian[0],
+      hargaVarian: split_varian[1]
+    };
+
+    if (split_varian[0] == null || split_varian[0] == "") {
+      varian_pilih = null;
+    }
+
+    var bayar_tagihan = {
+      id_tagihan_detail: id_tagihan_detail,
+      id_item_jual: id_item_jual,
+      id_list: id_list,
+      banyak_pesan: banyak_pesan,
+      nama_item: nama_item,
+      sub_total: sub_total,
+      varian_pilih: varian_pilih
+    };
+    axios.get('/bayar-tagihan', {
+      params: {
+        bayar_tagihan: bayar_tagihan
+      }
+    }).then(function (response) {
+      console.log(response.data);
+    })["catch"](function (e) {
+      console.log(e);
+    });
+    context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["BAYAR_TAGIHAN"], bayar_tagihan);
+  },
+  hapusTagihan: function hapusTagihan(context, id_tagihan) {
+    context.dispatch('loadDetailBill', id_tagihan);
+    axios.get('/data-item-jual/hapus-tagihan', {
+      params: {
+        id_tagihan: id_tagihan
+      }
+    }).then(function (response) {
+      context.dispatch('loadDetailBill');
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_TAGIHAN"], id_tagihan);
+      console.log(response.data);
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  },
+  hapusTagihanDetail: function hapusTagihanDetail(context, _ref) {
+    var tagihan = _ref.tagihan;
+    context.dispatch('loadDetailBill', tagihan.id_tagihan_detail);
+    axios.get('/data-item-jual/hapus-tagihan-detail', {
+      params: {
+        id_tagihan: tagihan.id_tagihan,
+        id_tagihan_detail: tagihan.id_tagihan_detail
+      }
+    }).then(function (response) {
+      context.dispatch('loadDetailBill');
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_TAGIHAN_DETAIL"], tagihan.id_tagihan_detail);
+      console.log(response.data);
     })["catch"](function (e) {
       console.log(e);
     });
@@ -57838,17 +58236,32 @@ __webpack_require__.r(__webpack_exports__);
   listItem: function listItem(state) {
     return state.listItem;
   },
-  isLoading: function isLoading(state) {
-    return state.isLoading;
+  loadItem: function loadItem(state) {
+    return state.loadItem;
   },
   loadSend: function loadSend(state) {
     return state.loadSend;
+  },
+  loadBill: function loadBill(state) {
+    return state.loadBill;
+  },
+  loadDetailBill: function loadDetailBill(state) {
+    return state.loadDetailBill;
+  },
+  showDetailBill: function showDetailBill(state) {
+    return state.showDetailBill;
   },
   dataPesanan: function dataPesanan(state) {
     return state.dataPesanan;
   },
   dataPembayaran: function dataPembayaran(state) {
     return state.dataPembayaran;
+  },
+  dataTagihan: function dataTagihan(state) {
+    return state.dataTagihan;
+  },
+  dataDetailTagihan: function dataDetailTagihan(state) {
+    return state.dataDetailTagihan;
   },
   singleData: function singleData(state) {
     return state.singleData;
@@ -57905,47 +58318,67 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_STATE, LOAD_SEND, TAMPIL_ITEM_JUAL, PILIH_ITEM, VARIAN_PUSH, LIST_PESANAN, PESAN_MENU, CARI_ITEM, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, DESTROY_MENU_ACT, PROSES_BAYAR, PROSES_TAGIHAN, CLEAR_PESAN_MENU, GET_PEMBAYARAN, CLOSE_PESAN */
+/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_ITEM, LOAD_SEND, LOAD_BILL, LOAD_DETAIL_BILL, SHOW_DETAIL_BILL, HIDE_DETAIL_BILL, TAMPIL_ITEM_JUAL, PILIH_ITEM, VARIAN_PUSH, LIST_PESANAN, LIST_TAGIHAN, TAGIHAN_DETAIL, BAYAR_TAGIHAN, PESAN_MENU, CARI_ITEM, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, HAPUS_TAGIHAN, HAPUS_TAGIHAN_DETAIL, DESTROY_MENU_ACT, PROSES_BAYAR, PROSES_TAGIHAN, CLEAR_PESAN_MENU, CLEAR_MODAL_TAGIHAN, GET_PEMBAYARAN, CLOSE_PESAN */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPEN_MODAL", function() { return OPEN_MODAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_STATE", function() { return LOAD_STATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_ITEM", function() { return LOAD_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_SEND", function() { return LOAD_SEND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BILL", function() { return LOAD_BILL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_DETAIL_BILL", function() { return LOAD_DETAIL_BILL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHOW_DETAIL_BILL", function() { return SHOW_DETAIL_BILL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HIDE_DETAIL_BILL", function() { return HIDE_DETAIL_BILL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_ITEM_JUAL", function() { return TAMPIL_ITEM_JUAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_ITEM", function() { return PILIH_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VARIAN_PUSH", function() { return VARIAN_PUSH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIST_PESANAN", function() { return LIST_PESANAN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIST_TAGIHAN", function() { return LIST_TAGIHAN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAGIHAN_DETAIL", function() { return TAGIHAN_DETAIL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BAYAR_TAGIHAN", function() { return BAYAR_TAGIHAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PESAN_MENU", function() { return PESAN_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CARI_ITEM", function() { return CARI_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UBAH_MENU", function() { return UBAH_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_MENU", function() { return UPDATE_MENU; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAPUS_MENU", function() { return HAPUS_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAPUS_TAGIHAN", function() { return HAPUS_TAGIHAN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAPUS_TAGIHAN_DETAIL", function() { return HAPUS_TAGIHAN_DETAIL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DESTROY_MENU_ACT", function() { return DESTROY_MENU_ACT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_BAYAR", function() { return PROSES_BAYAR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PROSES_TAGIHAN", function() { return PROSES_TAGIHAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLEAR_PESAN_MENU", function() { return CLEAR_PESAN_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLEAR_MODAL_TAGIHAN", function() { return CLEAR_MODAL_TAGIHAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_PEMBAYARAN", function() { return GET_PEMBAYARAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_PESAN", function() { return CLOSE_PESAN; });
 var OPEN_MODAL = 'OPEN_MODAL';
 var CLOSE_MODAL = 'CLOSE_MODAL';
-var LOAD_STATE = 'LOAD_STATE';
+var LOAD_ITEM = 'LOAD_ITEM';
 var LOAD_SEND = 'LOAD_SEND';
+var LOAD_BILL = 'LOAD_BILL';
+var LOAD_DETAIL_BILL = 'LOAD_DETAIL_BILL';
+var SHOW_DETAIL_BILL = 'SHOW_DETAIL_BILL';
+var HIDE_DETAIL_BILL = 'HIDE_DETAIL_BILL';
 var TAMPIL_ITEM_JUAL = 'TAMPIL_ITEM_JUAL';
 var PILIH_ITEM = 'PILIH_ITEM';
 var VARIAN_PUSH = 'VARIAN_PUSH';
 var LIST_PESANAN = 'LIST_PESANAN';
+var LIST_TAGIHAN = 'LIST_TAGIHAN';
+var TAGIHAN_DETAIL = 'TAGIHAN_DETAIL';
+var BAYAR_TAGIHAN = 'BAYAR_TAGIHAN';
 var PESAN_MENU = 'PESAN_MENU';
 var CARI_ITEM = 'CARI_ITEM';
 var UBAH_MENU = 'UBAH_MENU';
 var UPDATE_MENU = 'UPDATE_MENU';
 var HAPUS_MENU = 'HAPUS_MENU';
+var HAPUS_TAGIHAN = 'HAPUS_TAGIHAN';
+var HAPUS_TAGIHAN_DETAIL = 'HAPUS_TAGIHAN_DETAIL';
 var DESTROY_MENU_ACT = 'DESTROY_MENU_ACT';
 var PROSES_BAYAR = 'PROSES_BAYAR';
 var PROSES_TAGIHAN = 'PROSES_TAGIHAN';
 var CLEAR_PESAN_MENU = 'CLEAR_PESAN_MENU';
+var CLEAR_MODAL_TAGIHAN = 'CLEAR_MODAL_TAGIHAN';
 var GET_PEMBAYARAN = 'GET_PEMBAYARAN';
 var CLOSE_PESAN = 'CLOSE_PESAN';
 
@@ -57963,7 +58396,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mutations_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mutations-type */ "./resources/js/store/mutations-type.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-var _mutations$LOAD_STATE;
+var _mutations$LOAD_ITEM$;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -57973,37 +58406,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = (_mutations$LOAD_STATE = {}, _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_STATE"], function (state) {
+/* harmony default export */ __webpack_exports__["default"] = (_mutations$LOAD_ITEM$ = {}, _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_ITEM"], function (state) {
   var param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  state.isLoading = param;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_SEND"], function (state) {
+  state.loadItem = param;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_SEND"], function (state) {
   var param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   state.loadSend = param;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], function (state, data_item_jual) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_BILL"], function (state) {
+  var param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  state.loadBill = param;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LOAD_DETAIL_BILL"], function (state, param) {
+  state.loadDetailBill = param;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["SHOW_DETAIL_BILL"], function (state) {
+  state.showDetailBill = true;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HIDE_DETAIL_BILL"], function (state) {
+  state.showDetailBill = false;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], function (state, data_item_jual) {
   state.listItem = data_item_jual;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_ITEM"], function (state, data_item) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_ITEM"], function (state, data_item) {
   state.singleData = data_item;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["VARIAN_PUSH"], function (state, data_varian) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["VARIAN_PUSH"], function (state, data_varian) {
   state.menuInput.varian_pilih = data_varian;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_PESANAN"], function (state, data_menu) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_PESANAN"], function (state, data_menu) {
   state.dataPesanan.menu = data_menu.list_item;
   state.dataPesanan.total_harga = data_menu.total_harga;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], function (state, data_menu) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PESAN_MENU"], function (state, data_menu) {
   var data_clone = _objectSpread({}, data_menu);
 
   state.dataPesanan.total_harga += data_menu.sub_total;
   state.dataPesanan.menu.push(data_clone);
   console.log(state.dataPesanan.menu);
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], function (state, data_cari) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], function (state, data_cari) {
   state.listItem = data_cari;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], function (state, payload) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], function (state, payload) {
   state.singleData = payload.item;
   state.menuInput.banyak_pesan = payload.item.banyak_pesan;
   state.menuInput.varian_pilih = payload.item.varian_pilih;
   state.menuInput.keterangan = payload.item.keterangan;
   state.menuInput.harga_item = payload.item.harga_item;
   state.menuInput.indexMenu = payload.index;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], function (state, data_update) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UPDATE_MENU"], function (state, data_update) {
   var indexMenu = data_update.indexMenu,
       banyak_pesan = data_update.banyak_pesan,
       varian_pilih = data_update.varian_pilih,
@@ -58016,7 +58458,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.dataPesanan.total_harga -= state.dataPesanan.menu[indexMenu].sub_total;
   state.dataPesanan.menu[indexMenu].sub_total = sub_total;
   state.dataPesanan.total_harga += state.dataPesanan.menu[indexMenu].sub_total;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], function (state, index_arr) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_MENU"], function (state, index_arr) {
   var dataPesanan = state.dataPesanan.menu;
 
   var removePesanan = function removePesanan(data, index) {
@@ -58025,36 +58467,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   };
 
   state.dataPesanan.menu = removePesanan(dataPesanan, index_arr);
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["DESTROY_MENU_ACT"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["DESTROY_MENU_ACT"], function (state) {
   state.dataPesanan.total_harga = 0; // state.dataPesanan.kembalian = null
 
   state.dataPesanan.menu = [];
   state.loadSend = false;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"], function (state) {
   state.menuInput.banyak_pesan = null;
   state.menuInput.keterangan = null;
   state.menuInput.indexMenu = null;
   state.menuInput.varian_pilih = null;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_BAYAR"], function (state) {
   state.dataPesanan.total_harga = 0;
   state.dataPesanan.total_bayar = 0; // state.dataPesanan.kembalian = null
 
   state.dataPesanan.menu = [];
   state.loadSend = false;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_TAGIHAN"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PROSES_TAGIHAN"], function (state) {
   state.dataPesanan.total_harga = 0; // state.dataPesanan.kembalian  = null
 
   state.dataPesanan.menu = [];
   state.dataPesanan.nama_customer = null;
   state.loadSend = false;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_TAGIHAN"], function (state, data_tagihan) {
+  state.dataTagihan = data_tagihan;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAGIHAN_DETAIL"], function (state, data_detail_tagihan) {
+  state.dataDetailTagihan = data_detail_tagihan;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["BAYAR_TAGIHAN"], function (state, data_detail_tagihan) {
+  state.dataPesanan.total_harga += data_detail_tagihan.sub_total;
+  state.dataPesanan.menu.push(data_detail_tagihan);
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_TAGIHAN"], function (state, id_tagihan) {
+  // const dataPesanan = state.dataPesanan.menu
+  // BELUM SELESAI
+  var removePesanan = function removePesanan(data, index) {
+    state.dataPesanan.total_harga -= data[index].sub_total;
+    return data.slice(0, index).concat(data.slice(index + 1, data.length));
+  };
+
+  state.dataPesanan.menu = removePesanan(dataPesanan, index_arr);
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HAPUS_TAGIHAN_DETAIL"], function (state, id_tagihan_detail) {}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_MODAL_TAGIHAN"], function (state) {
+  state.dataTagihan = [];
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["OPEN_MODAL"], function (state) {
   state.showModal = true;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"], function (state) {
   state.showModal = false;
-}), _defineProperty(_mutations$LOAD_STATE, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_PESAN"], function (state) {
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLOSE_PESAN"], function (state) {
   state.menuInput.banyak_pesan = null;
   state.menuInput.keterangan = null;
-}), _mutations$LOAD_STATE);
+}), _mutations$LOAD_ITEM$);
 
 /***/ }),
 
@@ -58068,8 +58528,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  isLoading: false,
+  loadItem: false,
   loadSend: false,
+  loadBill: false,
+  loadDetailBill: null,
+  showDetailBill: false,
   showModal: false,
   // bayarNanti:false,
   listItem: null,
@@ -58087,6 +58550,8 @@ __webpack_require__.r(__webpack_exports__);
     nama_customer: null,
     menu: []
   },
+  dataTagihan: [],
+  dataDetailTagihan: [],
   menuInput: {
     varian_pilih: null,
     banyak_pesan: null,

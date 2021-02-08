@@ -13,6 +13,8 @@ use App\Models\BarangKeluar;
 use App\Models\BarangKeluarDetail;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
+use App\Models\Tagihan;
+use App\Models\TagihanDetail;
 use App\Models\User;
 use DataTables;
 
@@ -175,8 +177,23 @@ class DataTablesController extends Controller
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
                        </form>';
             return $column;
-        })->editColumn('tanggal_barang_keluar',function($edit){
-            return human_date($edit->tanggal_barang_keluar);
+        })->editColumn('tanggal_keluar',function($edit){
+            return human_date($edit->tanggal_keluar);
+        })->make(true);
+
+        return $datatables;
+    }
+
+    public function dataBarangKeluarDetail($id)
+    {
+        $barang_keluar_detail = BarangKeluarDetail::getData($id);
+        $datatables = DataTables::of($barang_keluar_detail)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/data-barang-keluar/detail/$action->id_barang_keluar/delete/$action->id_barang_keluar_detail").'">
+                          <button class="btn btn-danger"> Delete </button>
+                       </a>';
+            return $column;
+        })->editColumn('jumlah_barang',function($edit){
+            return $edit->jumlah_barang.' '.$edit->satuan_stok;
         })->make(true);
 
         return $datatables;
@@ -208,9 +225,9 @@ class DataTablesController extends Controller
 
     public function dataTransaksiDetail($id)
     {
-        $transaksi_detail = TransaksiDetail::getData($id);
-        $datatables = DataTables::of($transaksi_detail)->addColumn('action',function($action){
-            $column = '<form action="'.url("/admin/transaksi/detail/$action->id_transaksi/delete/$action->id_transaksi_detail").'" method="POST">
+        $tagihan_detail = TransaksiDetail::getData($id);
+        $datatables = DataTables::of($tagihan_detail)->addColumn('action',function($action){
+            $column = '<form action="'.url("/admin/tagihan/detail/$action->id_tagihan/delete/$action->id_tagihan_detail").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -221,6 +238,53 @@ class DataTablesController extends Controller
         })->editColumn('sub_total',function($edit){
             return format_rupiah($edit->sub_total);
         })->make(true);
+
+        return $datatables;
+    }
+
+    public function dataTagihan()
+    {
+        $tagihan = Tagihan::getData();
+        $datatables = DataTables::of($tagihan)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/tagihan/detail/$action->id_tagihan").'">
+                          <button class="btn btn-info"> Detail </button>
+                       </a>
+                        <form action="'.url("/admin/tagihan/delete/$action->id_tagihan").'" method="POST">
+                            <input type="hidden" name="_token" value="'.csrf_token().'">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
+                       </form>';
+            return $column;
+        })->editColumn('total_tagihan',function($edit){
+            return format_rupiah($edit->total_tagihan);
+        })->editColumn('status_tagihan',function($edit){
+            $class = ['belum-lunas' => ['class' => 'badge-danger','text' => 'Belum Lunas'], 'sudah-lunas' => ['class' => 'btn-success', 'text' => 'Sudah Lunas']];
+
+            return '<span class="badge '.$class[$edit->status_tagihan]['class'].'">'.$class[$edit->status_tagihan]['text'].'</span>';
+        })->rawColumns(['action','status_tagihan'])->make(true);
+
+        return $datatables;
+    }
+
+    public function dataTagihanDetail($id)
+    {
+        $tagihan_detail = TagihanDetail::getData($id);
+        $datatables = DataTables::of($tagihan_detail)->addColumn('action',function($action){
+            $column = '<form action="'.url("/admin/tagihan/detail/$action->id_tagihan/delete/$action->id_tagihan_detail").'" method="POST">
+                            <input type="hidden" name="_token" value="'.csrf_token().'">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
+                       </form>';
+            return $column;
+        })->editColumn('banyak_pesan',function($edit){
+            return $edit->banyak_pesan.'x';
+        })->editColumn('sub_total',function($edit){
+            return format_rupiah($edit->sub_total);
+        })->editColumn('status_tagihan_detail',function($edit){
+            $class = ['belum-dibayar' => ['class' => 'badge-danger','text' => 'Belum Lunas'], 'sudah-dibayar' => ['class' => 'btn-success', 'text' => 'Sudah Lunas']];
+
+            return '<span class="badge '.$class[$edit->status_tagihan_detail]['class'].'">'.$class[$edit->status_tagihan_detail]['text'].'</span>';
+        })->rawColumns(['action','status_tagihan_detail'])->make(true);
 
         return $datatables;
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Dec 12, 2020 at 03:20 AM
+-- Generation Time: Feb 08, 2021 at 11:29 AM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -55,8 +55,17 @@ CREATE TABLE `barang_keluar` (
   `id_barang_keluar` varchar(36) NOT NULL,
   `tanggal_keluar` date NOT NULL,
   `keterangan` text NOT NULL,
-  `id_users` varchar(36) NOT NULL
+  `id_users` varchar(36) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `barang_keluar`
+--
+
+INSERT INTO `barang_keluar` (`id_barang_keluar`, `tanggal_keluar`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
+('bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '2021-02-06', 'Test Barang Keluar', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-02-06 14:03:18', '2021-02-06 14:03:18');
 
 -- --------------------------------------------------------
 
@@ -69,8 +78,17 @@ CREATE TABLE `barang_keluar_detail` (
   `id_barang_keluar` varchar(36) NOT NULL,
   `id_barang` varchar(36) NOT NULL,
   `jumlah_barang` int(11) NOT NULL,
-  `satuan_stok` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `barang_keluar_detail`
+--
+
+INSERT INTO `barang_keluar_detail` (`id_barang_keluar_detail`, `id_barang_keluar`, `id_barang`, `jumlah_barang`, `created_at`, `updated_at`) VALUES
+('a2664a59-1ba4-49f7-92da-6e49febcffe4', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '91be7ca5-1775-468f-a9b1-c47f17836fef', 1, NULL, NULL),
+('d9ab7525-65b9-4329-915b-b4f48e7dcba2', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,16 +125,18 @@ CREATE TABLE `barang_masuk_detail` (
   `id_barang` varchar(36) NOT NULL,
   `jumlah_masuk` int(11) NOT NULL,
   `harga_satuan` int(11) NOT NULL,
-  `harga_total` int(11) NOT NULL
+  `harga_total` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `barang_masuk_detail`
 --
 
-INSERT INTO `barang_masuk_detail` (`id_barang_masuk_detail`, `id_barang_masuk`, `id_barang`, `jumlah_masuk`, `harga_satuan`, `harga_total`) VALUES
-('4aeec88e-e4c4-469e-9487-7b51f8a31ef6', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 10000, 120000),
-('e6268c7c-a666-40ff-bb5e-47cc1a30e231', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 20, 20000, 400000);
+INSERT INTO `barang_masuk_detail` (`id_barang_masuk_detail`, `id_barang_masuk`, `id_barang`, `jumlah_masuk`, `harga_satuan`, `harga_total`, `created_at`, `updated_at`) VALUES
+('4aeec88e-e4c4-469e-9487-7b51f8a31ef6', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 10000, 120000, NULL, NULL),
+('e6268c7c-a666-40ff-bb5e-47cc1a30e231', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 20, 20000, 400000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -246,10 +266,10 @@ INSERT INTO `supplier` (`id_supplier`, `nama_supplier`, `alamat_supplier`, `nomo
 
 CREATE TABLE `tagihan` (
   `id_tagihan` varchar(36) NOT NULL,
-  `tanggal_tagihan` date NOT NULL,
   `nama_customer` varchar(70) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `total_tagihan` int(11) NOT NULL,
   `keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `status_tagihan` varchar(20) NOT NULL,
   `id_users` varchar(36) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -259,8 +279,9 @@ CREATE TABLE `tagihan` (
 -- Dumping data for table `tagihan`
 --
 
-INSERT INTO `tagihan` (`id_tagihan`, `tanggal_tagihan`, `nama_customer`, `total_tagihan`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
-('fc2b84f0-98d2-4009-9c23-de22badfbe08', '2020-11-25', 'Hafiidh Luqmanul Hakim', 42000, '-', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03');
+INSERT INTO `tagihan` (`id_tagihan`, `nama_customer`, `total_tagihan`, `keterangan`, `status_tagihan`, `id_users`, `created_at`, `updated_at`) VALUES
+('45a07774-d7ef-4671-a217-960547a9ede8', 'sukimat', 53000, 'mantap', 'belum-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-01-21 15:11:25', '2021-01-21 15:11:25'),
+('fc2b84f0-98d2-4009-9c23-de22badfbe08', 'Hafiidh Luqmanul Hakim', 42000, '-', 'belum-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03');
 
 -- --------------------------------------------------------
 
@@ -271,11 +292,13 @@ INSERT INTO `tagihan` (`id_tagihan`, `tanggal_tagihan`, `nama_customer`, `total_
 CREATE TABLE `tagihan_detail` (
   `id_tagihan_detail` varchar(36) NOT NULL,
   `id_tagihan` varchar(36) NOT NULL,
+  `tgl_tagihan` date NOT NULL,
   `id_item_jual` varchar(36) NOT NULL,
   `banyak_pesan` int(11) NOT NULL,
   `sub_total` int(11) NOT NULL,
   `varian` text,
   `keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `status_tagihan_detail` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -284,9 +307,11 @@ CREATE TABLE `tagihan_detail` (
 -- Dumping data for table `tagihan_detail`
 --
 
-INSERT INTO `tagihan_detail` (`id_tagihan_detail`, `id_tagihan`, `id_item_jual`, `banyak_pesan`, `sub_total`, `varian`, `keterangan`, `created_at`, `updated_at`) VALUES
-('3a5535e7-f8d4-473d-bd52-e1f9a67aba94', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
-('43d71934-4837-4858-bb39-9ad1aa807025', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, '2020-11-25 12:05:03', '2020-11-25 12:05:03');
+INSERT INTO `tagihan_detail` (`id_tagihan_detail`, `id_tagihan`, `tgl_tagihan`, `id_item_jual`, `banyak_pesan`, `sub_total`, `varian`, `keterangan`, `status_tagihan_detail`, `created_at`, `updated_at`) VALUES
+('3a5535e7-f8d4-473d-bd52-e1f9a67aba94', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'belum-dibayar', '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
+('43d71934-4837-4858-bb39-9ad1aa807025', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'belum-dibayar', '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
+('bfba26a1-b887-4d2a-b158-dc671a9db973', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'belum-dibayar', '2021-01-21 15:11:25', '2021-01-21 15:11:25'),
+('f03531f3-9e13-4fdf-b40b-c16c0dfee31b', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'belum-dibayar', '2021-01-21 15:11:25', '2021-01-21 15:11:25');
 
 -- --------------------------------------------------------
 
@@ -431,6 +456,7 @@ ALTER TABLE `barang_keluar`
 -- Indexes for table `barang_keluar_detail`
 --
 ALTER TABLE `barang_keluar_detail`
+  ADD PRIMARY KEY (`id_barang_keluar_detail`),
   ADD KEY `id_barang_keluar` (`id_barang_keluar`),
   ADD KEY `id_barang` (`id_barang`);
 
@@ -493,7 +519,8 @@ ALTER TABLE `supplier`
 -- Indexes for table `tagihan`
 --
 ALTER TABLE `tagihan`
-  ADD PRIMARY KEY (`id_tagihan`);
+  ADD PRIMARY KEY (`id_tagihan`),
+  ADD KEY `id_users` (`id_users`);
 
 --
 -- Indexes for table `tagihan_detail`
@@ -572,6 +599,12 @@ ALTER TABLE `item_jual_detail`
 --
 ALTER TABLE `karyawan`
   ADD CONSTRAINT `karyawan_ibfk_1` FOREIGN KEY (`id_users`) REFERENCES `users` (`id_users`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tagihan`
+--
+ALTER TABLE `tagihan`
+  ADD CONSTRAINT `tagihan_ibfk_1` FOREIGN KEY (`id_users`) REFERENCES `users` (`id_users`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tagihan_detail`

@@ -11,4 +11,13 @@ class Tagihan extends Model
 	protected $keyType    = 'string';
 	protected $guarded    = [];
 	public $incrementing  = false;
+
+	public static function getData()
+	{
+		$get = self::join('users','tagihan.id_users','=','users.id_users')
+					->orderBy('created_at','desc')
+					->get();
+
+		return $get;
+	}
 }

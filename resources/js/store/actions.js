@@ -2,11 +2,23 @@ import * as mutations from './mutations-type'
 import { EventBus } from '../event-bus'
 
 export default {
-	loadState(context,param) {
-		context.commit(mutations.LOAD_STATE,param)
+	loadItem(context,param) {
+		context.commit(mutations.LOAD_ITEM,param)
 	},
 	loadSend(context,param) {
 		context.commit(mutations.LOAD_SEND,param)
+	},
+	loadBill(context,param) {
+		context.commit(mutations.LOAD_BILL,param)
+	},
+	loadDetailBill(context,param) {
+		context.commit(mutations.LOAD_DETAIL_BILL,param)
+	},
+	showDetailBill(context) {
+		context.commit(mutations.SHOW_DETAIL_BILL)
+	},
+	hideDetailBill(context) {
+		context.commit(mutations.HIDE_DETAIL_BILL)
 	},
 	openModal(context,target_modal) {
 		context.commit(mutations.OPEN_MODAL)
@@ -20,13 +32,12 @@ export default {
 		context.commit(mutations.CLEAR_PESAN_MENU)
 	},
 	tampilItemJual(context) {
-		context.dispatch('loadState')
+		context.dispatch('loadItem')
 
 		axios.get('/data-item-jual')
 			 .then((response) => {
-			 	console.log(response.data)
 				context.commit(mutations.TAMPIL_ITEM_JUAL,response.data)
-				context.dispatch('loadState',false)
+				context.dispatch('loadItem',false)
 			})
 	},
 	pilihItem(context,data_menu) {
@@ -60,6 +71,7 @@ export default {
 			data_pesan.sub_total = menu_input.banyak_pesan * data_pesan.harga_item
 		}
 
+		console.log(data_pesan)
 		axios.get('/tambah-list-menu', {
 			params:{
 				data_pesan:data_pesan
@@ -113,7 +125,7 @@ export default {
 	destroyMenuAct(context) {
 		axios.get('/destroy-list-menu')
 		.then((response) => {
-			console.log(response.data)
+			// console.log(response.data)
 		})
 		.catch((e) => {
 			console.log(e)
@@ -123,14 +135,14 @@ export default {
 	},
 	cariMenu(context,input_cari) {
 		if (input_cari != null || input_cari !== undefined) {
-			context.dispatch('loadState')
+			context.dispatch('loadItem')
 			axios.get('/data-item-jual/cari', {
 				params:{
 					cari_item:input_cari
 				}
 			})
 			.then(response => {
-				context.dispatch('loadState',false)
+				context.dispatch('loadItem',false)
 				context.commit(mutations.CARI_ITEM,response.data)
 			})
 		}
@@ -151,12 +163,37 @@ export default {
 			ket_bayar:dataPesanan.ket_bayar,
 			menu:dataPesanan.menu
 		})
-		.then(response => {
+		.then((response) => {
 			context.commit(mutations.PROSES_BAYAR)
 			context.dispatch('loadSend',false)
 			context.dispatch('closeModal','checkoutMenu')
 		})
-		.catch(e => {
+		.catch((e) => {
+			console.log(e)
+		})
+	},
+	listTagihan(context) {
+		axios.get('/data-item-jual/list-tagihan')
+		.then((response) => {
+			context.dispatch('loadBill',false)
+			context.commit(mutations.LIST_TAGIHAN,response.data)
+		})
+		.catch((e) => {
+			console.log(e)
+		})
+	},
+	clearModalTagihan(context) {
+		context.commit(mutations.CLEAR_MODAL_TAGIHAN)
+	},
+	tagihanDetail(context,id_tagihan) {
+		context.dispatch('loadDetailBill',id_tagihan)
+		axios.get('/data-item-jual/list-tagihan/detail/'+id_tagihan)
+		.then((response) => {
+			context.dispatch('loadDetailBill',null)
+			context.dispatch('showDetailBill')
+			context.commit(mutations.TAGIHAN_DETAIL,response.data)
+		})
+		.catch((e) => {
 			console.log(e)
 		})
 	},
@@ -175,6 +212,75 @@ export default {
 			context.dispatch('closeModal','checkoutMenu')
 		})
 		.catch(e => {
+			console.log(e)
+		})
+	},
+	bayarTagihan(context,data_tagihan) {
+		let clone       = {...data_tagihan}
+
+		const {id_tagihan_detail,id_item_jual,banyak_pesan,nama_item,sub_total} = clone
+		let id_list = '_' + Math.random().toString(36).substr(2, 9)
+		let split_varian = clone.varian.split(":")
+		let varian_pilih = {namaVarian:split_varian[0], hargaVarian:split_varian[1]}
+
+		if (split_varian[0] == null || split_varian[0] == "") {
+			varian_pilih = null
+		}
+
+		let bayar_tagihan = {
+			id_tagihan_detail,
+			id_item_jual,
+			id_list,
+			banyak_pesan,
+			nama_item,
+			sub_total,
+			varian_pilih				
+		}
+
+		axios.get('/bayar-tagihan',{
+			params:{
+				bayar_tagihan:bayar_tagihan
+			}
+		})
+		.then((response) => {
+			console.log(response.data)
+		})
+		.catch((e) => {
+			console.log(e)
+		})
+		
+		context.commit(mutations.BAYAR_TAGIHAN,bayar_tagihan)
+	},
+	hapusTagihan(context,id_tagihan) {
+		context.dispatch('loadDetailBill',id_tagihan)
+		axios.get('/data-item-jual/hapus-tagihan',{
+			params:{
+				id_tagihan
+			}
+		})
+		.then((response) => {
+			context.dispatch('loadDetailBill')
+			context.commit(mutations.HAPUS_TAGIHAN,id_tagihan)
+			console.log(response.data)
+		})
+		.catch((e) => {
+			console.log(e)
+		})
+	},
+	hapusTagihanDetail(context,{tagihan}) {
+		context.dispatch('loadDetailBill',tagihan.id_tagihan_detail)
+		axios.get('/data-item-jual/hapus-tagihan-detail',{
+			params:{
+				id_tagihan:tagihan.id_tagihan,
+				id_tagihan_detail:tagihan.id_tagihan_detail
+			}
+		})
+		.then((response) => {
+			context.dispatch('loadDetailBill')
+			context.commit(mutations.HAPUS_TAGIHAN_DETAIL,tagihan.id_tagihan_detail)
+			console.log(response.data)
+		})
+		.catch((e) => {
 			console.log(e)
 		})
 	},

@@ -11,7 +11,9 @@ class BarangKeluar extends Model
 
 	protected $table      = 'barang_keluar';
 	protected $primaryKey = 'id_barang_keluar';
+	protected $keyType    = 'string';
 	protected $guarded    = [];
+	public $incrementing  = false;
 
 	public static function getData()
 	{
