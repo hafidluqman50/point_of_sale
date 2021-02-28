@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Feb 08, 2021 at 11:29 AM
+-- Generation Time: Feb 28, 2021 at 12:18 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -162,6 +162,7 @@ CREATE TABLE `item_jual` (
   `nama_item` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `harga_item` int(11) NOT NULL,
   `foto_item` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id_jenis_item` varchar(36) NOT NULL,
   `status_item` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `status_delete` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -172,12 +173,14 @@ CREATE TABLE `item_jual` (
 -- Dumping data for table `item_jual`
 --
 
-INSERT INTO `item_jual` (`id_item_jual`, `nama_item`, `harga_item`, `foto_item`, `status_item`, `status_delete`, `created_at`, `updated_at`) VALUES
-('107924bd-84af-4f77-9570-965b908938e3', 'Nasi Pecel', 12000, '5e78e83a984b4_foto_menu_nasi-pecel.jpg', 'tersedia', 0, NULL, NULL),
-('1198e460-d9da-4530-8d81-b395a071fd5c', 'Nasi Ayam Lalapan', 23000, '5f995477d7443_foto_item_3051_350.jpg', 'tersedia', 0, NULL, NULL),
-('4268d7ad-9a02-4016-9224-764b98148ac6', 'Pecel Lele', 18000, '5f9957ebd5e91_foto_item_GIMVTR6uVPgQMzdLoS8doH9g1H3TqaHN-31353835313238373935d41d8cd98f00b204e9800998ecf8427e_800x800.jpg', 'tersedia', 0, '2020-10-28 19:37:15', '2020-10-28 19:37:15'),
-('4b5fbf3c-3e46-4b26-9b55-01282ce02375', 'Nasi Kare', 20000, '5f9ad81951832_foto_item_rekomendasi-resep-nasi-kare-khas-jepang-kudapan-lezat-sepulang-kerja-3BKSAyQi6r.jpg', 'tersedia', 0, '2020-10-29 22:56:25', '2020-10-29 22:56:25'),
-('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, '5e78e84829584_foto_menu_photo.jpg', 'tersedia', 0, NULL, NULL);
+INSERT INTO `item_jual` (`id_item_jual`, `nama_item`, `harga_item`, `foto_item`, `id_jenis_item`, `status_item`, `status_delete`, `created_at`, `updated_at`) VALUES
+('107924bd-84af-4f77-9570-965b908938e3', 'Nasi Pecel', 12000, '5e78e83a984b4_foto_menu_nasi-pecel.jpg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, NULL, NULL),
+('1198e460-d9da-4530-8d81-b395a071fd5c', 'Nasi Ayam Lalapan', 23000, '5f995477d7443_foto_item_3051_350.jpg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, NULL, NULL),
+('4268d7ad-9a02-4016-9224-764b98148ac6', 'Pecel Lele', 18000, '5f9957ebd5e91_foto_item_GIMVTR6uVPgQMzdLoS8doH9g1H3TqaHN-31353835313238373935d41d8cd98f00b204e9800998ecf8427e_800x800.jpg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, '2020-10-28 19:37:15', '2020-10-28 19:37:15'),
+('4b5fbf3c-3e46-4b26-9b55-01282ce02375', 'Nasi Kare', 20000, '5f9ad81951832_foto_item_rekomendasi-resep-nasi-kare-khas-jepang-kudapan-lezat-sepulang-kerja-3BKSAyQi6r.jpg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, '2020-10-29 22:56:25', '2021-02-26 11:47:01'),
+('7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 'Nasi Goreng', 12000, '5e78e84829584_foto_menu_photo.jpg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, NULL, NULL),
+('bd2562be-ae7e-45d0-b590-d2bba5806850', 'Ayam Geprek', 12000, '603a47e81e970_foto_item_download.jpeg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, '2021-02-27 21:23:52', '2021-02-27 21:23:52'),
+('d722d3b2-b4f3-41a0-9f64-5276337c58de', 'Nasi Mawut', 12000, '603a4c22c2fc4_foto_item_download (1).jpeg', '7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'tersedia', 0, '2021-02-27 21:41:54', '2021-02-27 21:41:54');
 
 -- --------------------------------------------------------
 
@@ -220,6 +223,26 @@ INSERT INTO `jenis_barang` (`id_jenis_barang`, `nama_jenis`, `status_delete`) VA
 ('55997545-f0c2-4125-973c-ba5be683e02e', 'Buah Buahan', 0),
 ('57ca891b-94b8-455b-9466-056f22a02aeb', 'Sayuran', 0),
 ('99a7b837-874b-40a4-8eb2-1db422f32c0e', 'Daging', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jenis_item`
+--
+
+CREATE TABLE `jenis_item` (
+  `id_jenis_item` varchar(36) NOT NULL,
+  `nama_jenis` varchar(30) NOT NULL,
+  `nama_jenis_slug` varchar(30) NOT NULL,
+  `status_delete` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `jenis_item`
+--
+
+INSERT INTO `jenis_item` (`id_jenis_item`, `nama_jenis`, `nama_jenis_slug`, `status_delete`) VALUES
+('7475eb12-316a-4ab6-a1a9-6b9629e503d0', 'Makanan', 'makanan', 0);
 
 -- --------------------------------------------------------
 
@@ -280,8 +303,9 @@ CREATE TABLE `tagihan` (
 --
 
 INSERT INTO `tagihan` (`id_tagihan`, `nama_customer`, `total_tagihan`, `keterangan`, `status_tagihan`, `id_users`, `created_at`, `updated_at`) VALUES
-('45a07774-d7ef-4671-a217-960547a9ede8', 'sukimat', 53000, 'mantap', 'belum-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-01-21 15:11:25', '2021-01-21 15:11:25'),
-('fc2b84f0-98d2-4009-9c23-de22badfbe08', 'Hafiidh Luqmanul Hakim', 42000, '-', 'belum-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03');
+('45a07774-d7ef-4671-a217-960547a9ede8', 'sukimat', 53000, 'mantap', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-01-21 15:11:25', '2021-02-25 13:14:13'),
+('f258dc3c-f146-4b67-bf06-8c745803f21f', 'Hafiidh Luqmanul Hakim', 48000, 'Meja No. 04', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-02-25 13:22:59', '2021-02-27 21:47:38'),
+('fc2b84f0-98d2-4009-9c23-de22badfbe08', 'Hafiidh Luqmanul Hakim', 42000, '-', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03');
 
 -- --------------------------------------------------------
 
@@ -308,10 +332,12 @@ CREATE TABLE `tagihan_detail` (
 --
 
 INSERT INTO `tagihan_detail` (`id_tagihan_detail`, `id_tagihan`, `tgl_tagihan`, `id_item_jual`, `banyak_pesan`, `sub_total`, `varian`, `keterangan`, `status_tagihan_detail`, `created_at`, `updated_at`) VALUES
-('3a5535e7-f8d4-473d-bd52-e1f9a67aba94', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'belum-dibayar', '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
-('43d71934-4837-4858-bb39-9ad1aa807025', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'belum-dibayar', '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
-('bfba26a1-b887-4d2a-b158-dc671a9db973', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'belum-dibayar', '2021-01-21 15:11:25', '2021-01-21 15:11:25'),
-('f03531f3-9e13-4fdf-b40b-c16c0dfee31b', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'belum-dibayar', '2021-01-21 15:11:25', '2021-01-21 15:11:25');
+('3a5535e7-f8d4-473d-bd52-e1f9a67aba94', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'sudah-dibayar', '2020-11-25 12:05:03', '2021-02-23 21:37:14'),
+('4224cd5f-20a1-484a-9720-09cc6e44e160', 'f258dc3c-f146-4b67-bf06-8c745803f21f', '2021-02-25', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'sudah-dibayar', '2021-02-25 13:22:59', '2021-02-27 21:46:26'),
+('43d71934-4837-4858-bb39-9ad1aa807025', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'sudah-dibayar', '2020-11-25 12:05:03', '2021-02-23 21:37:14'),
+('85eaeb83-af24-4004-ab69-28b6da2c428e', 'f258dc3c-f146-4b67-bf06-8c745803f21f', '2021-02-25', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, '+ Telor : 5000', 'pedas', 'sudah-dibayar', '2021-02-25 13:22:59', '2021-02-27 21:47:38'),
+('bfba26a1-b887-4d2a-b158-dc671a9db973', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'sudah-dibayar', '2021-01-21 15:11:25', '2021-02-25 13:14:13'),
+('f03531f3-9e13-4fdf-b40b-c16c0dfee31b', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'sudah-dibayar', '2021-01-21 15:11:25', '2021-02-25 13:14:13');
 
 -- --------------------------------------------------------
 
@@ -337,6 +363,7 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `total_bayar`, `id_users`, `status_transaksi`, `ket_bayar`, `keterangan`, `created_at`, `updated_at`) VALUES
+('030674ad-7909-4018-a05f-65ff6d9749ed', '2021-02-27', 25000, 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2021-02-27 21:47:38', '2021-02-27 21:47:38'),
 ('030c99b3-1db9-494f-98bd-7db5ad253322', '2020-08-01', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-01 02:03:25', '2020-08-01 02:03:25'),
 ('04df00cf-4f35-4784-8f72-f387f143fb1b', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 23:10:24', '2020-08-04 23:10:24'),
 ('52790729-1c53-4fd6-849e-8d29e8229b0a', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Meja No. 05', '2020-07-03 01:47:33', '2020-07-03 01:47:33'),
@@ -350,13 +377,16 @@ INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `to
 ('88448d2f-1c06-4bb1-b29c-63c1fd277b3b', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 22:50:08', '2020-08-04 22:50:08'),
 ('91a1a927-b2d1-4791-b746-b706efdb6506', '2020-08-04', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 22:49:36', '2020-08-04 22:49:36'),
 ('92c87ead-9a2d-40dd-877a-584c3e4836df', '2020-10-20', 144000, 144000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', 'Oke Mantap', '2020-10-20 13:20:34', '2020-10-20 13:20:34'),
+('9323433b-4362-4bc4-b735-51558bd348e2', '2021-02-23', 65000, 65000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', 'Tunai bayar tagihan + pesanan baru', '2021-02-23 21:37:14', '2021-02-23 21:37:14'),
 ('a20fea05-3131-403c-9ce2-6da2e140d7c9', '2020-08-03', 72000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-03 01:46:09', '2020-08-03 01:46:09'),
 ('b8122506-d451-4ccf-9b31-c43dbb7708c8', '2020-08-01', 144000, 144000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-01 02:06:38', '2020-08-01 02:06:38'),
 ('bdfeaef7-a76c-46d5-ba9e-8ffd830f07b8', '2020-11-03', 37000, 37000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-11-03 16:52:54', '2020-11-03 16:52:54'),
 ('bfc24deb-599f-454b-984e-c976bbdadf34', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 23:12:34', '2020-08-04 23:12:34'),
+('c6304e92-1a3e-42e2-994c-3495766bd222', '2021-02-25', 53000, 53000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2021-02-25 13:14:13', '2021-02-25 13:14:13'),
 ('d545abbc-807b-48a5-a818-4ded6d4ed92c', '2020-11-07', 48000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', NULL, '2020-11-07 14:07:54', '2020-11-07 14:07:54'),
 ('e63e6583-cdb4-405c-b41e-c7a925413b40', '2020-11-03', 37000, 37000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-11-03 16:31:40', '2020-11-03 16:31:40'),
-('eae99989-09a5-4f87-ac94-714c5cc1fc47', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 23:10:48', '2020-08-04 23:10:48');
+('eae99989-09a5-4f87-ac94-714c5cc1fc47', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 23:10:48', '2020-08-04 23:10:48'),
+('eed746e9-cb75-4806-96f4-8c7cbcf2e11a', '2021-02-27', 48000, 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2021-02-27 21:46:26', '2021-02-27 21:46:26');
 
 -- --------------------------------------------------------
 
@@ -381,6 +411,8 @@ CREATE TABLE `transaksi_detail` (
 --
 
 INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_item_jual`, `banyak_pesan`, `sub_total`, `keterangan`, `varian`, `created_at`, `updated_at`) VALUES
+('046cc797-a18f-439f-9802-24ba92c2047b', '030674ad-7909-4018-a05f-65ff6d9749ed', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, 'pedas', '+ Telor : 5000', '2021-02-27 21:47:38', '2021-02-27 21:47:38'),
+('08347000-623f-45e7-a928-dded270a0267', '9323433b-4362-4bc4-b735-51558bd348e2', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, NULL, '+ Katsu : 10000', '2021-02-23 21:37:14', '2021-02-23 21:37:14'),
 ('0efdc111-329d-4b75-b307-5c2b0dcc7f1a', '664de9e6-dc7b-42fb-b23d-8b6e0d8f95eb', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-01 02:04:50', '2020-08-01 02:04:50'),
 ('103d5ec4-2f80-4d7f-b60e-bdf4067f3126', '6bbb4e7f-53f1-437f-b428-f59e5121b471', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, NULL, NULL, '2020-10-20 13:20:02', '2020-10-20 13:20:02'),
 ('1534bdcc-ded8-4bad-89e8-bb519b3eb55e', '030c99b3-1db9-494f-98bd-7db5ad253322', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-01 02:03:26', '2020-08-01 02:03:26'),
@@ -388,10 +420,12 @@ INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_item_
 ('274211c2-7c2f-401f-9158-3306f7d3100f', 'e63e6583-cdb4-405c-b41e-c7a925413b40', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '', '2020-11-03 16:31:40', '2020-11-03 16:31:40'),
 ('2b5bbc2f-59f7-434f-ac9e-b35f994c2ef0', '57e9111a-a367-4d90-955d-356158b97e67', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, NULL, '+ Telor : 5000', '2020-11-07 13:21:03', '2020-11-07 13:21:03'),
 ('33b50765-3b74-4e07-a67c-1fe6e68fa376', '78a84628-cc58-4787-9247-40352ef61a90', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-04 22:47:22', '2020-08-04 22:47:22'),
+('46507d24-6b0f-4436-9645-21a9812a5323', '9323433b-4362-4bc4-b735-51558bd348e2', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, NULL, '', '2021-02-23 21:37:14', '2021-02-23 21:37:14'),
 ('4ca9e26d-a6f9-4115-a4e4-8eac57000db5', '7fdfc829-9785-4a80-9dd4-fd0a873469dd', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-10-28 13:48:49', '2020-10-28 13:48:49'),
 ('551558d2-0f20-4c6e-b425-4d562b1b0ca4', 'a20fea05-3131-403c-9ce2-6da2e140d7c9', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-03 01:46:09', '2020-08-03 01:46:09'),
 ('63b42115-60ea-4fe9-a302-d6574a7d957c', 'bdfeaef7-a76c-46d5-ba9e-8ffd830f07b8', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, '', '2020-11-03 16:52:54', '2020-11-03 16:52:54'),
 ('650e4de1-cccb-4d62-b584-31da939001ce', 'e63e6583-cdb4-405c-b41e-c7a925413b40', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, NULL, '+ Katsu : 5000', '2020-11-03 16:31:40', '2020-11-03 16:31:40'),
+('65994c0a-1f59-4f02-9bb9-c82779cc06bd', 'c6304e92-1a3e-42e2-994c-3495766bd222', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, NULL, '+ Katsu : 10000', '2021-02-25 13:14:13', '2021-02-25 13:14:13'),
 ('67aba47f-8fd5-4cb7-aeec-38aa5a9bfe6c', 'd545abbc-807b-48a5-a818-4ded6d4ed92c', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, NULL, '', '2020-11-07 14:07:54', '2020-11-07 14:07:54'),
 ('75123860-b44c-4ff4-a65f-c1e073614a69', 'bfc24deb-599f-454b-984e-c976bbdadf34', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-04 23:12:34', '2020-08-04 23:12:34'),
 ('84f3583e-e3a3-4e1b-bebd-87d8d5af02bd', '5c0318c2-57db-4601-b815-e48db8d5ddd8', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-04 23:11:47', '2020-08-04 23:11:47'),
@@ -404,6 +438,8 @@ INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `id_transaksi`, `id_item_
 ('cf749847-65ad-4357-bb70-08f6a4a8123a', 'd545abbc-807b-48a5-a818-4ded6d4ed92c', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, NULL, '+ Telor : 5000', '2020-11-07 14:07:54', '2020-11-07 14:07:54'),
 ('d201a8bb-c01e-4999-9c7c-c21879ebc95b', '92c87ead-9a2d-40dd-877a-584c3e4836df', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 12, 144000, NULL, NULL, '2020-10-20 13:20:34', '2020-10-20 13:20:34'),
 ('d7d4d065-5a5c-4d54-ab48-e23282b14cff', '04df00cf-4f35-4784-8f72-f387f143fb1b', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-04 23:10:24', '2020-08-04 23:10:24'),
+('db1ad865-b5c2-475e-87b0-1e7f3f7169b7', '9323433b-4362-4bc4-b735-51558bd348e2', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, NULL, '', '2021-02-23 21:37:14', '2021-02-23 21:37:14'),
+('e2367610-7404-4879-89ab-7b198e9a393a', 'c6304e92-1a3e-42e2-994c-3495766bd222', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, NULL, '', '2021-02-25 13:14:13', '2021-02-25 13:14:13'),
 ('ea991c5d-5605-48ed-929a-a31ba62d6bff', '88448d2f-1c06-4bb1-b29c-63c1fd277b3b', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-08-04 22:50:08', '2020-08-04 22:50:08'),
 ('f63e66d6-8cdc-4b11-b7c0-34acba7eb6b5', '7b62f969-1621-463f-8998-988ce32a9e56', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 1, 12000, NULL, NULL, '2020-07-03 01:51:02', '2020-07-03 01:51:02'),
 ('f9dfd1aa-31f4-4625-b8e1-f9ad07d240ef', 'a20fea05-3131-403c-9ce2-6da2e140d7c9', '7a31d915-ddd3-4d07-bedf-cadda5dc16c6', 2, 24000, NULL, NULL, '2020-08-03 01:46:09', '2020-08-03 01:46:09'),
@@ -486,7 +522,8 @@ ALTER TABLE `belanja`
 -- Indexes for table `item_jual`
 --
 ALTER TABLE `item_jual`
-  ADD PRIMARY KEY (`id_item_jual`);
+  ADD PRIMARY KEY (`id_item_jual`),
+  ADD KEY `id_jenis_item` (`id_jenis_item`);
 
 --
 -- Indexes for table `item_jual_detail`
@@ -500,6 +537,12 @@ ALTER TABLE `item_jual_detail`
 --
 ALTER TABLE `jenis_barang`
   ADD PRIMARY KEY (`id_jenis_barang`);
+
+--
+-- Indexes for table `jenis_item`
+--
+ALTER TABLE `jenis_item`
+  ADD PRIMARY KEY (`id_jenis_item`);
 
 --
 -- Indexes for table `karyawan`
@@ -587,6 +630,12 @@ ALTER TABLE `barang_masuk`
 ALTER TABLE `barang_masuk_detail`
   ADD CONSTRAINT `barang_masuk_detail_ibfk_1` FOREIGN KEY (`id_barang_masuk`) REFERENCES `barang_masuk` (`id_barang_masuk`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `barang_masuk_detail_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Constraints for table `item_jual`
+--
+ALTER TABLE `item_jual`
+  ADD CONSTRAINT `item_jual_ibfk_1` FOREIGN KEY (`id_jenis_item`) REFERENCES `jenis_item` (`id_jenis_item`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Constraints for table `item_jual_detail`

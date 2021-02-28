@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ItemJual;
-use App\Models\JenisBarang;
+use App\Models\JenisItem;
 use App\Models\Barang;
+use App\Models\JenisBarang;
 use App\Models\Supplier;
 use App\Models\BarangMasuk;
 use App\Models\BarangMasukDetail;
@@ -22,15 +23,15 @@ class DataTablesController extends Controller
 {
     public function dataItemJual()
     {
-        $item_jual  = ItemJual::where('status_delete',0)->orderBy('created_at','DESC')->get();
+        $item_jual  = ItemJual::join('jenis_item','item_jual.id_jenis_item','=','jenis_item.id_jenis_item')->where('item_jual.status_delete',0)->orderBy('created_at','DESC')->get();
         $datatables = DataTables::of($item_jual)->addColumn('action',function($action){
-    		$column = '<a href="'.url("/admin/item-jual/edit/$action->id_item_jual").'">
+    		$column = '<a href="'.url("/admin/data-item-jual/edit/$action->id_item_jual").'">
     				        <button class="btn btn-warning"> Edit </button>
 					   </a>
-                       <a href="'.url("/admin/item-jual/detail/$action->id_item_jual").'">
+                       <a href="'.url("/admin/data-item-jual/detail/$action->id_item_jual").'">
                             <button class="btn btn-info"> Detail </button>
                        </a>
-                       <form action="'.url("/admin/item-jual/delete/$action->id_item_jual").'" method="POST">
+                       <form action="'.url("/admin/data-item-jual/delete/$action->id_item_jual").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -51,6 +52,25 @@ class DataTablesController extends Controller
     			return '<span class="badge badge-danger"> Kosong </span';
     		}
     	})->rawColumns(['action','foto_item','status_item'])->make(true);
+
+        return $datatables;
+    }
+
+    public function dataJenisItem()
+    {
+        $jenis_item = JenisItem::where('status_delete',0)->get();
+        $datatables = DataTables::of($jenis_item)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/data-jenis-item/edit/$action->id_jenis_item").'">
+                          <button class="btn btn-warning"> Edit </button>
+                       </a>
+                       <form action="'.url("/admin/data-jenis-item/delete/$action->id_jenis_item").'" method="POST">
+                            <input type="hidden" name="_token" value="'.csrf_token().'">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
+                       </form>
+                    ';
+            return $column;
+        })->make(true);
 
         return $datatables;
     }

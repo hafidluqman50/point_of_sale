@@ -5,12 +5,12 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Item Jual</h1>
+					<h1 class="m-0 text-dark">Data Jenis Item</h1>
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="#">Home</a></li>
-						<li class="breadcrumb-item active">Item Jual</li>
+						<li class="breadcrumb-item active">Data Jenis Item</li>
 					</ol>
 				</div>
 			</div>
@@ -22,9 +22,9 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
-							<a href="{{ url('/admin/data-item-jual/tambah') }}">
+							<a href="{{ url('/admin/data-jenis-item/tambah') }}">
 								<button class="btn btn-primary">
-									Tambah Menu
+									Tambah Data
 								</button>
 							</a>
 						</div>
@@ -34,15 +34,11 @@
 								{{ session('message') }} <button class="close" data-dismiss="alert">X</button>
 							</div>
 							@endif
-							<table class="table table-hover" id="item-jual" width="100%">
+							<table class="table table-hover" id="data-jenis-item" width="100%">
 								<thead>
 									<tr>
 										<th>No.</th>
-										<th>Nama Menu</th>
-										<th>Harga</th>
-										<th>Foto Menu</th>
-										<th>Jenis Item</th>
-										<th>Status Menu</th>
+										<th>Nama Jenis</th>
 										<th>#</th>
 									</tr>
 								</thead>

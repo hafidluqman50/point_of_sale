@@ -19,6 +19,17 @@
 								<menu-item v-for="itemJual in listItem" :itemJual="itemJual" :key="itemJual.id" v-else></menu-item>
 			        		</div>	
 						</div>
+						<div class="card-footer d-flex justify-content-center align-items-center" style="padding-bottom:">
+							<nav aria-label="page navigation example">
+							  <ul class="pagination" style="margin:0;">
+								 <li class="page-item"><button class="page-link" href="#">Previous</button></li>
+							  	<div>
+								    <li class="page-item active"><button class="page-link" href="#">1</button></li>
+							  	</div>
+								<li class="page-item"><button class="page-link" href="#">Next</button></li>
+							  </ul>
+							</nav>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -211,6 +222,7 @@
 							<th>No.</th>
 							<th>Nama Customer</th>
 							<th>Total Tagihan</th>
+							<th>Keterangan</th>
 							<th>#</th>
 						</tr>
 					</thead>
@@ -233,12 +245,13 @@
 							<td>{{ index+1 }}</td>
 							<td>{{ item.nama_customer }}</td>
 							<td>{{ item.total_tagihan | formatRupiah }}</td>
+							<td>{{ item.keterangan }}</td>
 							<td>
 								<button class="btn btn-info" disabled="disabled" v-if="loadDetailBill == item.id_tagihan">
   									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   									Loading...
 								</button>
-								<button class="btn btn-info" @click="tagihanDetail(item.id_tagihan)" v-else>
+								<button class="btn btn-info" @click="tagihanDetail(item.id_tagihan); getIdTagihan(item.id_tagihan)" v-else>
 									Lihat List Tagihan
 								</button>
 								<button class="btn btn-danger">
@@ -265,11 +278,17 @@
 				</table>
 			</div>
 			<div :class="`${showDetailBill ? '' : 'is-hide'}`">
-				<button class="btn btn-default" @click="hideDetailBill()"><span class="fa fa-arrow-left"></span> Kembali</button>
+				<button class="btn btn-default" @click="hideDetailBill(); removeIdTagihan()"><span class="fa fa-arrow-left"></span> Kembali</button>
 				<!-- <hr> -->
 				<!-- <h6>Total Tagihan : </h6> -->
 				<hr>
-				<button class="btn btn-success" style="margin-bottom:10px;">Bayar Semua</button>
+				<button class="btn btn-success" disabled="disabled" v-if="loadDetailBill == id_tagihan">
+					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+					Loading...
+				</button>
+				<button class="btn btn-success" style="margin-bottom:10px;" @click="bayarSemuaTagihan(id_tagihan)" v-else>
+					Bayar Semua
+				</button>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -322,7 +341,8 @@
 					prefix:'Rp. ',
 					precision:2,
 					masked:false
-				}
+				},
+				id_tagihan:null
 			}
 		},
 		computed: {
@@ -359,6 +379,7 @@
 				'tagihanDetail',
 				'hideDetailBill',
 				'bayarTagihan',
+				'bayarSemuaTagihan',
 				'ubahMenu',
 				'updateMenu',
 				'hapusMenu'
@@ -385,6 +406,14 @@
 			},
 			bayarNantiAct:function(param) {
 				this.bayarNanti = param
+			},
+			getIdTagihan:function(param) {
+				this.id_tagihan = param
+			},
+			removeIdTagihan:function() {
+				if (this.id_tagihan != null) {
+					this.id_tagihan = null
+				}
 			}
 		},
 		mounted() {

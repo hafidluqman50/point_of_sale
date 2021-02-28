@@ -18,13 +18,13 @@
 		</div>
 	</div>
 	<section class="content">
-		<form action="{{ url('/admin/item-jual/save') }}" method="POST" enctype="multipart/form-data">
+		<form action="{{ url('/admin/data-item-jual/save') }}" method="POST" enctype="multipart/form-data">
 			@csrf
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
-							<a href="{{ url('/admin/item-jual') }}">
+							<a href="{{ url('/admin/data-item-jual') }}">
 								<button class="btn btn-default" type="button">
 									<span class="fas fa-arrow-left"></span> Kembali
 								</button>
@@ -42,6 +42,15 @@
 							<div class="form-group">
 								<label for="">Foto Item</label>
 								<input type="file" name="foto_item" class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="">Jenis Item</label>
+								<select name="jenis_item" class="form-control select2" required>
+									<option value="" selected="" disabled="">=== Pilih Jenis Item ===</option>
+									@foreach ($jenis_item as $element)
+									<option value="{{$element->id_jenis_item}}">{{$element->nama_jenis}}</option>
+									@endforeach
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="">Status Item</label>
@@ -71,10 +80,10 @@
 									<label for="">Varian Item</label>
 									<div class="row">
 										<div class="col-md-6">
-											<input type="text" name="nama_varian[]" class="form-control" placeholder="Nama Varian Item">	
+											<input type="text" name="nama_varian[]" class="form-control" placeholder="Nama Varian Item" disabled="disabled">	
 										</div>
 										<div class="col-md-6">
-											<input type="text" name="harga_varian[]" class="form-control" placeholder="Harga Varian Item">
+											<input type="text" name="harga_varian[]" class="form-control" placeholder="Harga Varian Item" disabled="disabled">
 										</div>
 									</div>
 								</div>

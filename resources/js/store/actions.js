@@ -251,6 +251,23 @@ export default {
 		
 		context.commit(mutations.BAYAR_TAGIHAN,bayar_tagihan)
 	},
+	bayarSemuaTagihan(context, id_tagihan) {
+		context.dispatch('loadDetailBill',id_tagihan)
+		axios.get('/bayar-semua-tagihan',{
+			params:{
+				id_tagihan:id_tagihan
+			}
+		})
+		.then((response) => {
+			context.dispatch('closeModal','tagihanModal')
+			context.dispatch('loadDetailBill',null)
+			context.dispatch('hideDetailBill')
+			context.commit(mutations.BAYAR_SEMUA_TAGIHAN,response.data)
+		})
+		.catch((e) => {
+			console.log(e)
+		})
+	},
 	hapusTagihan(context,id_tagihan) {
 		context.dispatch('loadDetailBill',id_tagihan)
 		axios.get('/data-item-jual/hapus-tagihan',{

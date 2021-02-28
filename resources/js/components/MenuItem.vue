@@ -1,9 +1,11 @@
 <template>
-	<div class="col-xl-3 col-lg-3 col-md-4">
+	<div class="col-xl-2 col-lg-2 col-md-2">
 		<div class="card">
 			<img class="card-img-top" :src="'/assets/foto_item/'+itemJual.foto_item" alt="Card image tap" draggable="false">
 			<div class="card-body">
-				<h5 class="card-title"><b>{{ itemJual.nama_item }}</b></h5>
+				<div class="label-item">
+					<h5 class="card-title"><b>{{ itemJual.nama_item }}</b></h5>
+				</div>
 				<p class="card-text" style="margin-top:5px; margin-bottom:5px;">
 					{{ itemJual.harga_item | formatRupiah }}
 				</p>

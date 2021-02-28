@@ -16,6 +16,7 @@ $(() => {
             {data:'nama_item',name:'nama_item'},
             {data:'harga_item',name:'harga_item'},
             {data:'foto_item',name:'foto_item'},
+            {data:'nama_jenis',name:'nama_jenis'},
             {data:'status_item',name:'status_item'},
             {data:'action',name:'action',searchable:false,orderable:false}
         ],
@@ -58,6 +59,33 @@ $(() => {
     })
     jenis_barang.on( 'order.dt search.dt',() => {
         jenis_barang.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
+            cell.innerHTML = i+1;
+        })
+    }).draw()
+
+    let jenis_item = $('#data-jenis-item').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:getUrlHost+'/datatables/data-jenis-item',
+        columns:[
+            {data:'id_jenis_item',searchable:false,render:(data,type,row,meta) => {
+                return meta.row + meta.settings._iDisplayStart+1;
+            }},
+            {data:'nama_jenis',name:'nama_jenis'},
+            {data:'action',name:'action',searchable:false,orderable:false}
+        ],
+        scrollCollapse: true,
+        columnDefs: [ {
+        sortable: true,
+        "class": "index",
+        }],
+        scrollX:true,
+        order: [[ 0, 'desc' ]],
+        responsive:true,
+        fixedColumns: true
+    })
+    jenis_item.on( 'order.dt search.dt',() => {
+        jenis_item.column(0, {search:'applied', order:'applied'}).nodes().each((cell, i) => {
             cell.innerHTML = i+1;
         })
     }).draw()
@@ -474,11 +502,13 @@ $(() => {
             $('.btn-varian-tambah').removeClass('is-hide')
             $('#form-varian').removeClass('is-hide')
             $('.form-varian').find('input').attr('required','required')
+            $('.form-varian').find('input').removeAttr('disabled')
         }
         else {
             $('.btn-varian-tambah').addClass('is-hide')
             $('#form-varian').addClass('is-hide')
             $('.form-varian').find('input').removeAttr('required')
+            $('.form-varian').find('input').attr('disabled','disabled')
         }
     })
 

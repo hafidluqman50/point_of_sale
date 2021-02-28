@@ -111,6 +111,16 @@ export default {
 		state.dataPesanan.total_harga+=data_detail_tagihan.sub_total
 		state.dataPesanan.menu.push(data_detail_tagihan)
 	},
+	[mutations.BAYAR_SEMUA_TAGIHAN] (state,data_detail_tagihan) {
+		console.log(data_detail_tagihan.tagihan)
+		state.dataPesanan.total_harga+=data_detail_tagihan.total_harga
+		if (state.dataPesanan.menu.length != 0) {
+			state.dataPesanan.menu.push(data_detail_tagihan.tagihan)
+		}
+		else {
+			state.dataPesanan.menu = data_detail_tagihan.tagihan
+		}
+	},
 	[mutations.HAPUS_TAGIHAN] (state,id_tagihan) {
 		// const dataPesanan = state.dataPesanan.menu
 		// BELUM SELESAI

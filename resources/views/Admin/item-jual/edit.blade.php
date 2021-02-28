@@ -22,35 +22,44 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<a href="{{ url('/admin/item-jual') }}">
+						<a href="{{ url('/admin/data-item-jual') }}">
 							<button class="btn btn-default">
 								<span class="fas fa-arrow-left"></span> Kembali
 							</button>
 						</a>
 					</div>
-					<form action="{{ url('/admin/item-jual/update/'.$id) }}" method="POST" enctype="multipart/form-data">
+					<form action="{{ url('/admin/data-item-jual/update/'.$id) }}" method="POST" enctype="multipart/form-data">
 						@csrf
 						@method('PUT')
 						<div class="card-body">
 							<div class="form-group">
 								<label for="">Nama Menu</label>
-								<input type="text" name="nama_menu" class="form-control" value="{{ $row->nama_menu }}" required placeholder="Isi Nama Menu" autofocus>
+								<input type="text" name="nama_item" class="form-control" value="{{ $row->nama_item }}" required placeholder="Isi Nama Menu" autofocus>
 							</div>
 							<div class="form-group">
 								<label for="">Harga Menu</label>
-								<input type="number" name="harga_menu" class="form-control" value="{{ $row->harga_menu }}" required placeholder="Isi Harga Menu">
+								<input type="number" name="harga_item" class="form-control" value="{{ $row->harga_item }}" required placeholder="Isi Harga Menu">
 							</div>
 							<div class="form-group">
 								<label for="">Foto Menu</label>
-								<input type="file" name="foto_menu" class="form-control">
-								<img src="{{ asset('assets/foto_menu/'.$row->foto_menu) }}" class="img-fluid img-thumbnail" alt="">
+								<input type="file" name="foto_item" class="form-control">
+								<img src="{{ asset('assets/foto_item/'.$row->foto_item) }}" class="img-fluid img-thumbnail" alt="">
+							</div>
+							<div class="form-group">
+								<label for="">Jenis Item</label>
+								<select name="jenis_item" class="form-control select2" required>
+									<option value="" selected="" disabled="">=== Pilih Jenis Item ===</option>
+									@foreach ($jenis_item as $element)
+									<option value="{{$element->id_jenis_item}}" {!!$row->id_jenis_item == $element->id_jenis_item ? 'selected="selected"' : ''!!}>{{$element->nama_jenis}}</option>
+									@endforeach
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="">Status Menu</label>
-								<select name="status_menu" class="form-control" required>
+								<select name="status_item" class="form-control" required>
 									<option value="" selected disabled>=== Pilih Status Menu ===</option>
-									<option value="tersedia" {!!$row->status_menu == 'tersedia' ? 'selected="selected"' : ''!!}>Tersedia</option>
-									<option value="kosong" {!!$row->status_menu == 'kosong' ? 'selected="selected"' : ''!!}>Kosong</option>
+									<option value="tersedia" {!!$row->status_item == 'tersedia' ? 'selected="selected"' : ''!!}>Tersedia</option>
+									<option value="kosong" {!!$row->status_item == 'kosong' ? 'selected="selected"' : ''!!}>Kosong</option>
 								</select>
 							</div>
 						</div>

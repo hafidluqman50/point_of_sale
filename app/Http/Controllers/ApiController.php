@@ -201,8 +201,21 @@ class ApiController extends Controller
 			 }
 
 			 if (isset($menu[$i]['id_tagihan_detail'])) {
+
 			 	TagihanDetail::where('id_tagihan_detail',$menu[$i]['id_tagihan_detail'])
-			 				->update(['status_tagihan' => 'sudah-dibayar']);
+			 				->update(['status_tagihan_detail' => 'sudah-dibayar']);
+
+				// Membandingkan jumlah tagihan yang sudah dibayar dengan keseluruhan jumlah data berdasarkan id_tagihan
+			 	$count_awal = TagihanDetail::where('id_tagihan',$menu[$i]['id_tagihan'])
+			 								->where('status_tagihan_detail','sudah-dibayar')
+			 								->count();
+
+			 	$count_akhir = TagihanDetail::where('id_tagihan',$menu[$i]['id_tagihan'])
+			 								->count();
+
+			 	if ($count_awal == $count_akhir) {
+			 		Tagihan::where('id_tagihan',$menu[$i]['id_tagihan'])->update(['status_tagihan' => 'sudah-lunas']);
+			 	}
 			 }
 			$insert_data[] = [
 				'id_transaksi_detail' => (string)Str::uuid(),
@@ -235,13 +248,14 @@ class ApiController extends Controller
     public function listTagihan()
     {
     	$tagihan = Tagihan::where('status_tagihan','belum-lunas')->get();
-    	$list_tagihan[] = [];
+    	$list_tagihan = [];
 
     	foreach ($tagihan as $key => $value) {
     		$list_tagihan[$key] = [
 				'id_tagihan'      => $value->id_tagihan,
 				'nama_customer'   => $value->nama_customer,
-				'total_tagihan'	  => $value->total_tagihan
+				'total_tagihan'	  => $value->total_tagihan,
+				'keterangan'	  => $value->keterangan
     		];
     	}
 
@@ -251,7 +265,7 @@ class ApiController extends Controller
     public function tagihanDetail($id)
     {
 		$tagihan_detail = TagihanDetail::getData($id);
-		$data_detail[]  = [];
+		$data_detail = [];
 
     	foreach ($tagihan_detail as $key => $value) {
     		$data_detail[$key] = [
@@ -278,12 +292,12 @@ class ApiController extends Controller
 		
 		$id_tagihan    = (string)Str::uuid();
 		Tagihan::create([
-			'id_tagihan'      => $id_tagihan,
-			'nama_customer'   => $nama_customer,
-			'total_tagihan'   => $total_tagihan,
-			'keterangan'      => $keterangan,
-			'status_tagihan'  => 'belum-dibayar',
-			'id_users'        => Auth::id()
+			'id_tagihan'     => $id_tagihan,
+			'nama_customer'  => $nama_customer,
+			'total_tagihan'  => $total_tagihan,
+			'keterangan'     => $keterangan,
+			'status_tagihan' => 'belum-lunas',
+			'id_users'       => Auth::id()
 		]);
 
 		for ($i=0; $i < count($menu); $i++) {
@@ -294,16 +308,17 @@ class ApiController extends Controller
 			 	$varian = '';
 			 }
 			$insert_data[] = [
-				'id_tagihan_detail' => (string)Str::uuid(),
-				'id_tagihan'        => $id_tagihan,
-				'tgl_tagihan'		=> date('Y-m-d'),
-				'id_item_jual'      => $menu[$i]['id_item_jual'],
-				'banyak_pesan'      => $menu[$i]['banyak_pesan'],
-				'sub_total'         => $menu[$i]['sub_total'],
-				'keterangan'        => $menu[$i]['keterangan'],
-				'varian'            => $varian,
-				'created_at'        => date('Y-m-d H:i:s'),
-				'updated_at'        => date('Y-m-d H:i:s'),
+				'id_tagihan_detail'     => (string)Str::uuid(),
+				'id_tagihan'            => $id_tagihan,
+				'tgl_tagihan'           => date('Y-m-d'),
+				'id_item_jual'          => $menu[$i]['id_item_jual'],
+				'banyak_pesan'          => $menu[$i]['banyak_pesan'],
+				'sub_total'             => $menu[$i]['sub_total'],
+				'keterangan'            => $menu[$i]['keterangan'],
+				'varian'                => $varian,
+				'status_tagihan_detail' => 'belum-dibayar',
+				'created_at'            => date('Y-m-d H:i:s'),
+				'updated_at'            => date('Y-m-d H:i:s'),
 			];
 		}
 
@@ -339,6 +354,7 @@ class ApiController extends Controller
 		}
 
 		$bayar_tagihan = json_decode($request->bayar_tagihan,TRUE);
+		// dd(json_decode($request->bayar_tagihan));
 
     	array_push($session['list_item'],$bayar_tagihan);
 
@@ -348,6 +364,65 @@ class ApiController extends Controller
     	session()->put('data_session',$session);
 
     	return session()->get('data_session');
+    }
+
+    public function bayarSemuaTagihan(Request $request)
+    {
+		if (session()->has('data_session')) {
+			$session   = session()->get('data_session');
+		}
+		else {
+			$session = [
+				'list_item'    => [],
+				'total_harga'  => 0,
+				'time_expired' => '',
+    		];
+
+    		session()->put('data_session',$session);
+		}
+
+		$get_tagihan = TagihanDetail::getData($request->id_tagihan);
+
+		$tagihan[] = [];
+
+		$total_harga = 0;
+
+		foreach ($get_tagihan as $key => $value) {
+			if ($value->varian == " " || $value->varian == null) {
+				$varian = null;
+			}
+			else {
+				$explode     = explode(":",$value->varian);
+				
+				$namaVarian  = rtrim($explode[0],"");
+				$hargaVarian = (int)ltrim($explode[1],"");
+
+				$varian = ['namaVarian'=>$namaVarian,'hargaVarian'=>$hargaVarian];
+			}
+
+			$tagihan[$key] = [
+				'id_tagihan'        => $value->id_tagihan,
+				'id_tagihan_detail' => $value->id_tagihan_detail,
+				'id_item_jual'		=> $value->id_item_jual,
+				'tgl_tagihan'       => $value->tgl_tagihan,
+				'nama_item'         => $value->nama_item,
+				'banyak_pesan'      => $value->banyak_pesan,
+				'sub_total'         => $value->sub_total,
+				'varian_pilih'      => $varian,
+				'keterangan'        => $value->keterangan
+			];
+
+    		array_push($session['list_item'],$tagihan[$key]);
+
+			$total_harga += $value->sub_total;
+		}
+
+		$session['time_expired'] = generate_time(60*60);
+		$session['total_harga']+=$total_harga;
+
+    	session()->put('data_session',$session);
+
+		return response()->json(['tagihan'=>$tagihan,'total_harga'=>$total_harga]);
     }
 
     public function dataPembayaran(Request $request) 

@@ -1,11 +1,16 @@
 .scrollable-content {
-	height:88vh;
+	height:80vh;
 	overflow:auto;
 }
 
 .checkout {
 	height:calc(100vh - 35vh);
 	overflow:auto;
+}
+
+.label-item {
+	width:100%;
+	min-height:38px;
 }
 
 .checkout-div {

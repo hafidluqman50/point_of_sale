@@ -92,13 +92,28 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{{ url('/admin/item-jual') }}" class="nav-link {{ $page == 'item-jual' ? 'active' : '' }}">
+          <li class="nav-item has-treeview @if (isset($treeview)){{ $treeview == 'item-jual' ? 'menu-open' : '' }} @endif">
+            <a href="#" class="nav-link @if(isset($treeview)) {{ $treeview == 'item-jual' ? 'active' : '' }} @endif">
               <i class="nav-icon fas fa-clipboard"></i>
               <p>
                 Item Jual
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-item-jual') }}" class="nav-link {{ $page == 'data-item-jual' ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Item Jual</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-jenis-item') }}" class="nav-link {{ $page == 'data-jenis-item' ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Data Jenis Item</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item has-treeview @if (isset($treeview)){{ $treeview == 'inventory' ? 'menu-open' : '' }}@endif">
             <a href="#" class="nav-link @if (isset($treeview)){{ $treeview == 'inventory' ? 'active' : '' }}@endif">
