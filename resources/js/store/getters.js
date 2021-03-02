@@ -17,17 +17,20 @@ export default {
 	showDetailBill: state => {
 		return state.showDetailBill
 	},
+	cariItem: state=> {
+		return state.cariItem
+	},
 	dataPesanan: state => {
 		return state.dataPesanan
 	},
 	dataPembayaran: state => {
 		return state.dataPembayaran
 	},
-	dataTagihan: state => {
-		return state.dataTagihan
+	listTagihan: state => {
+		return state.listTagihan
 	},
-	dataDetailTagihan: state => {
-		return state.dataDetailTagihan
+	listDetailTagihan: state => {
+		return state.listDetailTagihan
 	},
 	singleData: state => {
 		return state.singleData

@@ -35,7 +35,7 @@
           <div class="input-group input-group-sm">
             <input class="form-control form-control-navbar" name="cari_menu" v-model="dataCari" type="search" placeholder="Cari Menu" aria-label="Cari Menu" width="100%">
             <div class="input-group-append">
-              <button class="btn btn-navbar" type="button" v-on:click="cariMenu(dataCari)">
+              <button class="btn btn-navbar" type="button" v-on:click="cariItemAct({cari:dataCari,page:1})">
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex'
+  import {mapActions,mapGetters} from 'vuex'
 
 	export default {
     data:() => {
@@ -55,10 +55,15 @@
         dataCari:null
       }
     },
+    computed: {
+      ...mapGetters([
+        'cariItem'
+      ])
+    },
     methods: {
-      ...mapActions([
-          'cariMenu'
-        ])
+    ...mapActions([
+        'cariItemAct'
+      ])
     }
   }
 </script>

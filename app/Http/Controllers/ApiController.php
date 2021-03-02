@@ -25,13 +25,19 @@ class ApiController extends Controller
 		});
 	}
 
-    public function dataItemJual()
+    public function dataItemJual(Request $request)
     {
-		$item_jual   = ItemJual::where('status_delete',0)->orderBy('created_at','DESC');
-		$count       = $item_jual->count();
+		$page        = ($request->page - 1) * 18;
+		$item_jual   = ItemJual::where('status_delete',0)
+								->offset($page)
+								->limit(18)
+								->orderBy('created_at','DESC')
+								->get();
+
+		$count       = ceil(ItemJual::count()/18);
 		$data_item[] = [];
 
-    	foreach ($item_jual->get() as $key => $value) {
+    	foreach ($item_jual as $key => $value) {
     		$item_detail_jual = ItemJualDetail::where('id_item_jual',$value->id_item_jual)->get();
     		$data_item[$key] = [
 				'id_item_jual' => $value->id_item_jual,
@@ -46,18 +52,39 @@ class ApiController extends Controller
     		}
     	}
 
-    	return response()->json($data_item);
+    	return response()->json(['count' => $count, 'data_item' => $data_item]);
     }
 
     public function dataItemJualCari(Request $request)
     {
-    	$cari_item = $request->cari_item;
+		$cari_item = $request->cari_item;
+		$page      = ($request->page - 1) * 18;
 
-    	$data_cari = ItemJual::where('nama_item','like','%'.$cari_item.'%')
+    	$item_jual = ItemJual::where('nama_item','like','%'.$cari_item.'%')
     						  ->where('status_delete',0)
+    						  ->offset($page)
+    						  ->limit(18)
 			    			  ->get();
+		$data_cari[] = [];
 
-    	return response()->json($data_cari);
+    	foreach ($item_jual as $key => $value) {
+    		$item_detail_jual = ItemJualDetail::where('id_item_jual',$value->id_item_jual)->get();
+    		$data_cari[$key] = [
+				'id_item_jual' => $value->id_item_jual,
+				'nama_item'    => $value->nama_item,
+				'harga_item'   => $value->harga_item,
+				'foto_item'    => $value->foto_item,
+				'status_item'  => $value->status_item,
+				'varian'       => []
+    		];
+    		foreach ($item_detail_jual as $i => $j) {
+    			array_push($data_cari[$key]['varian'],['nama_varian' => $j->nama_varian,'harga_varian' => $j->harga_varian]);
+    		}
+    	}
+
+		$count       = ceil(ItemJual::where('nama_item','like','%'.$cari_item.'%')->count()/18);
+
+    	return response()->json(['count' => $count, 'data_item' => $data_cari]);
     }
 
     public function listItem()
@@ -245,9 +272,18 @@ class ApiController extends Controller
 		return response()->json(['message' => 'Berhasil Input Pesanan']);
     }
 
-    public function listTagihan()
+    public function listTagihan(Request $request)
     {
-    	$tagihan = Tagihan::where('status_tagihan','belum-lunas')->get();
+		$page = ($request->page - 1) * 5;
+
+		$tagihan = Tagihan::where('status_tagihan','belum-lunas')
+							->offset($page)
+							->limit(5)
+							->orderBy('created_at','desc')
+							->get();
+
+		$count = ceil(Tagihan::where('status_tagihan','belum-lunas')->count()/5);
+
     	$list_tagihan = [];
 
     	foreach ($tagihan as $key => $value) {
@@ -259,12 +295,44 @@ class ApiController extends Controller
     		];
     	}
 
-    	return response()->json($list_tagihan);
+    	return response()->json(['count' => $count, 'list_tagihan' => $list_tagihan]);
     }
 
-    public function tagihanDetail($id)
+    public function cariTagihan(Request $request)
     {
-		$tagihan_detail = TagihanDetail::getData($id);
+		$cari_tagihan = $request->cari_tagihan;
+		$page         = ($request->page - 1) * 5;
+
+    	$tagihan = Tagihan::where('nama_customer','like','%'.$cari_tagihan.'%')
+						  ->where('status_tagihan','belum-lunas')
+						  ->offset($page)
+						  ->limit(5)
+		    			  ->get();
+
+		$count = ceil(Tagihan::where('status_tagihan','belum-lunas')->count()/5);
+
+    	$list_tagihan = [];
+
+    	foreach ($tagihan as $key => $value) {
+    		$list_tagihan[$key] = [
+				'id_tagihan'      => $value->id_tagihan,
+				'nama_customer'   => $value->nama_customer,
+				'total_tagihan'	  => $value->total_tagihan,
+				'keterangan'	  => $value->keterangan
+    		];
+    	}
+
+    	return response()->json(['count' => $count, 'list_tagihan' => $list_tagihan]);	
+    }
+
+    public function tagihanDetail(Request $request,$id)
+    {
+		$page = ($request->page - 1) * 5;
+
+		$tagihan_detail = TagihanDetail::getData($id,$page);
+
+		$count = ceil(TagihanDetail::where('id_tagihan',$id)->count()/5);
+
 		$data_detail = [];
 
     	foreach ($tagihan_detail as $key => $value) {
@@ -280,7 +348,34 @@ class ApiController extends Controller
     		];
     	}
 
-    	return response()->json($data_detail);
+    	return response()->json(['count' => $count, 'data_detail_tagihan' => $data_detail]);
+    }
+
+    public function cariTagihanDetail(Request $request,$id)
+    {
+		$page = ($request->page - 1) * 5;
+		$cari = $request->cari;
+
+		$tagihan_detail = TagihanDetail::cariData($id,$cari,$page);
+
+		$count = ceil(TagihanDetail::where('id_tagihan',$id)->count()/5);
+
+		$data_detail = [];
+
+    	foreach ($tagihan_detail as $key => $value) {
+    		$data_detail[$key] = [
+				'id_tagihan'        => $value->id_tagihan,
+				'id_tagihan_detail' => $value->id_tagihan_detail,
+				'tgl_tagihan'		=> $value->tgl_tagihan,
+				'nama_item'         => $value->nama_item,
+				'banyak_pesan'		=> $value->banyak_pesan,
+				'sub_total'			=> $value->sub_total,
+				'varian'			=> $value->varian,
+				'keterangan'		=> $value->keterangan
+    		];
+    	}
+
+    	return response()->json(['count' => $count, 'data_detail_tagihan' => $data_detail]);
     }
 
     public function tagihanProses(Request $request)

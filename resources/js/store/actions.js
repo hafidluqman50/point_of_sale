@@ -31,14 +31,18 @@ export default {
 	clearPesanMenu(context) {
 		context.commit(mutations.CLEAR_PESAN_MENU)
 	},
-	tampilItemJual(context) {
+	tampilItemJual(context,page) {
 		context.dispatch('loadItem')
 
-		axios.get('/data-item-jual')
-			 .then((response) => {
-				context.commit(mutations.TAMPIL_ITEM_JUAL,response.data)
-				context.dispatch('loadItem',false)
-			})
+		axios.get('/data-item-jual',{
+			params:{
+				page:page
+			}
+		})
+		.then((response) => {
+			context.commit(mutations.TAMPIL_ITEM_JUAL,response.data)
+			context.dispatch('loadItem',false)
+		})
 	},
 	pilihItem(context,data_menu) {
 		context.commit(mutations.PILIH_ITEM,data_menu)
@@ -133,17 +137,19 @@ export default {
 
 		context.commit(mutations.DESTROY_MENU_ACT)
 	},
-	cariMenu(context,input_cari) {
-		if (input_cari != null || input_cari !== undefined) {
+	cariItemAct(context,param) {
+		if (param.cari != null || param.cari !== undefined) {
 			context.dispatch('loadItem')
+			context.commit(mutations.CARI_ITEM,param.cari)
 			axios.get('/data-item-jual/cari', {
 				params:{
-					cari_item:input_cari
+					cari_item:param.cari,
+					page:param.page
 				}
 			})
 			.then(response => {
 				context.dispatch('loadItem',false)
-				context.commit(mutations.CARI_ITEM,response.data)
+				context.commit(mutations.TAMPIL_ITEM_JUAL,response.data)
 			})
 		}
 	},
@@ -172,22 +178,47 @@ export default {
 			console.log(e)
 		})
 	},
-	listTagihan(context) {
-		axios.get('/data-item-jual/list-tagihan')
+	tampilTagihan(context,page) {
+		axios.get('/data-item-jual/list-tagihan',{
+			params:{
+				page:page
+			}
+		})
 		.then((response) => {
 			context.dispatch('loadBill',false)
-			context.commit(mutations.LIST_TAGIHAN,response.data)
+			context.commit(mutations.TAMPIL_TAGIHAN,response.data)
 		})
 		.catch((e) => {
 			console.log(e)
 		})
 	},
+	cariTagihanAct(context,param) {
+		console.log(param)
+		if (param.cari_tagihan != null || param.cari_tagihan !== undefined) {
+			context.dispatch('loadBill')
+			// context.commit(mutations.CARI_TAGIHAN,param.cari_tagihan)
+			axios.get('/data-item-jual/list-tagihan/cari', {
+				params:{
+					cari_tagihan:param.cari_tagihan,
+					page:param.page
+				}
+			})
+			.then(response => {
+				context.dispatch('loadBill',false)
+				context.commit(mutations.TAMPIL_TAGIHAN,response.data)
+			})
+		}
+	},
 	clearModalTagihan(context) {
 		context.commit(mutations.CLEAR_MODAL_TAGIHAN)
 	},
-	tagihanDetail(context,id_tagihan) {
-		context.dispatch('loadDetailBill',id_tagihan)
-		axios.get('/data-item-jual/list-tagihan/detail/'+id_tagihan)
+	tampilTagihanDetail(context,param) {
+		context.dispatch('loadDetailBill',param.id_tagihan)
+		axios.get('/data-item-jual/list-tagihan/detail/'+param.id_tagihan,{
+			params:{
+				page:param.page
+			}
+		})
 		.then((response) => {
 			context.dispatch('loadDetailBill',null)
 			context.dispatch('showDetailBill')
@@ -196,6 +227,22 @@ export default {
 		.catch((e) => {
 			console.log(e)
 		})
+	},
+	cariTagihanDetailAct(context,param) {
+		if (param.cari != null || param.cari !== undefined) {
+			context.dispatch('loadDetailBill','cari')
+			// context.commit(mutations.CARI_TAGIHAN,param.cari)
+			axios.get('/data-item-jual/list-tagihan/detail/'+param.id_tagihan+'/cari', {
+				params:{
+					cari:param.cari,
+					page:param.page
+				}
+			})
+			.then(response => {
+				context.dispatch('loadDetailBill',null)
+				context.commit(mutations.TAGIHAN_DETAIL,response.data)
+			})
+		}
 	},
 	prosesTagihan(context,dataPesanan) {
 		context.dispatch('loadSend')

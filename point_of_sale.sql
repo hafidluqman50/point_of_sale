@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Feb 28, 2021 at 12:18 PM
+-- Generation Time: Mar 02, 2021 at 07:04 AM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -305,7 +305,8 @@ CREATE TABLE `tagihan` (
 INSERT INTO `tagihan` (`id_tagihan`, `nama_customer`, `total_tagihan`, `keterangan`, `status_tagihan`, `id_users`, `created_at`, `updated_at`) VALUES
 ('45a07774-d7ef-4671-a217-960547a9ede8', 'sukimat', 53000, 'mantap', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-01-21 15:11:25', '2021-02-25 13:14:13'),
 ('f258dc3c-f146-4b67-bf06-8c745803f21f', 'Hafiidh Luqmanul Hakim', 48000, 'Meja No. 04', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-02-25 13:22:59', '2021-02-27 21:47:38'),
-('fc2b84f0-98d2-4009-9c23-de22badfbe08', 'Hafiidh Luqmanul Hakim', 42000, '-', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03');
+('fc2b84f0-98d2-4009-9c23-de22badfbe08', 'Hafiidh Luqmanul Hakim', 42000, '-', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
+('fc43025b-2bc6-4e3e-893e-066a91098807', 'Saipudin', 35000, '-', 'belum-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-02 12:17:27', '2021-03-02 12:17:27');
 
 -- --------------------------------------------------------
 
@@ -336,6 +337,8 @@ INSERT INTO `tagihan_detail` (`id_tagihan_detail`, `id_tagihan`, `tgl_tagihan`, 
 ('4224cd5f-20a1-484a-9720-09cc6e44e160', 'f258dc3c-f146-4b67-bf06-8c745803f21f', '2021-02-25', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'sudah-dibayar', '2021-02-25 13:22:59', '2021-02-27 21:46:26'),
 ('43d71934-4837-4858-bb39-9ad1aa807025', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'sudah-dibayar', '2020-11-25 12:05:03', '2021-02-23 21:37:14'),
 ('85eaeb83-af24-4004-ab69-28b6da2c428e', 'f258dc3c-f146-4b67-bf06-8c745803f21f', '2021-02-25', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, '+ Telor : 5000', 'pedas', 'sudah-dibayar', '2021-02-25 13:22:59', '2021-02-27 21:47:38'),
+('96fe8638-ae68-45d4-abed-8859822ff32a', 'fc43025b-2bc6-4e3e-893e-066a91098807', '2021-03-02', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'belum-dibayar', '2021-03-02 12:17:27', '2021-03-02 12:17:27'),
+('a9cda24a-c926-4951-8b92-bbf073870814', 'fc43025b-2bc6-4e3e-893e-066a91098807', '2021-03-02', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'belum-dibayar', '2021-03-02 12:17:27', '2021-03-02 12:17:27'),
 ('bfba26a1-b887-4d2a-b158-dc671a9db973', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'sudah-dibayar', '2021-01-21 15:11:25', '2021-02-25 13:14:13'),
 ('f03531f3-9e13-4fdf-b40b-c16c0dfee31b', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'sudah-dibayar', '2021-01-21 15:11:25', '2021-02-25 13:14:13');
 

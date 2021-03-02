@@ -16,18 +16,29 @@
 			        					<h5>Tidak Ada Menu</h5>
 			        				</div>
 			        			</div>
-								<menu-item v-for="itemJual in listItem" :itemJual="itemJual" :key="itemJual.id" v-else></menu-item>
+								<menu-item v-for="itemJual in listItem.data_item" :itemJual="itemJual" :key="itemJual.id" v-else></menu-item>
 			        		</div>	
 						</div>
 						<div class="card-footer d-flex justify-content-center align-items-center" style="padding-bottom:">
-							<nav aria-label="page navigation example">
-							  <ul class="pagination" style="margin:0;">
-								 <li class="page-item"><button class="page-link" href="#">Previous</button></li>
-							  	<div>
-								    <li class="page-item active"><button class="page-link" href="#">1</button></li>
-							  	</div>
-								<li class="page-item"><button class="page-link" href="#">Next</button></li>
-							  </ul>
+							<nav aria-label="page navigation example" v-if="listItem.length == 0">
+								<ul class="pagination" style="margin:0;">
+									<li class="page-item"><button class="page-link" href="#">Previous</button></li>
+									<div>
+										<li class="page-item active"><button class="page-link" href="#">1</button></li>
+									</div>
+									<li class="page-item"><button class="page-link" href="#">Next</button></li>
+								</ul>
+							</nav>
+							<nav aria-label="page navigation example" v-else>
+								<ul class="pagination">
+									<li class="page-item"><button class="page-link" href="#" :disabled="pageItemPosition == 1" @click="pageItem(pageItemPosition-1)">Previous</button></li>
+										<div v-for="count in listItem.count">
+											<li :class="`page-item ${pageItemPosition == count ? 'active' : ''}`">
+												<button class="page-link" href="#" :disabled="pageItemPosition == count" @click="pageItem(count)">{{count}}</button>
+											</li>
+										</div>
+									<li class="page-item"><button class="page-link" href="#" :disabled="pageItemPosition == listItem.count" @click="pageItem(pageItemPosition+1)">Next</button></li>
+								</ul>
 							</nav>
 						</div>
 					</div>
@@ -36,7 +47,7 @@
 					<div class="card m-0">
 						<div class="card-header bg-light">
 							<div class="row">
-								<div class="col-md-4 no-padding tagihan-menu" @click="openModal('tagihanModal'); listTagihan()">
+								<div class="col-md-4 no-padding tagihan-menu" @click="openModal('tagihanModal'); tampilTagihan(1)">
 									<span class="fas fa-bars"></span> Tagihan
 								</div>
 								<div class="col-md-8 no-padding">
@@ -216,6 +227,16 @@
 				</div>
 			</template>
 			<div :class="`${showDetailBill ? 'is-hide' : ''}`">
+				<div class="row">
+					<div class="col-md-4">	
+						<div class="form-group">
+							<input type="text" class="form-control" v-model="cariTagihan" placeholder="Cari Tagihan">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<button class="btn btn-primary" @click="cariTagihanAct({cari_tagihan:cariTagihan,page:1})"><span class="fas fa-search"></span></button>
+					</div>
+				</div>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -236,12 +257,12 @@
 			        			</div>
 							</td>
 						</tr>
-						<tr v-else-if="dataTagihan.length == 0 && loadBill == false">
+						<tr v-else-if="listTagihan.data_tagihan.length == 0 && loadBill == false">
 							<td align="center" colspan="5">
 								Tidak Ada Data
 							</td>
 						</tr>
-						<tr v-for="(item,index) in dataTagihan" :key="index">
+						<tr v-for="(item,index) in listTagihan.data_tagihan" :key="index" v-else>
 							<td>{{ index+1 }}</td>
 							<td>{{ item.nama_customer }}</td>
 							<td>{{ item.total_tagihan | formatRupiah }}</td>
@@ -251,7 +272,7 @@
   									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   									Loading...
 								</button>
-								<button class="btn btn-info" @click="tagihanDetail(item.id_tagihan); getIdTagihan(item.id_tagihan)" v-else>
+								<button class="btn btn-info" @click="tampilTagihanDetail({id_tagihan:item.id_tagihan,page:1}); getIdTagihan(item.id_tagihan)" v-else>
 									Lihat List Tagihan
 								</button>
 								<button class="btn btn-danger">
@@ -262,16 +283,29 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="4" align="right">
-								<nav aria-label="Page navigation example">
-								  <ul class="pagination">
-									 <li class="page-item"><button class="page-link" href="#">Previous</button></li>
-								  	<div>
-									    <li class="page-item active"><button class="page-link" href="#">1</button></li>
-								  	</div>
-									<li class="page-item"><button class="page-link" href="#">Next</button></li>
-								  </ul>
+							<td colspan="5">
+								<!-- <div class="d-flex align-items-center justify-content-center"> -->
+								<nav aria-label="page navigation example" v-if="listTagihan.data_tagihan.length == 0">
+									<ul class="pagination" style="margin:0;">
+										<li class="page-item"><button class="page-link" href="#">Previous</button></li>
+										<div>
+											<li class="page-item active"><button class="page-link" href="#">1</button></li>
+										</div>
+										<li class="page-item"><button class="page-link" href="#">Next</button></li>
+									</ul>
 								</nav>
+								<nav aria-label="page navigation example" v-else>
+									<ul class="pagination">
+										<li class="page-item"><button class="page-link" href="#" :disabled="pageBillPosition == 1" @click="pageBill(pageBillPosition-1)">Previous</button></li>
+											<div v-for="count in listTagihan.count">
+												<li :class="`page-item ${pageBillPosition == count ? 'active' : ''}`">
+													<button class="page-link" href="#" :disabled="pageBillPosition == count" @click="pageBill(count)">{{count}}</button>
+												</li>
+											</div>
+										<li class="page-item"><button class="page-link" href="#" :disabled="pageBillPosition == listTagihan.count" @click="pageBill(pageBillPosition+1)">Next</button></li>
+									</ul>
+								</nav>
+								<!-- </div> -->
 							</td>
 						</tr>
 					</tfoot>
@@ -282,13 +316,25 @@
 				<!-- <hr> -->
 				<!-- <h6>Total Tagihan : </h6> -->
 				<hr>
-				<button class="btn btn-success" disabled="disabled" v-if="loadDetailBill == id_tagihan">
-					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-					Loading...
-				</button>
-				<button class="btn btn-success" style="margin-bottom:10px;" @click="bayarSemuaTagihan(id_tagihan)" v-else>
-					Bayar Semua
-				</button>
+				<div class="row">
+					<div class="col-md-4">
+						<button class="btn btn-success" disabled="disabled" v-if="loadDetailBill == id_tagihan">
+							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+							Loading...
+						</button>
+						<button class="btn btn-success" style="margin-bottom:10px;" @click="bayarSemuaTagihan(id_tagihan)" v-else>
+							Bayar Semua
+						</button>
+					</div>
+					<div class="col-md-4">	
+						<div class="form-group">
+							<input type="search" class="form-control" v-model="cariDetailTagihan" placeholder="Cari Tagihan">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<button class="btn btn-primary" @click="cariTagihanDetailAct({id_tagihan:id_tagihan,cari:cariDetailTagihan,page:1})"><span class="fas fa-search"></span></button>
+					</div>
+				</div>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -303,7 +349,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(item,index) in dataDetailTagihan" :key="index">
+						<tr v-if="loadDetailBill == 'cari'">
+							<td align="center" colspan="8">
+			        			<div class="d-flex justify-content-center align-items-center" style="height:100%">
+									<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+										<span class="sr-only">Loading...</span>
+									</div>
+			        			</div>
+							</td>
+						</tr>
+						<tr v-for="(item,index) in listDetailTagihan.data_detail_tagihan" :key="index" v-else>
 							<td>{{ index+1 }}</td>
 							<td>{{ item.tgl_tagihan | formatDate }}</td>
 							<td>{{ item.nama_item }}</td>
@@ -314,6 +369,30 @@
 							<td>
 								<button class="btn btn-success" @click="bayarTagihan(item)">Bayar</button>
 								<button class="btn btn-danger">Delete</button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="8">
+								<nav aria-label="page navigation example" v-if="listDetailTagihan.data_detail_tagihan.length == 0">
+									<ul class="pagination" style="margin:0;">
+										<li class="page-item"><button class="page-link" href="#">Previous</button></li>
+										<div>
+											<li class="page-item active"><button class="page-link" href="#">1</button></li>
+										</div>
+										<li class="page-item"><button class="page-link" href="#">Next</button></li>
+									</ul>
+								</nav>
+								<nav aria-label="page navigation example" v-else>
+									<ul class="pagination">
+										<li class="page-item"><button class="page-link" href="#" :disabled="pageDetailBillPosition == 1" @click="pageDetailBill(pageDetailBillPosition-1)">Previous</button></li>
+											<div v-for="count in listDetailTagihan.count">
+												<li :class="`page-item ${pageDetailBillPosition == count ? 'active' : ''}`">
+													<button class="page-link" href="#" :disabled="pageDetailBillPosition == count" @click="pageDetailBill(count)">{{count}}</button>
+												</li>
+											</div>
+										<li class="page-item"><button class="page-link" href="#" :disabled="pageDetailBillPosition == listDetailTagihan.count" @click="pageDetailBill(pageDetailBillPosition+1)">Next</button></li>
+									</ul>
+								</nav>
 							</td>
 						</tr>
 					</tbody>
@@ -333,6 +412,11 @@
 		components: {Money},
 		data() {
 			return {
+				pageItemPosition:null,
+				pageBillPosition:1,
+				pageDetailBillPosition:1,
+				cariTagihan:null,
+				cariDetailTagihan:null,
 				bayarNanti:false,
 				isKredit:false,
 				money:{
@@ -357,8 +441,9 @@
 				'singleData',
 				'dataPesanan',
 				'menuInput',
-				'dataTagihan',
-				'dataDetailTagihan'
+				'cariItem',
+				'listTagihan',
+				'listDetailTagihan'
 			])
 		},
 		methods: {
@@ -367,16 +452,19 @@
 				'closeModal',
 				'closeMenu',
 				'tampilItemJual',
+				'cariItemAct',
 				'pesanMenu',
 				'destroyMenuAct',
 				'varianPush',
 				'checkoutPesanan',
 				'listPesanan',
-				'listTagihan',
+				'tampilTagihan',
+				'cariTagihanAct',
 				'clearModalTagihan',
 				'prosesBayar',
 				'prosesTagihan',
-				'tagihanDetail',
+				'tampilTagihanDetail',
+				'cariTagihanDetailAct',
 				'hideDetailBill',
 				'bayarTagihan',
 				'bayarSemuaTagihan',
@@ -384,6 +472,36 @@
 				'updateMenu',
 				'hapusMenu'
 			]),
+			pageItem:function(page) {
+				this.pageItemPosition = page
+				if (this.cariItem == null) {
+					this.tampilItemJual(page)
+				}
+				else {
+					let cariItem = this.cariItem
+					this.cariItemAct({cari:cariItem,page:page})
+				}
+			},
+			pageBill:function(page) {
+				this.pageBillPosition = page
+				if (this.cariTagihan == null) {
+					this.tampilTagihan(page)
+				}
+				else {
+					let cariTagihan = this.cariTagihan
+					this.cariTagihanAct({cari:cariTagihan,page:page})
+				}
+			},
+			pageDetailBill:function(page) {
+				this.pageDetailBillPosition = page
+				if (this.cariDetailTagihan == null) {
+					this.tampilDetailTagihan(page)
+				}
+				else {
+					let cariDetailTagihan = this.cariDetailTagihan
+					this.cariTagihanDetailAct({cari:cariDetailTagihan,page:page})
+				}
+			},
 			checkoutModal:function() {
 				if (this.dataPesanan.menu.length != 0) {
 					this.openModal('checkoutMenu')
@@ -417,7 +535,7 @@
 			}
 		},
 		mounted() {
-			this.tampilItemJual()
+			this.pageItem(1)
 			this.listPesanan()
 		},
 	}

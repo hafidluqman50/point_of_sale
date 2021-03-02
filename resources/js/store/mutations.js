@@ -20,8 +20,9 @@ export default {
 	[mutations.HIDE_DETAIL_BILL] (state) {
 		state.showDetailBill = false
 	},
-	[mutations.TAMPIL_ITEM_JUAL] (state,data_item_jual) {
-		state.listItem = data_item_jual
+	[mutations.TAMPIL_ITEM_JUAL] (state,param) {
+		state.listItem.data_item = param.data_item
+		state.listItem.count     = param.count
 	},
 	[mutations.PILIH_ITEM] (state,data_item) {
 		state.singleData = data_item
@@ -42,7 +43,7 @@ export default {
 		console.log(state.dataPesanan.menu)
 	},
 	[mutations.CARI_ITEM] (state,data_cari) {
-		state.listItem = data_cari
+		state.cariItem = data_cari
 	},
 	[mutations.UBAH_MENU] (state,payload) {
 		state.singleData             = payload.item
@@ -101,11 +102,13 @@ export default {
 		state.dataPesanan.nama_customer = null
 		state.loadSend                  = false
 	},
-	[mutations.LIST_TAGIHAN] (state,data_tagihan) {
-		state.dataTagihan = data_tagihan
+	[mutations.TAMPIL_TAGIHAN] (state,param) {
+		state.listTagihan.count        = param.count
+		state.listTagihan.data_tagihan = param.list_tagihan
 	},
-	[mutations.TAGIHAN_DETAIL] (state,data_detail_tagihan) {
-		state.dataDetailTagihan = data_detail_tagihan
+	[mutations.TAGIHAN_DETAIL] (state,param) {
+		state.listDetailTagihan.count               = param.count
+		state.listDetailTagihan.data_detail_tagihan = param.data_detail_tagihan
 	},
 	[mutations.BAYAR_TAGIHAN] (state,data_detail_tagihan) {
 		state.dataPesanan.total_harga+=data_detail_tagihan.sub_total

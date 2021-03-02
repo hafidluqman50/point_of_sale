@@ -6,7 +6,11 @@ export default {
 	showDetailBill:false,
 	showModal:false,
 	// bayarNanti:false,
-	listItem:null,
+	listItem:{
+		count:null,
+		data_item:[]
+	},
+	cariItem:null,
 	transaksi:{
 		count:null,
 		dataBayar:[]
@@ -21,8 +25,14 @@ export default {
 		nama_customer:null,
 		menu:[],
 	},
-	dataTagihan:[],
-	dataDetailTagihan:[],
+	listTagihan:{
+		count:null,
+		data_tagihan:[]
+	},
+	listDetailTagihan:{
+		count:null,
+		data_detail_tagihan:[]
+	},
 	menuInput:{
 		varian_pilih:null,
 		banyak_pesan:null,

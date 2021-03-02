@@ -2016,7 +2016,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       dataCari: null
     };
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['cariMenu']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['cariItem'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['cariItemAct']))
 });
 
 /***/ }),
@@ -2366,6 +2367,85 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2375,6 +2455,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
+      pageItemPosition: null,
+      pageBillPosition: 1,
+      pageDetailBillPosition: 1,
+      cariTagihan: null,
+      cariDetailTagihan: null,
       bayarNanti: false,
       isKredit: false,
       money: {
@@ -2387,8 +2472,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       id_tagihan: null
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['listItem', 'loadItem', 'loadSend', 'loadBill', 'loadDetailBill', 'showDetailBill', 'showModal', 'singleData', 'dataPesanan', 'menuInput', 'dataTagihan', 'dataDetailTagihan'])),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilItemJual', 'pesanMenu', 'destroyMenuAct', 'varianPush', 'checkoutPesanan', 'listPesanan', 'listTagihan', 'clearModalTagihan', 'prosesBayar', 'prosesTagihan', 'tagihanDetail', 'hideDetailBill', 'bayarTagihan', 'bayarSemuaTagihan', 'ubahMenu', 'updateMenu', 'hapusMenu'])), {}, {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['listItem', 'loadItem', 'loadSend', 'loadBill', 'loadDetailBill', 'showDetailBill', 'showModal', 'singleData', 'dataPesanan', 'menuInput', 'cariItem', 'listTagihan', 'listDetailTagihan'])),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['openModal', 'closeModal', 'closeMenu', 'tampilItemJual', 'cariItemAct', 'pesanMenu', 'destroyMenuAct', 'varianPush', 'checkoutPesanan', 'listPesanan', 'tampilTagihan', 'cariTagihanAct', 'clearModalTagihan', 'prosesBayar', 'prosesTagihan', 'tampilTagihanDetail', 'cariTagihanDetailAct', 'hideDetailBill', 'bayarTagihan', 'bayarSemuaTagihan', 'ubahMenu', 'updateMenu', 'hapusMenu'])), {}, {
+    pageItem: function pageItem(page) {
+      this.pageItemPosition = page;
+
+      if (this.cariItem == null) {
+        this.tampilItemJual(page);
+      } else {
+        var cariItem = this.cariItem;
+        this.cariItemAct({
+          cari: cariItem,
+          page: page
+        });
+      }
+    },
+    pageBill: function pageBill(page) {
+      this.pageBillPosition = page;
+
+      if (this.cariTagihan == null) {
+        this.tampilTagihan(page);
+      } else {
+        var cariTagihan = this.cariTagihan;
+        this.cariTagihanAct({
+          cari: cariTagihan,
+          page: page
+        });
+      }
+    },
+    pageDetailBill: function pageDetailBill(page) {
+      this.pageDetailBillPosition = page;
+
+      if (this.cariDetailTagihan == null) {
+        this.tampilDetailTagihan(page);
+      } else {
+        var cariDetailTagihan = this.cariDetailTagihan;
+        this.cariTagihanDetailAct({
+          cari: cariDetailTagihan,
+          page: page
+        });
+      }
+    },
     checkoutModal: function checkoutModal() {
       if (this.dataPesanan.menu.length != 0) {
         this.openModal('checkoutMenu');
@@ -2421,7 +2545,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    this.tampilItemJual();
+    this.pageItem(1);
     this.listPesanan();
   }
 });
@@ -38667,7 +38791,10 @@ var render = function() {
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
-                          return _vm.cariMenu(_vm.dataCari)
+                          return _vm.cariItemAct({
+                            cari: _vm.dataCari,
+                            page: 1
+                          })
                         }
                       }
                     },
@@ -38783,7 +38910,9 @@ var render = function() {
                                 },
                                 [_vm._m(1)]
                               )
-                            : _vm._l(_vm.listItem, function(itemJual) {
+                            : _vm._l(_vm.listItem.data_item, function(
+                                itemJual
+                              ) {
                                 return _c("menu-item", {
                                   key: itemJual.id,
                                   attrs: { itemJual: itemJual }
@@ -38794,7 +38923,116 @@ var render = function() {
                       )
                 ]),
                 _vm._v(" "),
-                _vm._m(2)
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "card-footer d-flex justify-content-center align-items-center",
+                    staticStyle: {}
+                  },
+                  [
+                    _vm.listItem.length == 0
+                      ? _c(
+                          "nav",
+                          {
+                            attrs: { "aria-label": "page navigation example" }
+                          },
+                          [_vm._m(2)]
+                        )
+                      : _c(
+                          "nav",
+                          {
+                            attrs: { "aria-label": "page navigation example" }
+                          },
+                          [
+                            _c(
+                              "ul",
+                              { staticClass: "pagination" },
+                              [
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: {
+                                        href: "#",
+                                        disabled: _vm.pageItemPosition == 1
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.pageItem(
+                                            _vm.pageItemPosition - 1
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Previous")]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.listItem.count, function(count) {
+                                  return _c("div", [
+                                    _c(
+                                      "li",
+                                      {
+                                        class:
+                                          "page-item " +
+                                          (_vm.pageItemPosition == count
+                                            ? "active"
+                                            : "")
+                                      },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "page-link",
+                                            attrs: {
+                                              href: "#",
+                                              disabled:
+                                                _vm.pageItemPosition == count
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.pageItem(count)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(count))]
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: {
+                                        href: "#",
+                                        disabled:
+                                          _vm.pageItemPosition ==
+                                          _vm.listItem.count
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.pageItem(
+                                            _vm.pageItemPosition + 1
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Next")]
+                                  )
+                                ])
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                  ]
+                )
               ])
             ]),
             _vm._v(" "),
@@ -38809,7 +39047,7 @@ var render = function() {
                         on: {
                           click: function($event) {
                             _vm.openModal("tagihanModal")
-                            _vm.listTagihan()
+                            _vm.tampilTagihan(1)
                           }
                         }
                       },
@@ -39654,6 +39892,52 @@ var render = function() {
         [
           _vm._v(" "),
           _c("div", { class: "" + (_vm.showDetailBill ? "is-hide" : "") }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.cariTagihan,
+                        expression: "cariTagihan"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "Cari Tagihan" },
+                    domProps: { value: _vm.cariTagihan },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.cariTagihan = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: {
+                      click: function($event) {
+                        return _vm.cariTagihanAct({
+                          cari_tagihan: _vm.cariTagihan,
+                          page: 1
+                        })
+                      }
+                    }
+                  },
+                  [_c("span", { staticClass: "fas fa-search" })]
+                )
+              ])
+            ]),
+            _vm._v(" "),
             _c("table", { staticClass: "table table-hover" }, [
               _c("thead", [
                 _c("tr", [
@@ -39703,7 +39987,8 @@ var render = function() {
                           )
                         ])
                       ])
-                    : _vm.dataTagihan.length == 0 && _vm.loadBill == false
+                    : _vm.listTagihan.data_tagihan.length == 0 &&
+                      _vm.loadBill == false
                     ? _c("tr", [
                         _c("td", { attrs: { align: "center", colspan: "5" } }, [
                           _vm._v(
@@ -39711,117 +39996,229 @@ var render = function() {
                           )
                         ])
                       ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm._l(_vm.dataTagihan, function(item, index) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [_vm._v(_vm._s(index + 1))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.nama_customer))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          _vm._s(_vm._f("formatRupiah")(item.total_tagihan))
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(item.keterangan))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm.loadDetailBill == item.id_tagihan
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-info",
-                                attrs: { disabled: "disabled" }
-                              },
-                              [
-                                _c("span", {
-                                  staticClass:
-                                    "spinner-border spinner-border-sm",
-                                  attrs: {
-                                    role: "status",
-                                    "aria-hidden": "true"
-                                  }
-                                }),
-                                _vm._v(
-                                  "\n  \t\t\t\t\t\t\t\t\tLoading...\n\t\t\t\t\t\t\t\t"
-                                )
-                              ]
+                    : _vm._l(_vm.listTagihan.data_tagihan, function(
+                        item,
+                        index
+                      ) {
+                        return _c("tr", { key: index }, [
+                          _c("td", [_vm._v(_vm._s(index + 1))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.nama_customer))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(_vm._f("formatRupiah")(item.total_tagihan))
                             )
-                          : _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-info",
-                                on: {
-                                  click: function($event) {
-                                    _vm.tagihanDetail(item.id_tagihan)
-                                    _vm.getIdTagihan(item.id_tagihan)
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n\t\t\t\t\t\t\t\t\tLihat List Tagihan\n\t\t\t\t\t\t\t\t"
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.keterangan))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm.loadDetailBill == item.id_tagihan
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info",
+                                    attrs: { disabled: "disabled" }
+                                  },
+                                  [
+                                    _c("span", {
+                                      staticClass:
+                                        "spinner-border spinner-border-sm",
+                                      attrs: {
+                                        role: "status",
+                                        "aria-hidden": "true"
+                                      }
+                                    }),
+                                    _vm._v(
+                                      "\n  \t\t\t\t\t\t\t\t\tLoading...\n\t\t\t\t\t\t\t\t"
+                                    )
+                                  ]
                                 )
-                              ]
-                            ),
-                        _vm._v(" "),
-                        _c("button", { staticClass: "btn btn-danger" }, [
-                          _vm._v("\n\t\t\t\t\t\t\t\t\tHapus\n\t\t\t\t\t\t\t\t")
+                              : _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.tampilTagihanDetail({
+                                          id_tagihan: item.id_tagihan,
+                                          page: 1
+                                        })
+                                        _vm.getIdTagihan(item.id_tagihan)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n\t\t\t\t\t\t\t\t\tLihat List Tagihan\n\t\t\t\t\t\t\t\t"
+                                    )
+                                  ]
+                                ),
+                            _vm._v(" "),
+                            _c("button", { staticClass: "btn btn-danger" }, [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t\t\t\tHapus\n\t\t\t\t\t\t\t\t"
+                              )
+                            ])
+                          ])
                         ])
-                      ])
-                    ])
-                  })
+                      })
                 ],
                 2
               ),
               _vm._v(" "),
               _c("tfoot", [
                 _c("tr", [
-                  _c("td", { attrs: { colspan: "4", align: "right" } }, [
-                    _c(
-                      "nav",
-                      { attrs: { "aria-label": "Page navigation example" } },
-                      [
-                        _c("ul", { staticClass: "pagination" }, [
-                          _c("li", { staticClass: "page-item" }, [
+                  _c("td", { attrs: { colspan: "5" } }, [
+                    _vm.listTagihan.data_tagihan.length == 0
+                      ? _c(
+                          "nav",
+                          {
+                            attrs: { "aria-label": "page navigation example" }
+                          },
+                          [
                             _c(
-                              "button",
+                              "ul",
                               {
-                                staticClass: "page-link",
-                                attrs: { href: "#" }
+                                staticClass: "pagination",
+                                staticStyle: { margin: "0" }
                               },
-                              [_vm._v("Previous")]
+                              [
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: { href: "#" }
+                                    },
+                                    [_vm._v("Previous")]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _c(
+                                    "li",
+                                    { staticClass: "page-item active" },
+                                    [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "page-link",
+                                          attrs: { href: "#" }
+                                        },
+                                        [_vm._v("1")]
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: { href: "#" }
+                                    },
+                                    [_vm._v("Next")]
+                                  )
+                                ])
+                              ]
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", [
-                            _c("li", { staticClass: "page-item active" }, [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "page-link",
-                                  attrs: { href: "#" }
-                                },
-                                [_vm._v("1")]
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("li", { staticClass: "page-item" }, [
+                          ]
+                        )
+                      : _c(
+                          "nav",
+                          {
+                            attrs: { "aria-label": "page navigation example" }
+                          },
+                          [
                             _c(
-                              "button",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" }
-                              },
-                              [_vm._v("Next")]
+                              "ul",
+                              { staticClass: "pagination" },
+                              [
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: {
+                                        href: "#",
+                                        disabled: _vm.pageBillPosition == 1
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.pageBill(
+                                            _vm.pageBillPosition - 1
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Previous")]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.listTagihan.count, function(count) {
+                                  return _c("div", [
+                                    _c(
+                                      "li",
+                                      {
+                                        class:
+                                          "page-item " +
+                                          (_vm.pageBillPosition == count
+                                            ? "active"
+                                            : "")
+                                      },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "page-link",
+                                            attrs: {
+                                              href: "#",
+                                              disabled:
+                                                _vm.pageBillPosition == count
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.pageBill(count)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(count))]
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c("li", { staticClass: "page-item" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: {
+                                        href: "#",
+                                        disabled:
+                                          _vm.pageBillPosition ==
+                                          _vm.listTagihan.count
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.pageBill(
+                                            _vm.pageBillPosition + 1
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Next")]
+                                  )
+                                ])
+                              ],
+                              2
                             )
-                          ])
-                        ])
-                      ]
-                    )
+                          ]
+                        )
                   ])
                 ])
               ])
@@ -39848,34 +40245,83 @@ var render = function() {
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _vm.loadDetailBill == _vm.id_tagihan
-              ? _c(
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4" }, [
+                _vm.loadDetailBill == _vm.id_tagihan
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        attrs: { disabled: "disabled" }
+                      },
+                      [
+                        _c("span", {
+                          staticClass: "spinner-border spinner-border-sm",
+                          attrs: { role: "status", "aria-hidden": "true" }
+                        }),
+                        _vm._v("\n\t\t\t\t\t\t\tLoading...\n\t\t\t\t\t\t")
+                      ]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        staticStyle: { "margin-bottom": "10px" },
+                        on: {
+                          click: function($event) {
+                            return _vm.bayarSemuaTagihan(_vm.id_tagihan)
+                          }
+                        }
+                      },
+                      [_vm._v("\n\t\t\t\t\t\t\tBayar Semua\n\t\t\t\t\t\t")]
+                    )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.cariDetailTagihan,
+                        expression: "cariDetailTagihan"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "search", placeholder: "Cari Tagihan" },
+                    domProps: { value: _vm.cariDetailTagihan },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.cariDetailTagihan = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" }, [
+                _c(
                   "button",
                   {
-                    staticClass: "btn btn-success",
-                    attrs: { disabled: "disabled" }
-                  },
-                  [
-                    _c("span", {
-                      staticClass: "spinner-border spinner-border-sm",
-                      attrs: { role: "status", "aria-hidden": "true" }
-                    }),
-                    _vm._v("\n\t\t\t\t\tLoading...\n\t\t\t\t")
-                  ]
-                )
-              : _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    staticStyle: { "margin-bottom": "10px" },
+                    staticClass: "btn btn-primary",
                     on: {
                       click: function($event) {
-                        return _vm.bayarSemuaTagihan(_vm.id_tagihan)
+                        return _vm.cariTagihanDetailAct({
+                          id_tagihan: _vm.id_tagihan,
+                          cari: _vm.cariDetailTagihan,
+                          page: 1
+                        })
                       }
                     }
                   },
-                  [_vm._v("\n\t\t\t\t\tBayar Semua\n\t\t\t\t")]
-                ),
+                  [_c("span", { staticClass: "fas fa-search" })]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover" }, [
               _c("thead", [
@@ -39900,47 +40346,246 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.dataDetailTagihan, function(item, index) {
-                  return _c("tr", { key: index }, [
-                    _c("td", [_vm._v(_vm._s(index + 1))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(_vm._s(_vm._f("formatDate")(item.tgl_tagihan)))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.nama_item))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.banyak_pesan))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(_vm._s(_vm._f("formatRupiah")(item.sub_total)))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.varian))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.keterangan))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          on: {
-                            click: function($event) {
-                              return _vm.bayarTagihan(item)
-                            }
-                          }
-                        },
-                        [_vm._v("Bayar")]
-                      ),
-                      _vm._v(" "),
-                      _c("button", { staticClass: "btn btn-danger" }, [
-                        _vm._v("Delete")
+                [
+                  _vm.loadDetailBill == "cari"
+                    ? _c("tr", [
+                        _c("td", { attrs: { align: "center", colspan: "8" } }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "d-flex justify-content-center align-items-center",
+                              staticStyle: { height: "100%" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "spinner-border",
+                                  staticStyle: {
+                                    width: "3rem",
+                                    height: "3rem"
+                                  },
+                                  attrs: { role: "status" }
+                                },
+                                [
+                                  _c("span", { staticClass: "sr-only" }, [
+                                    _vm._v("Loading...")
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        ])
                       ])
+                    : _vm._l(
+                        _vm.listDetailTagihan.data_detail_tagihan,
+                        function(item, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", [_vm._v(_vm._s(index + 1))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(_vm._f("formatDate")(item.tgl_tagihan))
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.nama_item))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.banyak_pesan))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(_vm._f("formatRupiah")(item.sub_total))
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.varian))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.keterangan))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.bayarTagihan(item)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Bayar")]
+                              ),
+                              _vm._v(" "),
+                              _c("button", { staticClass: "btn btn-danger" }, [
+                                _vm._v("Delete")
+                              ])
+                            ])
+                          ])
+                        }
+                      ),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", { attrs: { colspan: "8" } }, [
+                      _vm.listDetailTagihan.data_detail_tagihan.length == 0
+                        ? _c(
+                            "nav",
+                            {
+                              attrs: { "aria-label": "page navigation example" }
+                            },
+                            [
+                              _c(
+                                "ul",
+                                {
+                                  staticClass: "pagination",
+                                  staticStyle: { margin: "0" }
+                                },
+                                [
+                                  _c("li", { staticClass: "page-item" }, [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: { href: "#" }
+                                      },
+                                      [_vm._v("Previous")]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c(
+                                      "li",
+                                      { staticClass: "page-item active" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "page-link",
+                                            attrs: { href: "#" }
+                                          },
+                                          [_vm._v("1")]
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("li", { staticClass: "page-item" }, [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: { href: "#" }
+                                      },
+                                      [_vm._v("Next")]
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        : _c(
+                            "nav",
+                            {
+                              attrs: { "aria-label": "page navigation example" }
+                            },
+                            [
+                              _c(
+                                "ul",
+                                { staticClass: "pagination" },
+                                [
+                                  _c("li", { staticClass: "page-item" }, [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: {
+                                          href: "#",
+                                          disabled:
+                                            _vm.pageDetailBillPosition == 1
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.pageDetailBill(
+                                              _vm.pageDetailBillPosition - 1
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Previous")]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.listDetailTagihan.count, function(
+                                    count
+                                  ) {
+                                    return _c("div", [
+                                      _c(
+                                        "li",
+                                        {
+                                          class:
+                                            "page-item " +
+                                            (_vm.pageDetailBillPosition == count
+                                              ? "active"
+                                              : "")
+                                        },
+                                        [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "page-link",
+                                              attrs: {
+                                                href: "#",
+                                                disabled:
+                                                  _vm.pageDetailBillPosition ==
+                                                  count
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.pageDetailBill(
+                                                    count
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v(_vm._s(count))]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  }),
+                                  _vm._v(" "),
+                                  _c("li", { staticClass: "page-item" }, [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "page-link",
+                                        attrs: {
+                                          href: "#",
+                                          disabled:
+                                            _vm.pageDetailBillPosition ==
+                                            _vm.listDetailTagihan.count
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.pageDetailBill(
+                                              _vm.pageDetailBillPosition + 1
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Next")]
+                                    )
+                                  ])
+                                ],
+                                2
+                              )
+                            ]
+                          )
                     ])
                   ])
-                }),
-                0
+                ],
+                2
               )
             ])
           ])
@@ -39976,45 +40621,27 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
-      {
-        staticClass:
-          "card-footer d-flex justify-content-center align-items-center",
-        staticStyle: {}
-      },
+      "ul",
+      { staticClass: "pagination", staticStyle: { margin: "0" } },
       [
-        _c("nav", { attrs: { "aria-label": "page navigation example" } }, [
-          _c(
-            "ul",
-            { staticClass: "pagination", staticStyle: { margin: "0" } },
-            [
-              _c("li", { staticClass: "page-item" }, [
-                _c(
-                  "button",
-                  { staticClass: "page-link", attrs: { href: "#" } },
-                  [_vm._v("Previous")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c("li", { staticClass: "page-item active" }, [
-                  _c(
-                    "button",
-                    { staticClass: "page-link", attrs: { href: "#" } },
-                    [_vm._v("1")]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item" }, [
-                _c(
-                  "button",
-                  { staticClass: "page-link", attrs: { href: "#" } },
-                  [_vm._v("Next")]
-                )
-              ])
-            ]
-          )
+        _c("li", { staticClass: "page-item" }, [
+          _c("button", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("Previous")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("li", { staticClass: "page-item active" }, [
+            _c("button", { staticClass: "page-link", attrs: { href: "#" } }, [
+              _vm._v("1")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("button", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("Next")
+          ])
         ])
       ]
     )
@@ -58076,9 +58703,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   clearPesanMenu: function clearPesanMenu(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_PESAN_MENU"]);
   },
-  tampilItemJual: function tampilItemJual(context) {
+  tampilItemJual: function tampilItemJual(context, page) {
     context.dispatch('loadItem');
-    axios.get('/data-item-jual').then(function (response) {
+    axios.get('/data-item-jual', {
+      params: {
+        page: page
+      }
+    }).then(function (response) {
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], response.data);
       context.dispatch('loadItem', false);
     });
@@ -58169,16 +58800,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     });
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["DESTROY_MENU_ACT"]);
   },
-  cariMenu: function cariMenu(context, input_cari) {
-    if (input_cari != null || input_cari !== undefined) {
+  cariItemAct: function cariItemAct(context, param) {
+    if (param.cari != null || param.cari !== undefined) {
       context.dispatch('loadItem');
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], param.cari);
       axios.get('/data-item-jual/cari', {
         params: {
-          cari_item: input_cari
+          cari_item: param.cari,
+          page: param.page
         }
       }).then(function (response) {
         context.dispatch('loadItem', false);
-        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], response.data);
+        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], response.data);
       });
     }
   },
@@ -58204,26 +58837,66 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(e);
     });
   },
-  listTagihan: function listTagihan(context) {
-    axios.get('/data-item-jual/list-tagihan').then(function (response) {
+  tampilTagihan: function tampilTagihan(context, page) {
+    axios.get('/data-item-jual/list-tagihan', {
+      params: {
+        page: page
+      }
+    }).then(function (response) {
       context.dispatch('loadBill', false);
-      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_TAGIHAN"], response.data);
+      context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_TAGIHAN"], response.data);
     })["catch"](function (e) {
       console.log(e);
     });
   },
+  cariTagihanAct: function cariTagihanAct(context, param) {
+    console.log(param);
+
+    if (param.cari_tagihan != null || param.cari_tagihan !== undefined) {
+      context.dispatch('loadBill'); // context.commit(mutations.CARI_TAGIHAN,param.cari_tagihan)
+
+      axios.get('/data-item-jual/list-tagihan/cari', {
+        params: {
+          cari_tagihan: param.cari_tagihan,
+          page: param.page
+        }
+      }).then(function (response) {
+        context.dispatch('loadBill', false);
+        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_TAGIHAN"], response.data);
+      });
+    }
+  },
   clearModalTagihan: function clearModalTagihan(context) {
     context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["CLEAR_MODAL_TAGIHAN"]);
   },
-  tagihanDetail: function tagihanDetail(context, id_tagihan) {
-    context.dispatch('loadDetailBill', id_tagihan);
-    axios.get('/data-item-jual/list-tagihan/detail/' + id_tagihan).then(function (response) {
+  tampilTagihanDetail: function tampilTagihanDetail(context, param) {
+    context.dispatch('loadDetailBill', param.id_tagihan);
+    axios.get('/data-item-jual/list-tagihan/detail/' + param.id_tagihan, {
+      params: {
+        page: param.page
+      }
+    }).then(function (response) {
       context.dispatch('loadDetailBill', null);
       context.dispatch('showDetailBill');
       context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAGIHAN_DETAIL"], response.data);
     })["catch"](function (e) {
       console.log(e);
     });
+  },
+  cariTagihanDetailAct: function cariTagihanDetailAct(context, param) {
+    if (param.cari != null || param.cari !== undefined) {
+      context.dispatch('loadDetailBill', 'cari'); // context.commit(mutations.CARI_TAGIHAN,param.cari)
+
+      axios.get('/data-item-jual/list-tagihan/detail/' + param.id_tagihan + '/cari', {
+        params: {
+          cari: param.cari,
+          page: param.page
+        }
+      }).then(function (response) {
+        context.dispatch('loadDetailBill', null);
+        context.commit(_mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAGIHAN_DETAIL"], response.data);
+      });
+    }
   },
   prosesTagihan: function prosesTagihan(context, dataPesanan) {
     context.dispatch('loadSend');
@@ -58374,17 +59047,20 @@ __webpack_require__.r(__webpack_exports__);
   showDetailBill: function showDetailBill(state) {
     return state.showDetailBill;
   },
+  cariItem: function cariItem(state) {
+    return state.cariItem;
+  },
   dataPesanan: function dataPesanan(state) {
     return state.dataPesanan;
   },
   dataPembayaran: function dataPembayaran(state) {
     return state.dataPembayaran;
   },
-  dataTagihan: function dataTagihan(state) {
-    return state.dataTagihan;
+  listTagihan: function listTagihan(state) {
+    return state.listTagihan;
   },
-  dataDetailTagihan: function dataDetailTagihan(state) {
-    return state.dataDetailTagihan;
+  listDetailTagihan: function listDetailTagihan(state) {
+    return state.listDetailTagihan;
   },
   singleData: function singleData(state) {
     return state.singleData;
@@ -58441,7 +59117,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*!**********************************************!*\
   !*** ./resources/js/store/mutations-type.js ***!
   \**********************************************/
-/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_ITEM, LOAD_SEND, LOAD_BILL, LOAD_DETAIL_BILL, SHOW_DETAIL_BILL, HIDE_DETAIL_BILL, TAMPIL_ITEM_JUAL, PILIH_ITEM, VARIAN_PUSH, LIST_PESANAN, LIST_TAGIHAN, TAGIHAN_DETAIL, BAYAR_TAGIHAN, BAYAR_SEMUA_TAGIHAN, PESAN_MENU, CARI_ITEM, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, HAPUS_TAGIHAN, HAPUS_TAGIHAN_DETAIL, DESTROY_MENU_ACT, PROSES_BAYAR, PROSES_TAGIHAN, CLEAR_PESAN_MENU, CLEAR_MODAL_TAGIHAN, GET_PEMBAYARAN, CLOSE_PESAN */
+/*! exports provided: OPEN_MODAL, CLOSE_MODAL, LOAD_ITEM, LOAD_SEND, LOAD_BILL, LOAD_DETAIL_BILL, SHOW_DETAIL_BILL, HIDE_DETAIL_BILL, TAMPIL_ITEM_JUAL, PILIH_ITEM, VARIAN_PUSH, LIST_PESANAN, TAMPIL_TAGIHAN, TAGIHAN_DETAIL, BAYAR_TAGIHAN, BAYAR_SEMUA_TAGIHAN, PESAN_MENU, CARI_ITEM, UBAH_MENU, UPDATE_MENU, HAPUS_MENU, HAPUS_TAGIHAN, HAPUS_TAGIHAN_DETAIL, DESTROY_MENU_ACT, PROSES_BAYAR, PROSES_TAGIHAN, CLEAR_PESAN_MENU, CLEAR_MODAL_TAGIHAN, GET_PEMBAYARAN, CLOSE_PESAN */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -58458,7 +59134,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PILIH_ITEM", function() { return PILIH_ITEM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VARIAN_PUSH", function() { return VARIAN_PUSH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIST_PESANAN", function() { return LIST_PESANAN; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIST_TAGIHAN", function() { return LIST_TAGIHAN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAMPIL_TAGIHAN", function() { return TAMPIL_TAGIHAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAGIHAN_DETAIL", function() { return TAGIHAN_DETAIL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BAYAR_TAGIHAN", function() { return BAYAR_TAGIHAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BAYAR_SEMUA_TAGIHAN", function() { return BAYAR_SEMUA_TAGIHAN; });
@@ -58488,7 +59164,7 @@ var TAMPIL_ITEM_JUAL = 'TAMPIL_ITEM_JUAL';
 var PILIH_ITEM = 'PILIH_ITEM';
 var VARIAN_PUSH = 'VARIAN_PUSH';
 var LIST_PESANAN = 'LIST_PESANAN';
-var LIST_TAGIHAN = 'LIST_TAGIHAN';
+var TAMPIL_TAGIHAN = 'TAMPIL_TAGIHAN';
 var TAGIHAN_DETAIL = 'TAGIHAN_DETAIL';
 var BAYAR_TAGIHAN = 'BAYAR_TAGIHAN';
 var BAYAR_SEMUA_TAGIHAN = 'BAYAR_SEMUA_TAGIHAN';
@@ -58546,8 +59222,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.showDetailBill = true;
 }), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["HIDE_DETAIL_BILL"], function (state) {
   state.showDetailBill = false;
-}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], function (state, data_item_jual) {
-  state.listItem = data_item_jual;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_ITEM_JUAL"], function (state, param) {
+  state.listItem.data_item = param.data_item;
+  state.listItem.count = param.count;
 }), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["PILIH_ITEM"], function (state, data_item) {
   state.singleData = data_item;
 }), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["VARIAN_PUSH"], function (state, data_varian) {
@@ -58562,7 +59239,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.dataPesanan.menu.push(data_clone);
   console.log(state.dataPesanan.menu);
 }), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["CARI_ITEM"], function (state, data_cari) {
-  state.listItem = data_cari;
+  state.cariItem = data_cari;
 }), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["UBAH_MENU"], function (state, payload) {
   state.singleData = payload.item;
   state.menuInput.banyak_pesan = payload.item.banyak_pesan;
@@ -58614,10 +59291,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state.dataPesanan.menu = [];
   state.dataPesanan.nama_customer = null;
   state.loadSend = false;
-}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["LIST_TAGIHAN"], function (state, data_tagihan) {
-  state.dataTagihan = data_tagihan;
-}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAGIHAN_DETAIL"], function (state, data_detail_tagihan) {
-  state.dataDetailTagihan = data_detail_tagihan;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAMPIL_TAGIHAN"], function (state, param) {
+  state.listTagihan.count = param.count;
+  state.listTagihan.data_tagihan = param.list_tagihan;
+}), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["TAGIHAN_DETAIL"], function (state, param) {
+  state.listDetailTagihan.count = param.count;
+  state.listDetailTagihan.data_detail_tagihan = param.data_detail_tagihan;
 }), _defineProperty(_mutations$LOAD_ITEM$, _mutations_type__WEBPACK_IMPORTED_MODULE_0__["BAYAR_TAGIHAN"], function (state, data_detail_tagihan) {
   state.dataPesanan.total_harga += data_detail_tagihan.sub_total;
   state.dataPesanan.menu.push(data_detail_tagihan);
@@ -58669,7 +59348,11 @@ __webpack_require__.r(__webpack_exports__);
   showDetailBill: false,
   showModal: false,
   // bayarNanti:false,
-  listItem: null,
+  listItem: {
+    count: null,
+    data_item: []
+  },
+  cariItem: null,
   transaksi: {
     count: null,
     dataBayar: []
@@ -58684,8 +59367,14 @@ __webpack_require__.r(__webpack_exports__);
     nama_customer: null,
     menu: []
   },
-  dataTagihan: [],
-  dataDetailTagihan: [],
+  listTagihan: {
+    count: null,
+    data_tagihan: []
+  },
+  listDetailTagihan: {
+    count: null,
+    data_detail_tagihan: []
+  },
   menuInput: {
     varian_pilih: null,
     banyak_pesan: null,
