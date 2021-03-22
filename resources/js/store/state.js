@@ -1,4 +1,7 @@
 export default {
+	sidebarToggle:false,
+	sidebarMenu:[],
+	menuClicked:null,
 	loadItem:false,
 	loadSend:false,
 	loadBill:false,

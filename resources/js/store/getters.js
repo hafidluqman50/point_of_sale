@@ -1,4 +1,13 @@
 export default {
+	sidebarToggle: state => {
+		return state.sidebarToggle
+	},
+	sidebarMenu: state => {
+		return state.sidebarMenu
+	},
+	menuClicked: state => {
+		return state.menuClicked
+	},
 	listItem: state => {
 		return state.listItem
 	},

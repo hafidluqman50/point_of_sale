@@ -1,8 +1,9 @@
 <template>
 <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-    <div class="menu-nav">
+    <div class="menu-nav" @click="sidebarToggle()">
       <span class="fas fa-bars"></span> MENU
+      <!-- <button > KLIK</button> -->
     </div>
     <div class="container">
       <a href="#" class="navbar-brand">
@@ -62,7 +63,8 @@
     },
     methods: {
     ...mapActions([
-        'cariItemAct'
+        'cariItemAct',
+        'sidebarToggle'
       ])
     }
   }

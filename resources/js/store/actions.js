@@ -2,6 +2,25 @@ import * as mutations from './mutations-type'
 import { EventBus } from '../event-bus'
 
 export default {
+	sidebarToggle(context) {
+		context.commit(mutations.SIDEBAR_TOGGLE)
+	},
+	sidebarMenuLoad(context) {
+		axios.get('/load-jenis-item')
+		.then((response)=> {
+			context.commit(mutations.SIDEBAR_MENU,response.data)
+			context.commit(mutations.MENU_CLICKED)
+		})
+		.catch((e) => {
+			console.log(e)
+		})
+	},
+	jenisMenuClick(context,menu) {
+		localStorage.setItem('menu',menu)
+
+		context.commit(mutations.MENU_CLICKED)
+		context.dispatch('tampilItemJual',1)
+	},
 	loadItem(context,param) {
 		context.commit(mutations.LOAD_ITEM,param)
 	},
@@ -32,11 +51,13 @@ export default {
 		context.commit(mutations.CLEAR_PESAN_MENU)
 	},
 	tampilItemJual(context,page) {
+		let getJenis = localStorage.getItem('menu')
 		context.dispatch('loadItem')
 
 		axios.get('/data-item-jual',{
 			params:{
-				page:page
+				page:page,
+				jenis_menu:getJenis
 			}
 		})
 		.then((response) => {
@@ -48,11 +69,15 @@ export default {
 		context.commit(mutations.PILIH_ITEM,data_menu)
 	},
 	listPesanan(context) {
-		axios.get('/list-item')
-			 .then((response) => {
-			 	let list_menu = response.data
-				context.commit(mutations.LIST_PESANAN,list_menu)
-			 })
+		let pesanan = JSON.parse(localStorage.getItem('pesanan'))
+		if (pesanan == null) {
+			pesanan = {
+				list_item:[],
+				total_harga:0
+			}
+		}
+
+		context.commit(mutations.LIST_PESANAN,pesanan)
 	},
 	varianPush(context,param) {
 		let clone = {...param}
@@ -74,15 +99,6 @@ export default {
 		else {
 			data_pesan.sub_total = menu_input.banyak_pesan * data_pesan.harga_item
 		}
-
-		console.log(data_pesan)
-		axios.get('/tambah-list-menu', {
-			params:{
-				data_pesan:data_pesan
-			}
-		}).then((mantul) => {
-			console.log(mantul)
-		})
 
 		context.commit(mutations.PESAN_MENU,data_pesan)
 		context.dispatch('clearPesanMenu')
@@ -106,45 +122,27 @@ export default {
 		}
 
 		context.commit(mutations.UPDATE_MENU,clone)
-		
-		axios.get('/update-list-menu',{
-			params:{
-				data_update:clone
-			}
-		})
 
 		context.dispatch('clearPesanMenu')
 		context.dispatch('closeModal','modalEditMenu')
 	},
 	hapusMenu(context,data) {
-		axios.get('/hapus-list-menu',{
-			params:{
-				id_list:data.item.id_list
-			}
-		}).then((response) => {
-			console.log(response.data)
-		})
 		context.commit(mutations.HAPUS_MENU,data.index)
 	},
 	destroyMenuAct(context) {
-		axios.get('/destroy-list-menu')
-		.then((response) => {
-			// console.log(response.data)
-		})
-		.catch((e) => {
-			console.log(e)
-		})
-
 		context.commit(mutations.DESTROY_MENU_ACT)
 	},
 	cariItemAct(context,param) {
 		if (param.cari != null || param.cari !== undefined) {
+			let getJenis = localStorage.getItem('menu')
+
 			context.dispatch('loadItem')
 			context.commit(mutations.CARI_ITEM,param.cari)
 			axios.get('/data-item-jual/cari', {
 				params:{
 					cari_item:param.cari,
-					page:param.page
+					page:param.page,
+					jenis_menu:getJenis
 				}
 			})
 			.then(response => {
@@ -170,6 +168,7 @@ export default {
 			menu:dataPesanan.menu
 		})
 		.then((response) => {
+			localStorage.removeItem('pesanan')
 			context.commit(mutations.PROSES_BAYAR)
 			context.dispatch('loadSend',false)
 			context.dispatch('closeModal','checkoutMenu')

@@ -2,6 +2,23 @@ import * as mutations from './mutations-type'
 import axios from 'axios'
 
 export default {
+	[mutations.SIDEBAR_TOGGLE] (state) {
+		if (state.sidebarToggle) {
+			state.sidebarToggle = false
+		}
+		else {
+			state.sidebarToggle = true
+		}
+		console.log(state.sidebarToggle)
+	},
+	[mutations.SIDEBAR_MENU] (state,menu) {
+		state.sidebarMenu = menu
+	},
+	[mutations.MENU_CLICKED] (state) {
+		let menu = localStorage.getItem('menu')
+		
+		state.menuClicked = menu
+	},
 	[mutations.LOAD_ITEM] (state,param = true) {
 		state.loadItem = param
 	},
@@ -31,6 +48,7 @@ export default {
 		state.menuInput.varian_pilih = data_varian
 	},
 	[mutations.LIST_PESANAN] (state,data_menu) {
+		console.log(data_menu)
 		state.dataPesanan.menu        = data_menu.list_item
 		state.dataPesanan.total_harga = data_menu.total_harga
 	},
@@ -40,7 +58,12 @@ export default {
 		state.dataPesanan.total_harga+=data_menu.sub_total
 		state.dataPesanan.menu.push(data_clone)
 
-		console.log(state.dataPesanan.menu)
+		let localData = {
+			list_item:state.dataPesanan.menu,
+			total_harga:state.dataPesanan.total_harga
+		}
+
+		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
 	[mutations.CARI_ITEM] (state,data_cari) {
 		state.cariItem = data_cari
@@ -65,6 +88,15 @@ export default {
 		state.dataPesanan.menu[indexMenu].sub_total = sub_total
 
 		state.dataPesanan.total_harga+=state.dataPesanan.menu[indexMenu].sub_total
+
+		let localData = {
+			list_item:state.dataPesanan.menu,
+			total_harga:state.dataPesanan.total_harga
+		}
+
+		localStorage.removeItem('pesanan')
+
+		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
 	[mutations.HAPUS_MENU] (state,index_arr) {
 		const dataPesanan = state.dataPesanan.menu
@@ -75,12 +107,23 @@ export default {
 		}
 
   		state.dataPesanan.menu = removePesanan(dataPesanan,index_arr)
+
+		let localData = {
+			list_item:state.dataPesanan.menu,
+			total_harga:state.dataPesanan.total_harga
+		}
+
+		localStorage.removeItem('pesanan')
+
+		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
 	[mutations.DESTROY_MENU_ACT] (state) {
 		state.dataPesanan.total_harga  = 0
 		// state.dataPesanan.kembalian = null
 		state.dataPesanan.menu         = []
 		state.loadSend                 = false
+		
+		localStorage.removeItem('pesanan')
 	},
 	[mutations.CLEAR_PESAN_MENU] (state) {
 		state.menuInput.banyak_pesan = null
@@ -113,6 +156,15 @@ export default {
 	[mutations.BAYAR_TAGIHAN] (state,data_detail_tagihan) {
 		state.dataPesanan.total_harga+=data_detail_tagihan.sub_total
 		state.dataPesanan.menu.push(data_detail_tagihan)
+
+		let localData = {
+			list_item:state.dataPesanan.menu,
+			total_harga:state.dataPesanan.total_harga
+		}
+
+		localStorage.removeItem('pesanan')
+
+		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
 	[mutations.BAYAR_SEMUA_TAGIHAN] (state,data_detail_tagihan) {
 		console.log(data_detail_tagihan.tagihan)
@@ -123,6 +175,15 @@ export default {
 		else {
 			state.dataPesanan.menu = data_detail_tagihan.tagihan
 		}
+
+		let localData = {
+			list_item:state.dataPesanan.menu,
+			total_harga:state.dataPesanan.total_harga
+		}
+
+		localStorage.removeItem('pesanan')
+
+		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
 	[mutations.HAPUS_TAGIHAN] (state,id_tagihan) {
 		// const dataPesanan = state.dataPesanan.menu

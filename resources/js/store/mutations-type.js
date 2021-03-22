@@ -1,3 +1,6 @@
+export const SIDEBAR_TOGGLE		  = 'SIDEBAR_TOGGLE'
+export const SIDEBAR_MENU		  = 'SIDEBAR_MENU'
+export const MENU_CLICKED		  = 'MENU_CLICKED'
 export const OPEN_MODAL           = 'OPEN_MODAL'
 export const CLOSE_MODAL          = 'CLOSE_MODAL'
 export const LOAD_ITEM            = 'LOAD_ITEM'

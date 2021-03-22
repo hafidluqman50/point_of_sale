@@ -1,5 +1,18 @@
 <template>
 	<div>
+		<sidebar-component :active="sidebarToggle">
+			<ul class="sidebar-menu">
+				<li class="sidebar-item" onclick="window.history.back()">
+					<span class="fas fa-arrow-left"></span> Kembali
+				</li>
+				<li :class="`sidebar-item ${menuClicked == '' ? 'menu-active' : ''}`" @click="jenisMenuClick('')">
+					Semua Menu
+				</li>
+				<li v-for="menu in sidebarMenu" @click="jenisMenuClick(menu.nama_jenis_slug)" :class="`sidebar-item ${menuClicked == menu.nama_jenis_slug ? 'menu-active' : ''}`">
+					{{ menu.nama_jenis }}
+				</li>
+			</ul>
+		</sidebar-component>
 		<div class="container-fluid" style="padding-top:.6%;" :class="{'is-blur':showModal}">
 			<div class="row">
 				<div class="col-md-9">
@@ -431,6 +444,9 @@
 		},
 		computed: {
 			...mapGetters([
+				'sidebarToggle',
+				'sidebarMenu',
+				'menuClicked',
 				'listItem',
 				'loadItem',
 				'loadSend',
@@ -451,6 +467,8 @@
 				'openModal',
 				'closeModal',
 				'closeMenu',
+				'sidebarMenuLoad',
+				'jenisMenuClick',
 				'tampilItemJual',
 				'cariItemAct',
 				'pesanMenu',
@@ -537,6 +555,7 @@
 		mounted() {
 			this.pageItem(1)
 			this.listPesanan()
+			this.sidebarMenuLoad()
 		},
 	}
 </script>

@@ -2,7 +2,7 @@
     <div class="wrapper">
 		<navbar-component></navbar-component>
 		<div class="content-wrapper">
-			<div class="content">
+			<div class="">
 				<router-view></router-view>	
 			</div>
 		</div>

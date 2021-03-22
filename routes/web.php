@@ -144,6 +144,7 @@ Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
 	Route::get('/{any}',['uses' => 'Kasir\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 });
 
+Route::get('/load-jenis-item',['uses' => 'ApiController@loadJenisItem']);
 Route::get('/data-item-jual',['uses' => 'ApiController@dataItemJual']);
 Route::get('/data-item-jual/cari',['uses' => 'ApiController@dataItemJualCari']);
 Route::post('/data-item-jual/checkout',['uses' => 'ApiController@dataItemJualCheckout']);

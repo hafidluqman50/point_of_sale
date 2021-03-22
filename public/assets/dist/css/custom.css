@@ -3,6 +3,29 @@
 	overflow:auto;
 }
 
+.sidebar-menu {
+	margin-top:30%;
+	padding:0;
+	display: block;
+  	list-style: none;
+}
+
+.sidebar-item {
+	padding:5% 5% 5% 5%;
+	font-size:17px;
+	cursor:pointer;
+}
+
+.menu-active {
+	background:#007bff;
+	color:white;
+}
+
+.sidebar-item:hover:not(.menu-active) {
+	background:lightgrey;
+	opacity:0.9;
+}
+
 .checkout {
 	height:calc(100vh - 35vh);
 	overflow:auto;
@@ -129,9 +152,27 @@
 .slide-enter-active {
   transition: 1s;
 }
+
 .slide-enter {
   transform: translate(100%, 0);
 }
+
 .slide-leave-to {
   transform: translate(-100%, 0);
+}
+
+.sidebar-view {
+	left:-100%;
+	width:320px;
+	height:100vh;
+	position:fixed;
+	top:0;
+	box-shadow:0 .5rem 1rem rgba(0,0,0,.15)!important;
+	z-index:2;
+	background:white;
+	transition:.45s ease-in-out;
+}
+
+.sidebar-active {
+	left:0;
 }
