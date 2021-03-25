@@ -23,7 +23,7 @@
 					<div class="card">
 						<div class="card-header">
 							<a href="{{ url('/admin/data-barang-masuk/tambah') }}">
-								<button class="btn btn-primary">
+								<button class="btn btn-primary" type="button">
 									Tambah Data
 								</button>
 							</a>

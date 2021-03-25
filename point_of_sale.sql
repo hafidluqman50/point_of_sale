@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 22, 2021 at 11:36 AM
+-- Generation Time: Mar 25, 2021 at 05:00 PM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -65,6 +65,8 @@ CREATE TABLE `barang_keluar` (
 --
 
 INSERT INTO `barang_keluar` (`id_barang_keluar`, `tanggal_keluar`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
+('67309ca7-7fc0-4006-bc86-7ab7e787512d', '2020-04-09', 'Barang Keluar', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-26 00:30:33', '2021-03-26 00:30:33'),
+('af19323c-e2c6-436f-813c-e8732043a92b', '2020-04-21', 'Barang Keluar Lagi', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-26 00:31:20', '2021-03-26 00:31:20'),
 ('bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '2021-02-06', 'Test Barang Keluar', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-02-06 14:03:18', '2021-02-06 14:03:18');
 
 -- --------------------------------------------------------
@@ -87,8 +89,12 @@ CREATE TABLE `barang_keluar_detail` (
 --
 
 INSERT INTO `barang_keluar_detail` (`id_barang_keluar_detail`, `id_barang_keluar`, `id_barang`, `jumlah_barang`, `created_at`, `updated_at`) VALUES
+('076efada-8ca9-4c4f-b03e-c6665c1e80ff', '67309ca7-7fc0-4006-bc86-7ab7e787512d', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 12, NULL, NULL),
+('2065e036-f249-4a7e-9c5e-c3b5eacbc0a0', 'af19323c-e2c6-436f-813c-e8732043a92b', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, NULL, NULL),
 ('a2664a59-1ba4-49f7-92da-6e49febcffe4', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '91be7ca5-1775-468f-a9b1-c47f17836fef', 1, NULL, NULL),
-('d9ab7525-65b9-4329-915b-b4f48e7dcba2', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 1, NULL, NULL);
+('a304e591-c21a-4b89-8065-9996beedd9fc', '67309ca7-7fc0-4006-bc86-7ab7e787512d', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, NULL, NULL),
+('d9ab7525-65b9-4329-915b-b4f48e7dcba2', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 1, NULL, NULL),
+('db627973-058b-4f08-9871-943119891df1', 'af19323c-e2c6-436f-813c-e8732043a92b', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 12, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,6 +117,7 @@ CREATE TABLE `barang_masuk` (
 --
 
 INSERT INTO `barang_masuk` (`id_barang_masuk`, `tanggal_masuk`, `id_supplier`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
+('29d5390a-4c5a-47dc-a3a2-ed3339ac22ac', '2020-04-13', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Barang Pokok Masuk', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-26 00:22:40', '2021-03-26 00:22:40'),
 ('921596f8-bfbc-4ed9-9920-7a5e384c01ef', '2020-04-02', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Pemasukan Bahan Sayuran', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-04-02 21:56:36', '2020-04-02 21:56:36');
 
 -- --------------------------------------------------------
@@ -136,6 +143,8 @@ CREATE TABLE `barang_masuk_detail` (
 
 INSERT INTO `barang_masuk_detail` (`id_barang_masuk_detail`, `id_barang_masuk`, `id_barang`, `jumlah_masuk`, `harga_satuan`, `harga_total`, `created_at`, `updated_at`) VALUES
 ('4aeec88e-e4c4-469e-9487-7b51f8a31ef6', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 10000, 120000, NULL, NULL),
+('4e7641f4-e893-47da-b250-b9b23f672eb4', '29d5390a-4c5a-47dc-a3a2-ed3339ac22ac', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 12, 20000, 240000, NULL, NULL),
+('ceb4d9fa-aafd-4216-ac76-5aacff3879c4', '29d5390a-4c5a-47dc-a3a2-ed3339ac22ac', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 20000, 240000, NULL, NULL),
 ('e6268c7c-a666-40ff-bb5e-47cc1a30e231', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 20, 20000, 400000, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -476,7 +485,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `status_akun`, `remember_token`, `status_delete`) VALUES
 ('5fcc4e88-979d-48c6-893c-4226b3432467', 'Kasir', 'kasir', '$2y$10$ATocz/kGbvihcRhUmDo1peZ2TjbdJtn.89xItZwxac3/RC4lmI3ES', 0, 1, 'YMKX9UMYkvD7Ynqi5w6zrJP69QZq6oOPrBRJQVoXr4eNVejHvBEoTm2Gy50x', 0),
-('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 2, 1, 'qFao5vNmFEYWQiQuTHaQV6N8gkstqTqoE4c57YKBTeEKL1fGYR9gxBqMUAbd', 0);
+('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 2, 1, '4VoqXNfDSQqC5yhRrOyrrusrmpShpi90Cp3QW2cyx3ZKCvyKmFte257VcP5q', 0);
 
 --
 -- Indexes for dumped tables

@@ -153,6 +153,18 @@
                   <p>Data Barang Keluar</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/laporan-stok-barang') }}" class="nav-link {{ $page == 'laporan-stok-barang' ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Stok Barang</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/laporan-mutasi-barang') }}" class="nav-link {{ $page == 'laporan-mutasi-barang' ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Mutasi Barang</p>
+                </a>
+              </li>
               {{-- <li class="nav-item">
                 <a href="{{ url('/admin/data-belanja') }}" class="nav-link {{ $page == 'barang' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>

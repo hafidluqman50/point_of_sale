@@ -74,6 +74,10 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/data-barang/edit/{id}',['uses' => 'Admin\BarangController@edit']);
 	Route::put('/data-barang/update/{id}',['uses' => 'Admin\BarangController@update']);
 	Route::delete('/data-barang/delete/{id}',['uses' => 'Admin\BarangController@delete']);
+	Route::get('/laporan-stok-barang',['uses' => 'Admin\LaporanInventoryController@laporanStokBarang']);
+	Route::get('/laporan-mutasi-barang',['uses' => 'Admin\LaporanInventoryController@laporanMutasiBarang']);
+	Route::get('/laporan-inventory/cetak-laporan-stok',['uses' => 'Admin\LaporanInventoryController@cetakLaporanStok']);
+	Route::get('/laporan-inventory/cetak-laporan-mutasi',['uses' => 'Admin\LaporanInventoryController@cetakLaporanMutasi']);
 	// END ROUTE BARANG //
 
 	// ROUTE SUPPLIER //
@@ -110,7 +114,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::delete('/transaksi/delete/{id}',['uses' => 'Admin\TransaksiController@delete']);
 	Route::get('/transaksi/detail/{id}',['uses' => 'Admin\TransaksiDetailController@index']);
 	Route::delete('/transaksi/detail/{id}/delete/{id_detail}',['uses' => 'Admin\TransaksiDetailController@delete']);
-	Route::get('/transaksi/laporan-export',['uses' => 'Admin\TransaksiController@laporan']);
+	Route::get('/transaksi/cetak-laporan',['uses' => 'Admin\TransaksiController@laporanTransaksi']);
 	// END ROUTE TRANSAKSI //
 
 	// ROUTE TAGIHAN //
@@ -118,7 +122,7 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::delete('/tagihan/delete/{id}',['uses' => 'Admin\TagihanController@delete']);
 	Route::get('/tagihan/detail/{id}',['uses' => 'Admin\TagihanDetailController@index']);
 	Route::delete('/tagihan/detail/{id}/delete/{id_detail}',['uses' => 'Admin\TransaksiDetailController@delete']);
-	Route::get('/tagihan/laporan-export',['uses' => 'Admin\TagihanController@laporan']);
+	Route::get('/tagihan/cetak-laporan',['uses' => 'Admin\TagihanController@cetakLaporanTagihan']);
 	// END ROUTE TAGIHAN //
 
 	// ROUTE USERS //

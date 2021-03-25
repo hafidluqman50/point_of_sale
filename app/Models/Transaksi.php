@@ -23,5 +23,15 @@ class Transaksi extends Model
                 ->get();
 
    		return $db;
-   	}	
+   	}
+
+    public static function reportData($from,$to)
+    {
+        $get = self::join('users','transaksi.id_users','=','users.id_users')
+                    ->whereBetween('tanggal_transaksi',[$from,$to])
+                    ->orderBy('tanggal_transaksi','DESC')
+                    ->get();
+
+        return $get;
+    }
 }

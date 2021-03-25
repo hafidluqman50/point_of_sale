@@ -22,22 +22,26 @@
 				<div class="card">
 					<div class="card-header">
 						<div class="row justify-content-center align-items-center">
-							<div class="col-md-12 row">
-								<div class="col-md-4">
-									<div class="form-group row">
-										<label for="" class="col-md-4 col-form-label">From</label>
-										<input type="date" name="from" class="form-control col-md-8">
+							<div class="col-md-12">
+								<form action="{{ url('/admin/tagihan/cetak-laporan') }}" method="GET">
+									<div class="row">
+										<div class="col-md-3">
+											<div class="form-group row">
+												<label for="" class="col-md-3 col-form-label">From</label>
+												<input type="date" name="from" class="form-control col-md-8">
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group row">
+												<label for="" class="col-md-3 col-form-label">To</label>
+												<input type="date" name="to" class="form-control col-md-8">
+											</div>
+										</div>
+										<div class="col-md-4">
+											<button class="btn btn-success">Export <span class="fas fa-file-excel"></span></button>
+										</div>
 									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="form-group row">
-										<label for="" class="col-md-4 col-form-label">To</label>
-										<input type="date" name="to" class="form-control col-md-8">
-									</div>
-								</div>
-								<div class="col-md-4">
-									<button class="btn btn-success">Export <span class="fas fa-file-excel"></span></button>
-								</div>
+								</form>
 							</div>
 						</div>
 					</div>
