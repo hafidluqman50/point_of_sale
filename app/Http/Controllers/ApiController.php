@@ -488,93 +488,59 @@ class ApiController extends Controller
 		return response()->json(['message' => 'Berhasil Input Tagihan']);
     }
 
-    // HARUS DIRAPIKAN //
-  //   public function bayarTagihan(Request $request)
-  //   {
-		// if (session()->has('data_session')) {
-		// 	$session   = session()->get('data_session');
-		// }
-		// else {
-		// 	$session = [
-		// 		'list_item'    => [],
-		// 		'total_harga'  => 0,
-		// 		'time_expired' => '',
-  //   		];
+    public function hapusTagihan(Request $request)
+    {
+    	Tagihan::where('id_tagihan',$request->id_tagihan)->delete();
 
-  //   		session()->put('data_session',$session);
-		// }
+    	return response()->json(['message' => 'Berhasil Hapus']);
+    }
 
-		// $bayar_tagihan = json_decode($request->bayar_tagihan,TRUE);
-		// // dd(json_decode($request->bayar_tagihan));
+    public function hapusDetailTagihan(Request $request)
+    {
+    	TagihanDetail::where('id_tagihan',$request->id_tagihan)->where('id_tagihan_detail',$request->id_tagihan_detail)->delete();
 
-  //   	array_push($session['list_item'],$bayar_tagihan);
+    	return response()->json(['message' => 'Berhasil Hapus']);
+    }
 
-		// $session['time_expired'] = generate_time(60*60);
-		// $session['total_harga']+=$bayar_tagihan['sub_total'];
+    public function bayarSemuaTagihan(Request $request)
+    {
 
-  //   	session()->put('data_session',$session);
+		$get_tagihan = TagihanDetail::getData($request->id_tagihan);
 
-  //   	return session()->get('data_session');
-  //   }
+		$tagihan[] = [];
 
-  //   public function bayarSemuaTagihan(Request $request)
-  //   {
-		// if (session()->has('data_session')) {
-		// 	$session   = session()->get('data_session');
-		// }
-		// else {
-		// 	$session = [
-		// 		'list_item'    => [],
-		// 		'total_harga'  => 0,
-		// 		'time_expired' => '',
-  //   		];
+		$total_harga = 0;
 
-  //   		session()->put('data_session',$session);
-		// }
-
-		// $get_tagihan = TagihanDetail::getData($request->id_tagihan);
-
-		// $tagihan[] = [];
-
-		// $total_harga = 0;
-
-		// foreach ($get_tagihan as $key => $value) {
-		// 	if ($value->varian == " " || $value->varian == null) {
-		// 		$varian = null;
-		// 	}
-		// 	else {
-		// 		$explode     = explode(":",$value->varian);
+		foreach ($get_tagihan as $key => $value) {
+			if ($value->varian == " " || $value->varian == null) {
+				$varian = null;
+			}
+			else {
+				$explode     = explode(":",$value->varian);
 				
-		// 		$namaVarian  = rtrim($explode[0],"");
-		// 		$hargaVarian = (int)ltrim($explode[1],"");
+				$namaVarian  = rtrim($explode[0],"");
+				$hargaVarian = (int)ltrim($explode[1],"");
 
-		// 		$varian = ['namaVarian'=>$namaVarian,'hargaVarian'=>$hargaVarian];
-		// 	}
+				$varian = ['namaVarian'=>$namaVarian,'hargaVarian'=>$hargaVarian];
+			}
 
-		// 	$tagihan[$key] = [
-		// 		'id_tagihan'        => $value->id_tagihan,
-		// 		'id_tagihan_detail' => $value->id_tagihan_detail,
-		// 		'id_item_jual'		=> $value->id_item_jual,
-		// 		'tgl_tagihan'       => $value->tgl_tagihan,
-		// 		'nama_item'         => $value->nama_item,
-		// 		'banyak_pesan'      => $value->banyak_pesan,
-		// 		'sub_total'         => $value->sub_total,
-		// 		'varian_pilih'      => $varian,
-		// 		'keterangan'        => $value->keterangan
-		// 	];
+			$tagihan[$key] = [
+				'id_tagihan'        => $value->id_tagihan,
+				'id_tagihan_detail' => $value->id_tagihan_detail,
+				'id_item_jual'		=> $value->id_item_jual,
+				'tgl_tagihan'       => $value->tgl_tagihan,
+				'nama_item'         => $value->nama_item,
+				'banyak_pesan'      => $value->banyak_pesan,
+				'sub_total'         => $value->sub_total,
+				'varian_pilih'      => $varian,
+				'keterangan'        => $value->keterangan
+			];
 
-  //   		array_push($session['list_item'],$tagihan[$key]);
+			$total_harga += $value->sub_total;
+		}
 
-		// 	$total_harga += $value->sub_total;
-		// }
-
-		// $session['time_expired'] = generate_time(60*60);
-		// $session['total_harga']+=$total_harga;
-
-  //   	session()->put('data_session',$session);
-
-		// return response()->json(['tagihan'=>$tagihan,'total_harga'=>$total_harga]);
-  //   }
+		return response()->json(['tagihan'=>$tagihan,'total_harga'=>$total_harga]);
+    }
 
     public function dataPembayaran(Request $request) 
     {

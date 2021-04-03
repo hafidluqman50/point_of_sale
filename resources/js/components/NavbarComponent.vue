@@ -2,12 +2,12 @@
 <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="menu-nav" @click="sidebarToggle()">
-      <span class="fas fa-bars"></span> MENU
+      <span class="fas fa-bars"></span>
       <!-- <button > KLIK</button> -->
     </div>
     <div class="container">
       <a href="#" class="navbar-brand">
-        <span class="brand-text font-weight-light">Point Of Sale</span>
+        <span class="brand-text font-weight-light">JupiterPOS</span>
       </a>
       
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

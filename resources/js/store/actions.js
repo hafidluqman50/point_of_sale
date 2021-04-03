@@ -2,8 +2,17 @@ import * as mutations from './mutations-type'
 import { EventBus } from '../event-bus'
 
 export default {
+	backPage(context) {
+		localStorage.setItem('menu','')
+		context.commit(mutations.MENU_CLICKED)
+		window.history.back()
+	},
 	sidebarToggle(context) {
 		context.commit(mutations.SIDEBAR_TOGGLE)
+	},
+	closeTagihan(context) {
+		context.dispatch('closeModal','tagihanModal')
+		context.dispatch('hideDetailBill')
 	},
 	sidebarMenuLoad(context) {
 		axios.get('/load-jenis-item')
@@ -20,6 +29,7 @@ export default {
 
 		context.commit(mutations.MENU_CLICKED)
 		context.dispatch('tampilItemJual',1)
+		context.dispatch('sidebarToggle')
 	},
 	loadItem(context,param) {
 		context.commit(mutations.LOAD_ITEM,param)
@@ -32,6 +42,12 @@ export default {
 	},
 	loadDetailBill(context,param) {
 		context.commit(mutations.LOAD_DETAIL_BILL,param)
+	},
+	loadDeleteBill(context,param) {
+		context.commit(mutations.LOAD_DELETE_BILL,param)
+	},
+	loadDeleteDetailBill(context,param) {
+		context.commit(mutations.LOAD_DELETE_DETAIL_BILL,param)
 	},
 	showDetailBill(context) {
 		context.commit(mutations.SHOW_DETAIL_BILL)
@@ -192,7 +208,6 @@ export default {
 		})
 	},
 	cariTagihanAct(context,param) {
-		console.log(param)
 		if (param.cari_tagihan != null || param.cari_tagihan !== undefined) {
 			context.dispatch('loadBill')
 			// context.commit(mutations.CARI_TAGIHAN,param.cari_tagihan)
@@ -282,18 +297,17 @@ export default {
 			sub_total,
 			varian_pilih				
 		}
-
-		axios.get('/bayar-tagihan',{
-			params:{
-				bayar_tagihan:bayar_tagihan
-			}
-		})
-		.then((response) => {
-			console.log(response.data)
-		})
-		.catch((e) => {
-			console.log(e)
-		})
+		// axios.get('/bayar-tagihan',{
+		// 	params:{
+		// 		bayar_tagihan:bayar_tagihan
+		// 	}
+		// })
+		// .then((response) => {
+		// 	console.log(response.data)
+		// })
+		// .catch((e) => {
+		// 	console.log(e)
+		// })
 		
 		context.commit(mutations.BAYAR_TAGIHAN,bayar_tagihan)
 	},
@@ -314,56 +328,37 @@ export default {
 			console.log(e)
 		})
 	},
-	hapusTagihan(context,id_tagihan) {
-		context.dispatch('loadDetailBill',id_tagihan)
+	hapusTagihan(context,param) {
+		context.dispatch('loadDeleteBill',param.id_tagihan)
 		axios.get('/data-item-jual/hapus-tagihan',{
 			params:{
-				id_tagihan
+				id_tagihan:param.id_tagihan
 			}
 		})
 		.then((response) => {
-			context.dispatch('loadDetailBill')
-			context.commit(mutations.HAPUS_TAGIHAN,id_tagihan)
+			context.dispatch('loadDeleteBill')
+			// context.commit(mutations.HAPUS_TAGIHAN,param.id_tagihan)
+			context.dispatch('tampilTagihan',param.page)
 			console.log(response.data)
 		})
 		.catch((e) => {
 			console.log(e)
 		})
 	},
-	hapusTagihanDetail(context,{tagihan}) {
-		context.dispatch('loadDetailBill',tagihan.id_tagihan_detail)
-		axios.get('/data-item-jual/hapus-tagihan-detail',{
+	hapusTagihanDetail(context,tagihan) {
+		context.dispatch('loadDeleteDetailBill',tagihan.id_tagihan_detail)
+		axios.get('/data-item-jual/hapus-detail-tagihan',{
 			params:{
 				id_tagihan:tagihan.id_tagihan,
 				id_tagihan_detail:tagihan.id_tagihan_detail
 			}
 		})
 		.then((response) => {
-			context.dispatch('loadDetailBill')
-			context.commit(mutations.HAPUS_TAGIHAN_DETAIL,tagihan.id_tagihan_detail)
-			console.log(response.data)
+			context.dispatch('loadDeleteDetailBill')
+			context.dispatch('tampilTagihanDetail',tagihan.page)
 		})
 		.catch((e) => {
 			console.log(e)
 		})
-	},
-	getPembayaran(context,page) {
-		// let dataBayar = null
-		// if (dataBayar == null) {
-		console.log(page)
-		context.dispatch('loadState')
-		axios.get('/data-pembayaran',{
-			params:{
-				page:page
-			}
-		}).then(response => {
-			 	context.dispatch('loadState',false)
-				context.commit(mutations.GET_PEMBAYARAN,response.data)
-			})
-		// }
-		// else {
-		// 	context.commit(mutations.GET_PEMBAYARAN,dataBayar)
-		// }
-		// console.log(dataBayar)
 	}
 }

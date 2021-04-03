@@ -7,7 +7,6 @@ Vue.use(VueRouter)
 // ADMIN COMPONENT //
 import MainAdmin from './components/Admin/Main'
 import KasirMainAdmin from './components/Admin/views/KasirMain'
-import PembayaranAdmin from './components/Admin/views/Pembayaran'
 // END ADMIN COMPONENT //
 
 // KASIR COMPONENT //
@@ -28,10 +27,6 @@ const router = new VueRouter({
 				{
 					path:'',
 					component:KasirMainAdmin
-				},
-				{
-					path:'pembayaran',
-					component:PembayaranAdmin
 				}
 			]
 		},

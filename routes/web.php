@@ -11,7 +11,7 @@
 |
 */
 Route::get('/hash',function(){
-	dd(bcrypt('kasir'));
+	dd(bcrypt('gudang'));
 });
 
 Route::group(['middleware' => 'has.auth'],function(){
@@ -138,17 +138,110 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/kasir',['uses' => 'Admin\KasirController@index']);
 	Route::any('/kasir/{any}',['uses' => 'Admin\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 	// END ROUTE KASIR //
+
+	Route::get('/settings-profile',['uses' => 'Admin\DashboardController@settingsProfile']);
+	Route::get('/settings-profile/save',['uses' => 'Admin\DashboardController@save']);
 });
 
-Route::group(['middleware' => 'is.gudang'],function(){
+Route::group(['middleware' => 'is.gudang','prefix' => 'gudang'],function(){
 	Route::get('/dashboard',['uses' => 'Gudang\DashboardController@index']);
+
+	// ROUTE BARANG //
+	Route::get('/data-jenis-barang',['uses' => 'Gudang\JenisBarangController@index']);
+	Route::get('/data-jenis-barang/tambah',['uses' => 'Gudang\JenisBarangController@tambah']);
+	Route::post('/data-jenis-barang/save',['uses' => 'Gudang\JenisBarangController@save']);
+	Route::get('/data-jenis-barang/edit/{id}',['uses' => 'Gudang\JenisBarangController@edit']);
+	Route::put('/data-jenis-barang/update/{id}',['uses' => 'Gudang\JenisBarangController@update']);
+	Route::delete('/data-jenis-barang/delete/{id}',['uses' => 'Gudang\JenisBarangController@delete']);
+	// END ROUTE BARANG //
+
+	// ROUTE BARANG //
+	Route::get('/data-barang',['uses' => 'Gudang\BarangController@index']);
+	Route::get('/data-barang/tambah',['uses' => 'Gudang\BarangController@tambah']);
+	Route::post('/data-barang/save',['uses' => 'Gudang\BarangController@save']);
+	Route::get('/data-barang/edit/{id}',['uses' => 'Gudang\BarangController@edit']);
+	Route::put('/data-barang/update/{id}',['uses' => 'Gudang\BarangController@update']);
+	Route::delete('/data-barang/delete/{id}',['uses' => 'Gudang\BarangController@delete']);
+	Route::get('/laporan-stok-barang',['uses' => 'Gudang\LaporanInventoryController@laporanStokBarang']);
+	Route::get('/laporan-mutasi-barang',['uses' => 'Gudang\LaporanInventoryController@laporanMutasiBarang']);
+	Route::get('/laporan-inventory/cetak-laporan-stok',['uses' => 'Gudang\LaporanInventoryController@cetakLaporanStok']);
+	Route::get('/laporan-inventory/cetak-laporan-mutasi',['uses' => 'Gudang\LaporanInventoryController@cetakLaporanMutasi']);
+	// END ROUTE BARANG //
+
+	// ROUTE SUPPLIER //
+	Route::get('/data-supplier',['uses' => 'Gudang\SupplierController@index']);
+	Route::get('/data-supplier/tambah',['uses' => 'Gudang\SupplierController@tambah']);
+	Route::post('/data-supplier/save',['uses' => 'Gudang\SupplierController@save']);
+	Route::get('/data-supplier/edit/{id}',['uses' => 'Gudang\SupplierController@edit']);
+	Route::put('/data-supplier/update/{id}',['uses' => 'Gudang\SupplierController@update']);
+	Route::delete('/data-supplier/delete/{id}',['uses' => 'Gudang\SupplierController@delete']);
+	// END ROUTE SUPPLIER //
+
+	// ROUTE BARNAG MASUK //
+	Route::get('/data-barang-masuk',['uses' => 'Gudang\BarangMasukController@index']);
+	Route::get('/data-barang-masuk/tambah',['uses' => 'Gudang\BarangMasukController@tambah']);
+	Route::post('/data-barang-masuk/save',['uses' => 'Gudang\BarangMasukController@save']);
+	Route::get('/data-barang-masuk/edit/{id}',['uses' => 'Gudang\BarangMasukController@edit']);
+	Route::put('/data-barang-masuk/update/{id}',['uses' => 'Gudang\BarangMasukController@update']);
+	Route::get('/data-barang-masuk/detail/{id}',['uses' => 'Gudang\BarangMasukController@detail']);
+	Route::delete('/data-barang-masuk/delete/{id}',['uses' => 'Gudang\BarangMasukController@delete']);
+	// END ROUTE BARANG MASUK //
+
+	// ROUTE BARNAG MASUK //
+	Route::get('/data-barang-keluar',['uses' => 'Gudang\BarangKeluarController@index']);
+	Route::get('/data-barang-keluar/tambah',['uses' => 'Gudang\BarangKeluarController@tambah']);
+	Route::post('/data-barang-keluar/save',['uses' => 'Gudang\BarangKeluarController@save']);
+	Route::get('/data-barang-keluar/edit/{id}',['uses' => 'Gudang\BarangKeluarController@edit']);
+	Route::put('/data-barang-keluar/update/{id}',['uses' => 'Gudang\BarangKeluarController@update']);
+	Route::get('/data-barang-keluar/detail/{id}',['uses' => 'Gudang\BarangKeluarController@detail']);
+	Route::delete('/data-barang-keluar/delete/{id}',['uses' => 'Gudang\BarangKeluarController@delete']);
+	// END ROUTE BARANG MASUK //
+
+	Route::get('/settings-profile',['uses' => 'Gudang\DashboardController@settingsProfile']);
+	Route::get('/settings-profile/save',['uses' => 'Gudang\DashboardController@save']);
 });
 
 Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
-	Route::get('/{any}',['uses' => 'Kasir\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
+	Route::get('/dashboard',['uses' => 'Kasir\DashboardController@index']);
+
+	// ROUTE DATA ITEM JUAL //
+	Route::get('/data-item-jual',['uses' => 'Kasir\ItemJualController@index']);
+	Route::get('/data-item-jual/tambah',['uses' => 'Kasir\ItemJualController@tambah']);
+	Route::post('/data-item-jual/save',['uses' => 'Kasir\ItemJualController@save']);
+	Route::get('/data-item-jual/edit/{id}',['uses' => 'Kasir\ItemJualController@edit']);
+	Route::put('/data-item-jual/update/{id}',['uses' => 'Kasir\ItemJualController@update']);
+	Route::delete('/data-item-jual/delete/{id}',['uses' => 'Kasir\ItemJualController@delete']);
+	// END ROUTE DATA ITEM JUAL //
+
+	// ROUTE DATA JENIS ITEM //
+	Route::get('/data-jenis-item',['uses' => 'Kasir\JenisItemController@index']);
+	Route::get('/data-jenis-item/tambah',['uses' => 'Kasir\JenisItemController@tambah']);
+	Route::post('/data-jenis-item/save',['uses' => 'Kasir\JenisItemController@save']);
+	Route::get('/data-jenis-item/edit/{id}',['uses' => 'Kasir\JenisItemController@edit']);
+	Route::put('/data-jenis-item/update/{id}',['uses' => 'Kasir\JenisItemController@update']);
+	Route::delete('/data-jenis-item/delete/{id}',['uses' => 'Kasir\JenisItemController@delete']);
+	// END ROUTE DATA JENIS ITEM //
+	
+	// ROUTE TRANSAKSI //
+	Route::get('/transaksi',['uses' => 'Kasir\TransaksiController@index']);
+	Route::get('/transaksi/detail/{id}',['uses' => 'Kasir\TransaksiDetailController@index']);
+	Route::get('/transaksi/cetak-laporan',['uses' => 'Kasir\TransaksiController@laporanTransaksi']);
+	// END ROUTE TRANSAKSI //
+
+	// ROUTE TAGIHAN //
+	Route::get('/tagihan',['uses' => 'Kasir\TagihanController@index']);
+	Route::get('/tagihan/detail/{id}',['uses' => 'Kasir\TagihanDetailController@index']);
+	Route::get('/tagihan/cetak-laporan',['uses' => 'Kasir\TagihanController@cetakLaporanTagihan']);
+	// END ROUTE TAGIHAN //
+	Route::get('/',['uses' => 'Kasir\KasirController@index']);
+	Route::any('/{any}',['uses' => 'Kasir\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
+
+	Route::get('/settings-profile',['uses' => 'Kasir\DashboardController@settingsProfile']);
+	Route::get('/settings-profile/save',['uses' => 'Kasir\DashboardController@save']);
 });
 
 Route::get('/load-jenis-item',['uses' => 'ApiController@loadJenisItem']);
+
 Route::get('/data-item-jual',['uses' => 'ApiController@dataItemJual']);
 Route::get('/data-item-jual/cari',['uses' => 'ApiController@dataItemJualCari']);
 Route::post('/data-item-jual/checkout',['uses' => 'ApiController@dataItemJualCheckout']);
@@ -157,6 +250,9 @@ Route::get('/data-item-jual/list-tagihan/cari',['uses' => 'ApiController@cariTag
 Route::get('/data-item-jual/list-tagihan/detail/{id}',['uses' => 'ApiController@tagihanDetail']);
 Route::get('/data-item-jual/list-tagihan/detail/{id}/cari',['uses' => 'ApiController@cariTagihanDetail']);
 Route::post('/data-item-jual/tagihan-proses',['uses' => 'ApiController@tagihanProses']);
+Route::get('/data-item-jual/hapus-tagihan',['uses' => 'ApiController@hapusTagihan']);
+Route::get('/data-item-jual/hapus-detail-tagihan',['uses' => 'ApiController@hapusDetailTagihan']);
+
 Route::get('/list-item',['uses' => 'ApiController@listItem']);
 Route::get('/tambah-list-menu',['uses' => 'ApiController@tambahListMenu']);
 Route::get('/update-list-menu',['uses' => 'ApiController@updateListMenu']);

@@ -6,6 +6,8 @@ export default {
 	loadSend:false,
 	loadBill:false,
 	loadDetailBill:null,
+	loadDeleteBill:null,
+	loadDeleteDetailBill:null,
 	showDetailBill:false,
 	showModal:false,
 	// bayarNanti:false,

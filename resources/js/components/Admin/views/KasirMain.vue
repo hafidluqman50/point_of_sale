@@ -15,7 +15,7 @@
 		</sidebar-component>
 		<div class="container-fluid" style="padding-top:.6%;" :class="{'is-blur':showModal}">
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-lg-9 col-md-6">
 					<div class="card m-0">
 						<div class="card-body scrollable-content">
 		        			<div class="d-flex justify-content-center align-items-center" style="height:100%" v-if="loadItem">
@@ -56,7 +56,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-lg-3 col-md-6">
 					<div class="card m-0">
 						<div class="card-header bg-light">
 							<div class="row">
@@ -225,7 +225,11 @@
 					<button class="btn btn-primary float-md-right" v-if="bayarNanti == false" @click="prosesBayar(dataPesanan)">Proses</button>
 					<button class="btn btn-primary float-md-right" v-else @click="prosesTagihan(dataPesanan)">Simpan Tagihan</button>
 				</div>
-				<div class="spinner-border" role="status" v-else></div>
+				<div v-else>
+					<button class="btn btn-primary float-md-right" disabled>
+  						Loading... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+					</button>
+				</div>
 			</template>
 		</vue-modal>
 		<!-- END MODAL CHECKOUT -->
@@ -288,7 +292,11 @@
 								<button class="btn btn-info" @click="tampilTagihanDetail({id_tagihan:item.id_tagihan,page:1}); getIdTagihan(item.id_tagihan)" v-else>
 									Lihat List Tagihan
 								</button>
-								<button class="btn btn-danger">
+								<button class="btn btn-danger" disabled="disabled" v-if="loadDeleteBill == item.id_tagihan">
+  									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  									Loading...
+								</button>
+								<button class="btn btn-danger" @click="deleteTagihan(item.id_tagihan)" v-else>
 									Hapus
 								</button>
 							</td>
@@ -371,6 +379,11 @@
 			        			</div>
 							</td>
 						</tr>
+						<tr v-else-if="listDetailTagihan.data_detail_tagihan.length == 0 && loadDetailBill == null">
+							<td align="center" colspan="8">
+								Tidak Ada Data
+							</td>
+						</tr>
 						<tr v-for="(item,index) in listDetailTagihan.data_detail_tagihan" :key="index" v-else>
 							<td>{{ index+1 }}</td>
 							<td>{{ item.tgl_tagihan | formatDate }}</td>
@@ -381,7 +394,11 @@
 							<td>{{ item.keterangan }}</td>
 							<td>
 								<button class="btn btn-success" @click="bayarTagihan(item)">Bayar</button>
-								<button class="btn btn-danger">Delete</button>
+								<button class="btn btn-danger" disabled="disabled" v-if="loadDeleteDetailBill == item.id_tagihan_detail">
+  									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  									Loading...
+								</button>
+								<button class="btn btn-danger" @click="deleteDetailTagihan({id_tagihan,id_tagihan_detail:item.id_tagihan_detail})" v-else>Delete</button>
 							</td>
 						</tr>
 						<tr>
@@ -452,6 +469,8 @@
 				'loadSend',
 				'loadBill',
 				'loadDetailBill',
+				'loadDeleteBill',
+				'loadDeleteDetailBill',
 				'showDetailBill',
 				'showModal',
 				'singleData',
@@ -484,6 +503,8 @@
 				'tampilTagihanDetail',
 				'cariTagihanDetailAct',
 				'hideDetailBill',
+				'hapusTagihan',
+				'hapusTagihanDetail',
 				'bayarTagihan',
 				'bayarSemuaTagihan',
 				'ubahMenu',
@@ -531,9 +552,6 @@
 			destroyMenu:function() {
 				this.destroyMenuAct();
 			},
-			ngetes:(index_arr) => {
-				console.log(index_arr)
-			},
 			VarianAct:function(param) {
 				this.varianPush(param)
 			},
@@ -550,6 +568,23 @@
 				if (this.id_tagihan != null) {
 					this.id_tagihan = null
 				}
+			},
+			deleteTagihan:function(id_tagihan) {
+				let param = {
+					id_tagihan,
+					page:this.pageBillPosition
+				}
+
+				this.hapusTagihan(param)
+			},
+			deleteDetailTagihan:function(data) {
+				let param = {
+					id_tagihan:data.id_tagihan,
+					id_tagihan_detail:data.id_tagihan_detail,
+					page:this.pageBillPosition
+				}
+
+				this.hapusTagihanDetail(param)
 			}
 		},
 		mounted() {

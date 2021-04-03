@@ -29,14 +29,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{ $total_transaksi }}</h3>
 
-                <p>New Orders</p>
+                <p>Jumlah Transaksi Harian</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('/admin/transaksi') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -44,14 +44,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>{{ $total_supplier }}</h3>
 
-                <p>Bounce Rate</p>
+                <p>Supplier</p>
               </div>
               <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="ion ion-android-people"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('/admin/supplier') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -59,14 +59,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3>{{ $total_users }}</h3>
 
-                <p>User Registrations</p>
+                <p>Users</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('/admin/users/') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -74,14 +74,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3>{{ $total_tagihan }}</h3>
 
-                <p>Unique Visitors</p>
+                <p>Total Tagihan</p>
               </div>
               <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion ion-card"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('/admin/tagihan') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -98,16 +98,6 @@
                   <i class="fas fa-chart-pie mr-1"></i>
                   Sales
                 </h3>
-                <div class="card-tools">
-                  <ul class="nav nav-pills ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                    </li>
-                  </ul>
-                </div>
               </div><!-- /.card-header -->
               <div class="card-body">
                 <div class="tab-content p-0">
@@ -185,4 +175,130 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+@endsection
+
+@section('js')
+<script>
+  /* Chart.js Charts */
+  // Sales chart
+  var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d');
+  //$('#revenue-chart').get(0).getContext('2d');
+
+  var salesChartData = {
+    labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July','Agustus','September','Oktober','November','Desember'],
+    datasets: [
+      {
+        label               : 'Digital Goods',
+        backgroundColor     : 'rgba(60,141,188,0.9)',
+        borderColor         : 'rgba(60,141,188,0.8)',
+        pointRadius          : false,
+        pointColor          : '#3b8bba',
+        pointStrokeColor    : 'rgba(60,141,188,1)',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgba(60,141,188,1)',
+        data                : {!!json_encode($dataset_transaksi)!!}
+      }
+    ]
+  }
+
+  var salesChartOptions = {
+    maintainAspectRatio : false,
+    responsive : true,
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        gridLines : {
+          display : false,
+        }
+      }],
+      yAxes: [{
+        gridLines : {
+          display : false,
+        },
+        ticks: {
+             beginAtZero: true,
+             userCallback: function(label, index, labels) {
+                 // when the floored value is the same as the value we have a whole number
+                 if (Math.floor(label) === label) {
+                     return label;
+                 }
+
+             },
+         }
+      }]
+    }
+  }
+
+  // This will get the first returned node in the jQuery collection.
+  var salesChart = new Chart(salesChartCanvas, { 
+      type: 'line', 
+      data: salesChartData, 
+      options: salesChartOptions
+    }
+  )
+
+  // Sales graph chart
+  var salesGraphChartCanvas = $('#line-chart').get(0).getContext('2d');
+  //$('#revenue-chart').get(0).getContext('2d');
+
+  var salesGraphChartData = {
+    labels  : {!!json_encode(sort_arr_asc($label_per_year))!!},
+    datasets: [
+      {
+        label               : 'Digital Goods',
+        fill                : false,
+        borderWidth         : 2,
+        lineTension         : 0,
+        spanGaps : true,
+        borderColor         : '#efefef',
+        pointRadius         : 3,
+        pointHoverRadius    : 7,
+        pointColor          : '#efefef',
+        pointBackgroundColor: '#efefef',
+        data                : {!!json_encode($dataset_per_year)!!}
+      }
+    ]
+  }
+
+  var salesGraphChartOptions = {
+    maintainAspectRatio : false,
+    responsive : true,
+    legend: {
+      display: false,
+    },
+    scales: {
+      xAxes: [{
+        ticks : {
+          fontColor: '#efefef',
+        },
+        gridLines : {
+          display : false,
+          color: '#efefef',
+          drawBorder: false,
+        }
+      }],
+      yAxes: [{
+        ticks : {
+          stepSize: 5000,
+          fontColor: '#efefef',
+        },
+        gridLines : {
+          display : true,
+          color: '#efefef',
+          drawBorder: false,
+        }
+      }]
+    }
+  }
+
+  // This will get the first returned node in the jQuery collection.
+  var salesGraphChart = new Chart(salesGraphChartCanvas, { 
+      type: 'line', 
+      data: salesGraphChartData, 
+      options: salesGraphChartOptions
+    }
+  )
+</script>
 @endsection

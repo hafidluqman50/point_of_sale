@@ -21,7 +21,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<a href="{{ url('/admin/users') }}">
+						<a href="{{ url('/admin/users/tambah') }}">
 							<button class="btn btn-primary">
 								Tambah User
 							</button>

@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
         'has.auth' => \App\Http\Middleware\hasAuth::class,
         'is.admin' => \App\Http\Middleware\isAdmin::class,
         'is.gudang' => \App\Http\Middleware\isGudang::class,
-        'is.kasir' => \App\Http\Middleware\isKaryawan::class
+        'is.kasir' => \App\Http\Middleware\isKasir::class
     ];
 
     /**

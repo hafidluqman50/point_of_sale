@@ -1,5 +1,5 @@
 <template>
-	<div class="col-xl-2 col-lg-2 col-md-2">
+	<div class="col-xl-2 col-lg-2 col-md-6">
 		<div class="card">
 			<img class="card-img-top" :src="'/assets/foto_item/'+itemJual.foto_item" alt="Card image tap" draggable="false">
 			<div class="card-body">

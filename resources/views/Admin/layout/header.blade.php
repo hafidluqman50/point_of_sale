@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Point Of Sale | {{ $title }}</title>
+  <title>JupiterPOS | {{ $title }}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -49,7 +49,7 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">Profile</span>
           <div class="dropdown-divider"></div>
-          <a href="{{ url('/settings-profile') }}" class="dropdown-item">
+          <a href="{{ url('/admin/settings-profile') }}" class="dropdown-item">
             Ubah Profile
           </a>
           <div class="dropdown-divider"></div>
@@ -67,7 +67,7 @@
     <a href="#" class="brand-link">
       <img src="{{asset('assets/dist/img/AdminLTELogo.png')}}" alt="POS Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Point Of Sale</span>
+      <span class="brand-text font-weight-light">JupiterPOS</span>
     </a>
 
     <!-- Sidebar -->

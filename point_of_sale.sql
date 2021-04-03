@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 25, 2021 at 05:00 PM
+-- Generation Time: Apr 03, 2021 at 08:31 AM
 -- Server version: 8.0.13
 -- PHP Version: 7.2.8
 
@@ -66,6 +66,7 @@ CREATE TABLE `barang_keluar` (
 
 INSERT INTO `barang_keluar` (`id_barang_keluar`, `tanggal_keluar`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
 ('67309ca7-7fc0-4006-bc86-7ab7e787512d', '2020-04-09', 'Barang Keluar', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-26 00:30:33', '2021-03-26 00:30:33'),
+('8071933c-50ba-4b72-968b-a662d2fde133', '2021-04-02', 'Oke mantap juga', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-04-02 20:25:55', '2021-04-02 20:25:55'),
 ('af19323c-e2c6-436f-813c-e8732043a92b', '2020-04-21', 'Barang Keluar Lagi', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-26 00:31:20', '2021-03-26 00:31:20'),
 ('bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '2021-02-06', 'Test Barang Keluar', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-02-06 14:03:18', '2021-02-06 14:03:18');
 
@@ -91,10 +92,21 @@ CREATE TABLE `barang_keluar_detail` (
 INSERT INTO `barang_keluar_detail` (`id_barang_keluar_detail`, `id_barang_keluar`, `id_barang`, `jumlah_barang`, `created_at`, `updated_at`) VALUES
 ('076efada-8ca9-4c4f-b03e-c6665c1e80ff', '67309ca7-7fc0-4006-bc86-7ab7e787512d', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 12, NULL, NULL),
 ('2065e036-f249-4a7e-9c5e-c3b5eacbc0a0', 'af19323c-e2c6-436f-813c-e8732043a92b', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, NULL, NULL),
+('84a7ae05-4928-44a2-ae37-e76ee119c955', '8071933c-50ba-4b72-968b-a662d2fde133', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, NULL, NULL),
 ('a2664a59-1ba4-49f7-92da-6e49febcffe4', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '91be7ca5-1775-468f-a9b1-c47f17836fef', 1, NULL, NULL),
 ('a304e591-c21a-4b89-8065-9996beedd9fc', '67309ca7-7fc0-4006-bc86-7ab7e787512d', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, NULL, NULL),
 ('d9ab7525-65b9-4329-915b-b4f48e7dcba2', 'bf4a43a0-84a5-4b3b-bd83-de2e21cfb900', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 1, NULL, NULL),
 ('db627973-058b-4f08-9871-943119891df1', 'af19323c-e2c6-436f-813c-e8732043a92b', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 12, NULL, NULL);
+
+--
+-- Triggers `barang_keluar_detail`
+--
+DELIMITER $$
+CREATE TRIGGER `trigger_barang_keluar` AFTER INSERT ON `barang_keluar_detail` FOR EACH ROW BEGIN 
+	UPDATE barang SET stok_barang = stok_barang - NEW.jumlah_barang WHERE id_barang = NEW.id_barang; 
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -118,7 +130,8 @@ CREATE TABLE `barang_masuk` (
 
 INSERT INTO `barang_masuk` (`id_barang_masuk`, `tanggal_masuk`, `id_supplier`, `keterangan`, `id_users`, `created_at`, `updated_at`) VALUES
 ('29d5390a-4c5a-47dc-a3a2-ed3339ac22ac', '2020-04-13', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Barang Pokok Masuk', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-26 00:22:40', '2021-03-26 00:22:40'),
-('921596f8-bfbc-4ed9-9920-7a5e384c01ef', '2020-04-02', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Pemasukan Bahan Sayuran', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-04-02 21:56:36', '2020-04-02 21:56:36');
+('921596f8-bfbc-4ed9-9920-7a5e384c01ef', '2020-04-02', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Pemasukan Bahan Sayuran', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-04-02 21:56:36', '2020-04-02 21:56:36'),
+('d528435e-7e96-419c-80ac-1a3380f6f652', '2021-04-02', 'cc4392c5-915c-4ed7-8a57-7caf0696b71c', 'Oke mantap', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-04-02 20:25:12', '2021-04-02 20:25:12');
 
 -- --------------------------------------------------------
 
@@ -142,10 +155,21 @@ CREATE TABLE `barang_masuk_detail` (
 --
 
 INSERT INTO `barang_masuk_detail` (`id_barang_masuk_detail`, `id_barang_masuk`, `id_barang`, `jumlah_masuk`, `harga_satuan`, `harga_total`, `created_at`, `updated_at`) VALUES
+('398d30b6-62e9-48c6-909e-14270edb5075', 'd528435e-7e96-419c-80ac-1a3380f6f652', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 12000, 144000, NULL, NULL),
 ('4aeec88e-e4c4-469e-9487-7b51f8a31ef6', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 10000, 120000, NULL, NULL),
 ('4e7641f4-e893-47da-b250-b9b23f672eb4', '29d5390a-4c5a-47dc-a3a2-ed3339ac22ac', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 12, 20000, 240000, NULL, NULL),
 ('ceb4d9fa-aafd-4216-ac76-5aacff3879c4', '29d5390a-4c5a-47dc-a3a2-ed3339ac22ac', '91be7ca5-1775-468f-a9b1-c47f17836fef', 12, 20000, 240000, NULL, NULL),
 ('e6268c7c-a666-40ff-bb5e-47cc1a30e231', '921596f8-bfbc-4ed9-9920-7a5e384c01ef', '539184cc-6b5d-4b98-b85b-5f72bba220e2', 20, 20000, 400000, NULL, NULL);
+
+--
+-- Triggers `barang_masuk_detail`
+--
+DELIMITER $$
+CREATE TRIGGER `trigger_barang_masuk` AFTER INSERT ON `barang_masuk_detail` FOR EACH ROW BEGIN
+UPDATE barang SET stok_barang = stok_barang + NEW.jumlah_masuk WHERE id_barang = NEW.id_barang;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -314,10 +338,8 @@ CREATE TABLE `tagihan` (
 --
 
 INSERT INTO `tagihan` (`id_tagihan`, `nama_customer`, `total_tagihan`, `keterangan`, `status_tagihan`, `id_users`, `created_at`, `updated_at`) VALUES
-('45a07774-d7ef-4671-a217-960547a9ede8', 'sukimat', 53000, 'mantap', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-01-21 15:11:25', '2021-02-25 13:14:13'),
-('f258dc3c-f146-4b67-bf06-8c745803f21f', 'Hafiidh Luqmanul Hakim', 48000, 'Meja No. 04', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-02-25 13:22:59', '2021-02-27 21:47:38'),
-('fc2b84f0-98d2-4009-9c23-de22badfbe08', 'Hafiidh Luqmanul Hakim', 42000, '-', 'sudah-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2020-11-25 12:05:03', '2020-11-25 12:05:03'),
-('fc43025b-2bc6-4e3e-893e-066a91098807', 'Saipudin', 35000, '-', 'belum-lunas', 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', '2021-03-02 12:17:27', '2021-03-02 12:17:27');
+('5aa8ca16-9d89-4568-a2a3-1c0776d0bb31', 'Ahmad', 12000, NULL, 'belum-lunas', '5fcc4e88-979d-48c6-893c-4226b3432467', '2021-04-03 16:07:42', '2021-04-03 16:07:42'),
+('fb95e9a6-3084-4ed6-93f2-36ba6d1fc6f6', 'Test', 12000, NULL, 'belum-lunas', '5fcc4e88-979d-48c6-893c-4226b3432467', '2021-04-03 16:13:19', '2021-04-03 16:13:19');
 
 -- --------------------------------------------------------
 
@@ -344,14 +366,8 @@ CREATE TABLE `tagihan_detail` (
 --
 
 INSERT INTO `tagihan_detail` (`id_tagihan_detail`, `id_tagihan`, `tgl_tagihan`, `id_item_jual`, `banyak_pesan`, `sub_total`, `varian`, `keterangan`, `status_tagihan_detail`, `created_at`, `updated_at`) VALUES
-('3a5535e7-f8d4-473d-bd52-e1f9a67aba94', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'sudah-dibayar', '2020-11-25 12:05:03', '2021-02-23 21:37:14'),
-('4224cd5f-20a1-484a-9720-09cc6e44e160', 'f258dc3c-f146-4b67-bf06-8c745803f21f', '2021-02-25', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'sudah-dibayar', '2021-02-25 13:22:59', '2021-02-27 21:46:26'),
-('43d71934-4837-4858-bb39-9ad1aa807025', 'fc2b84f0-98d2-4009-9c23-de22badfbe08', '2021-02-06', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'sudah-dibayar', '2020-11-25 12:05:03', '2021-02-23 21:37:14'),
-('85eaeb83-af24-4004-ab69-28b6da2c428e', 'f258dc3c-f146-4b67-bf06-8c745803f21f', '2021-02-25', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 25000, '+ Telor : 5000', 'pedas', 'sudah-dibayar', '2021-02-25 13:22:59', '2021-02-27 21:47:38'),
-('96fe8638-ae68-45d4-abed-8859822ff32a', 'fc43025b-2bc6-4e3e-893e-066a91098807', '2021-03-02', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'belum-dibayar', '2021-03-02 12:17:27', '2021-03-02 12:17:27'),
-('a9cda24a-c926-4951-8b92-bbf073870814', 'fc43025b-2bc6-4e3e-893e-066a91098807', '2021-03-02', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'belum-dibayar', '2021-03-02 12:17:27', '2021-03-02 12:17:27'),
-('bfba26a1-b887-4d2a-b158-dc671a9db973', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '1198e460-d9da-4530-8d81-b395a071fd5c', 1, 23000, '', NULL, 'sudah-dibayar', '2021-01-21 15:11:25', '2021-02-25 13:14:13'),
-('f03531f3-9e13-4fdf-b40b-c16c0dfee31b', '45a07774-d7ef-4671-a217-960547a9ede8', '2021-02-06', '4b5fbf3c-3e46-4b26-9b55-01282ce02375', 1, 30000, '+ Katsu : 10000', NULL, 'sudah-dibayar', '2021-01-21 15:11:25', '2021-02-25 13:14:13');
+('631674d4-aeeb-424c-8053-95af638cbff5', '5aa8ca16-9d89-4568-a2a3-1c0776d0bb31', '2021-04-03', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'belum-dibayar', '2021-04-03 16:07:42', '2021-04-03 16:07:42'),
+('b04dc105-26d7-4634-868d-6d56f4ceda06', 'fb95e9a6-3084-4ed6-93f2-36ba6d1fc6f6', '2021-04-03', '107924bd-84af-4f77-9570-965b908938e3', 1, 12000, '', NULL, 'belum-dibayar', '2021-04-03 16:13:19', '2021-04-03 16:13:19');
 
 -- --------------------------------------------------------
 
@@ -380,6 +396,7 @@ INSERT INTO `transaksi` (`id_transaksi`, `tanggal_transaksi`, `total_harga`, `to
 ('030674ad-7909-4018-a05f-65ff6d9749ed', '2021-02-27', 25000, 48000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2021-02-27 21:47:38', '2021-02-27 21:47:38'),
 ('030c99b3-1db9-494f-98bd-7db5ad253322', '2020-08-01', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-01 02:03:25', '2020-08-01 02:03:25'),
 ('04df00cf-4f35-4784-8f72-f387f143fb1b', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 23:10:24', '2020-08-04 23:10:24'),
+('38ae1e90-92ef-11eb-a8b3-0242ac130003', '2022-01-01', 12000, 12000, '5fcc4e88-979d-48c6-893c-4226b3432467', 'sudah-bayar', 'bayar-sekarang', NULL, NULL, NULL),
 ('52790729-1c53-4fd6-849e-8d29e8229b0a', '2020-07-07', 12000, 0, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'belum-bayar', 'bayar-nanti', 'Meja No. 05', '2020-07-03 01:47:33', '2020-07-03 01:47:33'),
 ('57e9111a-a367-4d90-955d-356158b97e67', '2020-11-07', 25000, 25000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-11-07 13:21:03', '2020-11-07 13:21:03'),
 ('5c0318c2-57db-4601-b815-e48db8d5ddd8', '2020-08-04', 12000, 12000, 'b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'sudah-bayar', 'bayar-sekarang', NULL, '2020-08-04 23:11:47', '2020-08-04 23:11:47'),
@@ -484,8 +501,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `level_user`, `status_akun`, `remember_token`, `status_delete`) VALUES
-('5fcc4e88-979d-48c6-893c-4226b3432467', 'Kasir', 'kasir', '$2y$10$ATocz/kGbvihcRhUmDo1peZ2TjbdJtn.89xItZwxac3/RC4lmI3ES', 0, 1, 'YMKX9UMYkvD7Ynqi5w6zrJP69QZq6oOPrBRJQVoXr4eNVejHvBEoTm2Gy50x', 0),
-('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 2, 1, '4VoqXNfDSQqC5yhRrOyrrusrmpShpi90Cp3QW2cyx3ZKCvyKmFte257VcP5q', 0);
+('018b8d48-04ec-4ecd-8fb8-33c55696aa9c', 'Gudang', 'gudang', '$2y$10$TgpMqR3a2nrvcO9l1cop/eQ4ilScV/PyLqBdRsNp4jLZqemC/rLEW', 1, 1, NULL, 0),
+('5fcc4e88-979d-48c6-893c-4226b3432467', 'Kasir', 'kasir', '$2y$10$ATocz/kGbvihcRhUmDo1peZ2TjbdJtn.89xItZwxac3/RC4lmI3ES', 0, 1, 'lzPBU41oBzCTmSx4T29nAaZejtiNwRNpV5aVVpLAjEz5GFfSuZ61Ks9o1Hnu', 0),
+('b5e10cbb-4c22-4005-9d4f-5e3e00766682', 'Administrator', 'admin', '$2y$10$SOKPPqAhaphhLIRxOSJJ4OrdiyVTd.9mPZ9dk6D8fN9b5sEbNEQKe', 2, 1, 'wcMqqYI71iFaJvvDGOcLOsG0SYZIaM3V6O0UKqvJJajiosRWKkzM1z9c2D8H', 0);
 
 --
 -- Indexes for dumped tables

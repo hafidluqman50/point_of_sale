@@ -1,13 +1,15 @@
 <template>
-	<div :class="`vue-modal ${modalAct ? 'show-modal' : ''}`">
-		<div class="vue-modal-header bg-light d-flex">
-			<slot name="modal-header"></slot>
-		</div>
-		<div class="vue-modal-body">
-			<slot></slot>
-		</div>
-		<div class="vue-modal-footer bg-light">
-			<slot name="modal-footer"></slot>
+	<div class="row align-items-center justify-content-center">
+		<div :class="`vue-modal ${modalAct ? 'show-modal' : ''} col-lg-8 col-md-12`">
+			<div class="vue-modal-header bg-light d-flex">
+				<slot name="modal-header"></slot>
+			</div>
+			<div class="vue-modal-body">
+				<slot></slot>
+			</div>
+			<div class="vue-modal-footer bg-light">
+				<slot name="modal-footer"></slot>
+			</div>
 		</div>
 	</div>
 </template>

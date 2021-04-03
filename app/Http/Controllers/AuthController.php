@@ -28,7 +28,7 @@ class AuthController extends Controller
             }
     		else if(Auth::user()->level_user == 0)
     		{
-    			return redirect('/kasir');
+    			return redirect('/kasir/dashboard');
     		}
     		else if (Auth::user()->status_akun == 0) 
     		{

@@ -18,20 +18,39 @@ use App\Models\Tagihan;
 use App\Models\TagihanDetail;
 use App\Models\User;
 use DataTables;
+use Auth;
 
 class DataTablesController extends Controller
 {
+    private $level;
+
+    function __construct()
+    {
+        $this->middleware(function($request,$next){
+            if (Auth::user()->level_user == 2) {
+                $this->level = 'admin';
+            }
+            else if (Auth::user()->level_user == 1) {
+                $this->level = 'gudang';
+            }
+            else if (Auth::user()->level_user == 0) {
+                $this->level = 'kasir';
+            }
+            return $next($request);
+        });
+    }
+
     public function dataItemJual()
     {
         $item_jual  = ItemJual::join('jenis_item','item_jual.id_jenis_item','=','jenis_item.id_jenis_item')->where('item_jual.status_delete',0)->orderBy('created_at','DESC')->get();
         $datatables = DataTables::of($item_jual)->addColumn('action',function($action){
-    		$column = '<a href="'.url("/admin/data-item-jual/edit/$action->id_item_jual").'">
+    		$column = '<a href="'.url("/$this->level/data-item-jual/edit/$action->id_item_jual").'">
     				        <button class="btn btn-warning"> Edit </button>
 					   </a>
-                       <a href="'.url("/admin/data-item-jual/detail/$action->id_item_jual").'">
+                       <a href="'.url("/$this->level/data-item-jual/detail/$action->id_item_jual").'">
                             <button class="btn btn-info"> Detail </button>
                        </a>
-                       <form action="'.url("/admin/data-item-jual/delete/$action->id_item_jual").'" method="POST">
+                       <form action="'.url("/$this->level/data-item-jual/delete/$action->id_item_jual").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -60,10 +79,10 @@ class DataTablesController extends Controller
     {
         $jenis_item = JenisItem::where('status_delete',0)->get();
         $datatables = DataTables::of($jenis_item)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-jenis-item/edit/$action->id_jenis_item").'">
+            $column = '<a href="'.url("/$this->level/data-jenis-item/edit/$action->id_jenis_item").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                       <form action="'.url("/admin/data-jenis-item/delete/$action->id_jenis_item").'" method="POST">
+                       <form action="'.url("/$this->level/data-jenis-item/delete/$action->id_jenis_item").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -79,10 +98,10 @@ class DataTablesController extends Controller
     {
         $jenis_barang = JenisBarang::where('status_delete',0)->get();
         $datatables = DataTables::of($jenis_barang)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-jenis-barang/edit/$action->id_jenis_barang").'">
+            $column = '<a href="'.url("/$this->level/data-jenis-barang/edit/$action->id_jenis_barang").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                       <form action="'.url("/admin/data-jenis-barang/delete/$action->id_jenis_barang").'" method="POST">
+                       <form action="'.url("/$this->level/data-jenis-barang/delete/$action->id_jenis_barang").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -98,10 +117,10 @@ class DataTablesController extends Controller
     {
         $barang = Barang::getData();
         $datatables = DataTables::of($barang)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-barang/edit/$action->id_barang").'">
+            $column = '<a href="'.url("/$this->level/data-barang/edit/$action->id_barang").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                       <form action="'.url("/admin/data-barang/delete/$action->id_barang").'" method="POST">
+                       <form action="'.url("/$this->level/data-barang/delete/$action->id_barang").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -146,13 +165,13 @@ class DataTablesController extends Controller
     {
         $barang_masuk = BarangMasuk::getData();
         $datatables = DataTables::of($barang_masuk)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-barang-masuk/detail/$action->id_barang_masuk").'">
+            $column = '<a href="'.url("/$this->level/data-barang-masuk/detail/$action->id_barang_masuk").'">
                           <button class="btn btn-info"> Detail </button>
                        </a>
-                       <a href="'.url("/admin/data-barang-masuk/edit/$action->id_barang_masuk").'">
+                       <a href="'.url("/$this->level/data-barang-masuk/edit/$action->id_barang_masuk").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                        <form action="'.url("/admin/data-barang-masuk/delete/$action->id_barang_masuk").'" method="POST">
+                        <form action="'.url("/$this->level/data-barang-masuk/delete/$action->id_barang_masuk").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -169,7 +188,7 @@ class DataTablesController extends Controller
     {
         $barang_masuk_detail = BarangMasukDetail::getData($id);
         $datatables = DataTables::of($barang_masuk_detail)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-barang-masuk/detail/$action->id_barang_masuk/delete/$action->id_barang_masuk_detail").'">
+            $column = '<a href="'.url("/$this->level/data-barang-masuk/detail/$action->id_barang_masuk/delete/$action->id_barang_masuk_detail").'">
                           <button class="btn btn-danger"> Delete </button>
                        </a>';
             return $column;
@@ -188,10 +207,10 @@ class DataTablesController extends Controller
     {
         $barang_keluar = BarangKeluar::getData();
         $datatables = DataTables::of($barang_keluar)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-barang-keluar/detail/$action->id_barang_keluar").'">
+            $column = '<a href="'.url("/$this->level/data-barang-keluar/detail/$action->id_barang_keluar").'">
                           <button class="btn btn-info"> Detail </button>
                        </a>
-                        <form action="'.url("/admin/data-barang-keluar/delete/$action->id_barang_keluar").'" method="POST">
+                        <form action="'.url("/$this->level/data-barang-keluar/delete/$action->id_barang_keluar").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
@@ -208,7 +227,7 @@ class DataTablesController extends Controller
     {
         $barang_keluar_detail = BarangKeluarDetail::getData($id);
         $datatables = DataTables::of($barang_keluar_detail)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-barang-keluar/detail/$action->id_barang_keluar/delete/$action->id_barang_keluar_detail").'">
+            $column = '<a href="'.url("/$this->level/data-barang-keluar/detail/$action->id_barang_keluar/delete/$action->id_barang_keluar_detail").'">
                           <button class="btn btn-danger"> Delete </button>
                        </a>';
             return $column;
@@ -223,14 +242,17 @@ class DataTablesController extends Controller
     {
         $transaksi = Transaksi::getData();
         $datatables = DataTables::of($transaksi)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/transaksi/detail/$action->id_transaksi").'">
+            $column = '<a href="'.url("/$this->level/transaksi/detail/$action->id_transaksi").'">
                           <button class="btn btn-info"> Detail </button>
-                       </a>
+                       </a>';
+            if ($this->level == 'admin') {
+                $column .='
                         <form action="'.url("/admin/transaksi/delete/$action->id_transaksi").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
                        </form>';
+            }
             return $column;
         })->editColumn('tanggal_transaksi',function($edit){
             return human_date($edit->tanggal_transaksi);
@@ -266,14 +288,17 @@ class DataTablesController extends Controller
     {
         $tagihan = Tagihan::getData();
         $datatables = DataTables::of($tagihan)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/tagihan/detail/$action->id_tagihan").'">
+            $column = '<a href="'.url("/$this->level/tagihan/detail/$action->id_tagihan").'">
                           <button class="btn btn-info"> Detail </button>
-                       </a>
+                       </a>';
+            if ($this->level == 'admin') {
+                $column .='
                         <form action="'.url("/admin/tagihan/delete/$action->id_tagihan").'" method="POST">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" onclick="return confirm(\'Delete ?\');"> Delete </button>
                        </form>';
+            }
             return $column;
         })->editColumn('total_tagihan',function($edit){
             return format_rupiah($edit->total_tagihan);

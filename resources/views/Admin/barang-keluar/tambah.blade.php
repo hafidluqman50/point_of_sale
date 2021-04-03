@@ -46,7 +46,7 @@
 						<div class="card">
 							<div class="card-body">
 								<div id="append">
-									<div class="row" id="input-barang" div-input="1" style="border-bottom:1px solid lightgray; margin-bottom:1%;">
+									<div class="row input-multiple-barang" id="input-barang" div-input="1" style="border-bottom:1px solid lightgray; margin-bottom:1%;">
 										<div class="col-md-4">
 											<div class="form-group">
 												<label for="">Jenis Barang</label>

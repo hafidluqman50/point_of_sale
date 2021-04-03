@@ -9,7 +9,6 @@ export default {
 		else {
 			state.sidebarToggle = true
 		}
-		console.log(state.sidebarToggle)
 	},
 	[mutations.SIDEBAR_MENU] (state,menu) {
 		state.sidebarMenu = menu
@@ -31,6 +30,12 @@ export default {
 	[mutations.LOAD_DETAIL_BILL] (state,param) {
 		state.loadDetailBill = param
 	},
+	[mutations.LOAD_DELETE_BILL] (state,param) {
+		state.loadDeleteBill = param
+	},
+	[mutations.LOAD_DELETE_DETAIL_BILL] (state,param) {
+		state.loadDeleteDetailBill = param
+	},
 	[mutations.SHOW_DETAIL_BILL] (state) {
 		state.showDetailBill = true
 	},
@@ -48,7 +53,6 @@ export default {
 		state.menuInput.varian_pilih = data_varian
 	},
 	[mutations.LIST_PESANAN] (state,data_menu) {
-		console.log(data_menu)
 		state.dataPesanan.menu        = data_menu.list_item
 		state.dataPesanan.total_harga = data_menu.total_harga
 	},
@@ -167,7 +171,6 @@ export default {
 		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
 	[mutations.BAYAR_SEMUA_TAGIHAN] (state,data_detail_tagihan) {
-		console.log(data_detail_tagihan.tagihan)
 		state.dataPesanan.total_harga+=data_detail_tagihan.total_harga
 		if (state.dataPesanan.menu.length != 0) {
 			state.dataPesanan.menu.push(data_detail_tagihan.tagihan)
@@ -185,19 +188,19 @@ export default {
 
 		localStorage.setItem('pesanan',JSON.stringify(localData))
 	},
-	[mutations.HAPUS_TAGIHAN] (state,id_tagihan) {
-		// const dataPesanan = state.dataPesanan.menu
-		// BELUM SELESAI
-		const removePesanan = (data,index) => {
-			state.dataPesanan.total_harga-=data[index].sub_total
-			return data.slice(0,index).concat(data.slice(index+1,data.length))
-		}
+	// [mutations.HAPUS_TAGIHAN] (state,id_tagihan) {
+	// 	// const dataPesanan = state.dataPesanan.menu
+	// 	// BELUM SELESAI
+	// 	const removePesanan = (data,index) => {
+	// 		state.dataPesanan.total_harga-=data[index].sub_total
+	// 		return data.slice(0,index).concat(data.slice(index+1,data.length))
+	// 	}
 
-  		state.dataPesanan.menu = removePesanan(dataPesanan,index_arr)
-	},
-	[mutations.HAPUS_TAGIHAN_DETAIL] (state,id_tagihan_detail) {
+ //  		state.dataPesanan.menu = removePesanan(dataPesanan,index_arr)
+	// },
+	// [mutations.HAPUS_TAGIHAN_DETAIL] (state,id_tagihan_detail) {
 		
-	},
+	// },
 	[mutations.CLEAR_MODAL_TAGIHAN] (state) {
 		state.dataTagihan = [];
 	},

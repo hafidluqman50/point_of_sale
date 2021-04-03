@@ -23,6 +23,12 @@ export default {
 	loadDetailBill: state => {
 		return state.loadDetailBill
 	},
+	loadDeleteBill: state => {
+		return state.loadDeleteBill
+	},
+	loadDeleteDetailBill: state => {
+		return state.loadDeleteBill
+	},
 	showDetailBill: state => {
 		return state.showDetailBill
 	},

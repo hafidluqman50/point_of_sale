@@ -5,6 +5,16 @@ function format_rupiah($rupiah) {
 	return $hasil_rupiah;
 }
 
+function sort_arr_asc($arr) {
+	asort($arr);
+	$new_array = [];
+	foreach ($arr as $key => $value) {
+		$new_array[] = $value;
+	}
+
+	return $new_array;
+}
+
 function session_expired() {
 	if (session()->has('data_session')) {
 		$data_session = session()->get('data_session');
