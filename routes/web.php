@@ -234,6 +234,7 @@ Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
 	Route::get('/transaksi',['uses' => 'Kasir\TransaksiController@index']);
 	Route::get('/transaksi/detail/{id}',['uses' => 'Kasir\TransaksiDetailController@index']);
 	Route::get('/transaksi/cetak-laporan',['uses' => 'Kasir\TransaksiController@laporanTransaksi']);
+	Route::get('/transaksi/struk/{id}',['uses' => 'Kasir\TransaksiController@strukTransaksi']);
 	// END ROUTE TRANSAKSI //
 
 	// ROUTE TAGIHAN //
