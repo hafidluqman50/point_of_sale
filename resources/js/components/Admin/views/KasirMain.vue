@@ -177,7 +177,7 @@
 					<p><b>CHECKOUT</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeModal('checkoutMenu')">Close</button>
+					<button class="btn btn-dark" @click="closeCheckoutMenuAct()">Close</button>
 				</div>
 			</template>
 			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
@@ -194,8 +194,12 @@
 				<div v-if="isKredit == false">
 					<div class="form-group">
 						<label for="">Jumlah Bayar</label>
-						<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money">
+						<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money" @keyup.native="hitungKembalian()">
 						</money>
+					</div>
+					<div class="">
+						<label for="">Kembalian</label>
+						<money class="form-control" readonly="readonly" name="kembalian" v-model="dataPesanan.kembalian" v-bind="money"></money>
 					</div>
 					<hr>
 				</div>
@@ -203,9 +207,11 @@
 					<input type="hidden" :value="dataPesanan.total_harga">
 				</div>
 			</div>
-			<div :class="`form-group ${bayarNanti == false ? 'is-hide' : ''}`">
-				<label for="">Nama Customer</label>
-				<input type="text" name="nama_customer" class="form-control" v-model="dataPesanan.nama_customer" placeholder="Isi Nama Customer">
+			<div :class="`${bayarNanti == false ? 'is-hide' : ''}`">
+				<div class="form-group">
+					<label for="">Nama Customer</label>
+					<input type="text" name="nama_customer" class="form-control" v-model="dataPesanan.nama_customer" placeholder="Isi Nama Customer">
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="">Keterangan</label>
@@ -285,6 +291,9 @@
 							<td>{{ item.total_tagihan | formatRupiah }}</td>
 							<td>{{ item.keterangan }}</td>
 							<td>
+								<button class="btn btn-primary" @click="pilihTagihanAct(item)">
+									Pilih Tagihan
+								</button>
 								<button class="btn btn-info" disabled="disabled" v-if="loadDetailBill == item.id_tagihan">
   									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   									Loading...
@@ -497,10 +506,13 @@
 				'listPesanan',
 				'tampilTagihan',
 				'cariTagihanAct',
+				'closeCheckoutMenu',
 				'clearModalTagihan',
 				'prosesBayar',
+				'hitungKembalianAct',
 				'prosesTagihan',
 				'tampilTagihanDetail',
+				'pilihTagihan',
 				'cariTagihanDetailAct',
 				'hideDetailBill',
 				'hapusTagihan',
@@ -585,6 +597,26 @@
 				}
 
 				this.hapusTagihanDetail(param)
+			},
+			pilihTagihanAct:function(data) {
+				this.pilihTagihan(data)
+				this.bayarNanti = true
+			},
+			closeCheckoutMenuAct:function() {
+				this.closeCheckoutMenu()
+				this.bayarNanti = false
+			},
+			hitungKembalian:function() {
+				if (this.dataPesanan.total_bayar != 0) {
+					let kembalian = this.dataPesanan.total_bayar - this.dataPesanan.total_harga
+					if (kembalian > 0) {
+						this.hitungKembalianAct(kembalian)
+					}
+				}
+				else {
+					let kembalian = 0
+					this.hitungKembalianAct(kembalian)
+				}
 			}
 		},
 		mounted() {

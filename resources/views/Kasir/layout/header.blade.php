@@ -131,6 +131,7 @@
               </p>
             </a>
           </li>
+          @if (check_info_outlet())
           <li class="nav-item">
             <a href="{{ url('/kasir') }}" class="nav-link">
               <i class="nav-icon fas fa-money-bill-wave"></i>
@@ -139,6 +140,7 @@
               </p>
             </a>
           </li>
+          @endif
         </ul>
       </nav>
     </div>

@@ -18,15 +18,15 @@ class hasAuth
     {
         if (Auth::check()) 
         {
-            if (Auth::user()->level_user == 2) 
+            if (Auth::user()->level_user == 2 && Auth::user()->status_delete == 0) 
             {
                 return redirect('/admin/dashboard');
             }
-            else if(Auth::user()->level_user == 1)
+            else if(Auth::user()->level_user == 1 && Auth::user()->status_delete == 0)
             {
                 return redirect('/gudang/dashboard');
             }
-            else if (Auth::user()->level_user == 0) 
+            else if (Auth::user()->level_user == 0 && Auth::user()->status_delete == 0) 
             {
                 return redirect('/kasir');
             }

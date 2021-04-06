@@ -25,6 +25,13 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
+          <div class="col-md-12">
+            @if(check_info_outlet() == false)
+            <div class="alert alert-warning alert-dismissible fade show">
+              Mohon Isi Info Outlet Terlebih Dahulu Jika Ingin Bertransaksi <a href="{{ url('/admin/info-outlet') }}">Klik Disini</a>
+            </div>
+            @endif
+          </div>
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">

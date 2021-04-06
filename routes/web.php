@@ -115,7 +115,13 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/transaksi/detail/{id}',['uses' => 'Admin\TransaksiDetailController@index']);
 	Route::delete('/transaksi/detail/{id}/delete/{id_detail}',['uses' => 'Admin\TransaksiDetailController@delete']);
 	Route::get('/transaksi/cetak-laporan',['uses' => 'Admin\TransaksiController@laporanTransaksi']);
+	Route::get('/transaksi/struk/{id}',['uses' => 'Admin\TransaksiController@strukTransaksi']);
 	// END ROUTE TRANSAKSI //
+
+	// ROUTE INFO OUTLET //
+	Route::get('/info-outlet',['uses' => 'Admin\InfoOutletController@index']);
+	Route::post('/info-outlet/save',['uses' => 'Admin\InfoOutletController@save']);
+	// END ROUTE INFO OUTLET //
 
 	// ROUTE TAGIHAN //
 	Route::get('/tagihan',['uses' => 'Admin\TagihanController@index']);
@@ -132,15 +138,17 @@ Route::group(['middleware' => 'is.admin', 'prefix' => 'admin'],function(){
 	Route::get('/users/edit/{id}',['uses' => 'Admin\UsersController@edit']);
 	Route::put('/users/update/{id}',['uses' => 'Admin\UsersController@update']);
 	Route::delete('/users/delete/{id}',['uses' => 'Admin\UsersController@delete']);
+	Route::get('/users/status-akun/{id}',['uses' => 'Admin\UsersController@statusAkun']);
 	// END ROUTE USERS //
 
 	// ROUTE KASIR //
 	Route::get('/kasir',['uses' => 'Admin\KasirController@index']);
+	Route::get('/kasir/cetak-struk/{id}',['uses' => 'Admin\KasirController@cetakStruk']);
 	Route::any('/kasir/{any}',['uses' => 'Admin\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 	// END ROUTE KASIR //
 
 	Route::get('/settings-profile',['uses' => 'Admin\DashboardController@settingsProfile']);
-	Route::get('/settings-profile/save',['uses' => 'Admin\DashboardController@save']);
+	Route::post('/settings-profile/save',['uses' => 'Admin\DashboardController@save']);
 });
 
 Route::group(['middleware' => 'is.gudang','prefix' => 'gudang'],function(){
@@ -198,7 +206,7 @@ Route::group(['middleware' => 'is.gudang','prefix' => 'gudang'],function(){
 	// END ROUTE BARANG MASUK //
 
 	Route::get('/settings-profile',['uses' => 'Gudang\DashboardController@settingsProfile']);
-	Route::get('/settings-profile/save',['uses' => 'Gudang\DashboardController@save']);
+	Route::post('/settings-profile/save',['uses' => 'Gudang\DashboardController@save']);
 });
 
 Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
@@ -234,10 +242,11 @@ Route::group(['middleware' => 'is.kasir', 'prefix' => 'kasir'],function(){
 	Route::get('/tagihan/cetak-laporan',['uses' => 'Kasir\TagihanController@cetakLaporanTagihan']);
 	// END ROUTE TAGIHAN //
 	Route::get('/',['uses' => 'Kasir\KasirController@index']);
+	Route::get('/cetak-struk/{id}',['uses' => 'Kasir\KasirController@cetakStruk']);
 	Route::any('/{any}',['uses' => 'Kasir\KasirController@index'])->where('any','^(?!api\/)[\/\w\.-]*');
 
 	Route::get('/settings-profile',['uses' => 'Kasir\DashboardController@settingsProfile']);
-	Route::get('/settings-profile/save',['uses' => 'Kasir\DashboardController@save']);
+	Route::post('/settings-profile/save',['uses' => 'Kasir\DashboardController@save']);
 });
 
 Route::get('/load-jenis-item',['uses' => 'ApiController@loadJenisItem']);

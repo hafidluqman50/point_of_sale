@@ -5,6 +5,18 @@ function format_rupiah($rupiah) {
 	return $hasil_rupiah;
 }
 
+function check_info_outlet() {
+	$check = App\Models\InfoOutlet::count();
+	if ($check == 0) {
+		$return = false;
+	}
+	else {
+		$return = true;
+	}
+
+	return $return;
+}
+
 function sort_arr_asc($arr) {
 	asort($arr);
 	$new_array = [];

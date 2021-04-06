@@ -14,9 +14,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-    	$auth = $request->only('username','password');
+        $username = $request->username;
+        $password = $request->password;
 
-    	if (Auth::attempt($auth)) 
+    	if (Auth::attempt(['username' => $username, 'password' => $password, 'status_delete' => 0])) 
     	{
     		if (Auth::user()->level_user == 2) 
     		{
@@ -32,6 +33,7 @@ class AuthController extends Controller
     		}
     		else if (Auth::user()->status_akun == 0) 
     		{
+                Auth::logout();
     			return redirect('/')->with('log','Akun Non Aktif');
     		}
     	}

@@ -260,6 +260,8 @@ class DataTablesController extends Controller
             return format_rupiah($edit->total_harga);
         })->editColumn('total_bayar',function($edit){
             return format_rupiah($edit->total_bayar);
+        })->editColumn('kembalian',function($edit){
+            return format_rupiah($edit->kembalian);
         })->make(true);
 
         return $datatables;
@@ -340,7 +342,10 @@ class DataTablesController extends Controller
         $datatables = DataTables::of($users)->addColumn('action',function($action){
             $class = [0 => ['class' => 'btn-success','text' => 'Aktifkan'], 1 => ['class' => 'btn-danger', 'text' => 'Non Aktifkan']];
 
-            $column = '<a href="'.url("/admin/users/status-akun/$action->id_users").'">
+            $column = '<a href="'.url("/admin/users/edit/$action->id_users").'">
+                          <button class="btn btn-warning">Edit</button>
+                       </a>
+                       <a href="'.url("/admin/users/status-akun/$action->id_users").'">
                           <button class="btn '.$class[$action->status_akun]['class'].'"> '.$class[$action->status_akun]['text'].' </button>
                        </a>
                        <form action="'.url("/admin/users/delete/$action->id_users").'" method="POST">

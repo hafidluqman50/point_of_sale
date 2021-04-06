@@ -2,7 +2,7 @@
 	<div>
 		<sidebar-component :active="sidebarToggle">
 			<ul class="sidebar-menu">
-				<li class="sidebar-item" @click="backPage()">
+				<li class="sidebar-item" onclick="window.history.back()">
 					<span class="fas fa-arrow-left"></span> Kembali
 				</li>
 				<li :class="`sidebar-item ${menuClicked == '' ? 'menu-active' : ''}`" @click="jenisMenuClick('')">
@@ -177,7 +177,7 @@
 					<p><b>CHECKOUT</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeModal('checkoutMenu')">Close</button>
+					<button class="btn btn-dark" @click="closeCheckoutMenuAct()">Close</button>
 				</div>
 			</template>
 			<p><b>Harga Total : {{ dataPesanan.total_harga | formatRupiah }}</b></p>
@@ -194,8 +194,12 @@
 				<div v-if="isKredit == false">
 					<div class="form-group">
 						<label for="">Jumlah Bayar</label>
-						<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money">
+						<money class="form-control" name="jumlah_bayar" v-model="dataPesanan.total_bayar" v-bind="money" @keyup.native="hitungKembalian()">
 						</money>
+					</div>
+					<div class="">
+						<label for="">Kembalian</label>
+						<money class="form-control" readonly="readonly" name="kembalian" v-model="dataPesanan.kembalian" v-bind="money"></money>
 					</div>
 					<hr>
 				</div>
@@ -203,9 +207,11 @@
 					<input type="hidden" :value="dataPesanan.total_harga">
 				</div>
 			</div>
-			<div :class="`form-group ${bayarNanti == false ? 'is-hide' : ''}`">
-				<label for="">Nama Customer</label>
-				<input type="text" name="nama_customer" class="form-control" v-model="dataPesanan.nama_customer" placeholder="Isi Nama Customer">
+			<div :class="`${bayarNanti == false ? 'is-hide' : ''}`">
+				<div class="form-group">
+					<label for="">Nama Customer</label>
+					<input type="text" name="nama_customer" class="form-control" v-model="dataPesanan.nama_customer" placeholder="Isi Nama Customer">
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="">Keterangan</label>
@@ -240,7 +246,7 @@
 					<p><b>TAGIHAN</b></p>
 				</div>
 				<div class="vue-modal-close">
-					<button class="btn btn-dark" @click="closeTagihan()">Close</button>
+					<button class="btn btn-dark" @click="closeModal('tagihanModal');">Close</button>
 				</div>
 			</template>
 			<div :class="`${showDetailBill ? 'is-hide' : ''}`">
@@ -285,16 +291,15 @@
 							<td>{{ item.total_tagihan | formatRupiah }}</td>
 							<td>{{ item.keterangan }}</td>
 							<td>
+								<button class="btn btn-primary" @click="pilihTagihanAct(item)">
+									Pilih Tagihan
+								</button>
 								<button class="btn btn-info" disabled="disabled" v-if="loadDetailBill == item.id_tagihan">
   									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   									Loading...
 								</button>
 								<button class="btn btn-info" @click="tampilTagihanDetail({id_tagihan:item.id_tagihan,page:1}); getIdTagihan(item.id_tagihan)" v-else>
 									Lihat List Tagihan
-								</button>
-								<button class="btn btn-danger" disabled="disabled" v-if="loadDeleteBill == item.id_tagihan">
-  									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-  									Loading...
 								</button>
 							</td>
 						</tr>
@@ -391,10 +396,6 @@
 							<td>{{ item.keterangan }}</td>
 							<td>
 								<button class="btn btn-success" @click="bayarTagihan(item)">Bayar</button>
-								<button class="btn btn-danger" disabled="disabled" v-if="loadDeleteDetailBill == item.id_tagihan_detail">
-  									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-  									Loading...
-								</button>
 							</td>
 						</tr>
 						<tr>
@@ -479,11 +480,9 @@
 		},
 		methods: {
 			...mapActions([
-				'backPage',
 				'openModal',
 				'closeModal',
 				'closeMenu',
-				'closeTagihan',
 				'sidebarMenuLoad',
 				'jenisMenuClick',
 				'tampilItemJual',
@@ -495,14 +494,15 @@
 				'listPesanan',
 				'tampilTagihan',
 				'cariTagihanAct',
+				'closeCheckoutMenu',
 				'clearModalTagihan',
 				'prosesBayar',
+				'hitungKembalianAct',
 				'prosesTagihan',
 				'tampilTagihanDetail',
+				'pilihTagihan',
 				'cariTagihanDetailAct',
 				'hideDetailBill',
-				'hapusTagihan',
-				'hapusTagihanDetail',
 				'bayarTagihan',
 				'bayarSemuaTagihan',
 				'ubahMenu',
@@ -567,22 +567,25 @@
 					this.id_tagihan = null
 				}
 			},
-			deleteTagihan:function(id_tagihan) {
-				let param = {
-					id_tagihan,
-					page:this.pageBillPosition
-				}
-
-				this.hapusTagihan(param)
+			pilihTagihanAct:function(data) {
+				this.pilihTagihan(data)
+				this.bayarNanti = true
 			},
-			deleteDetailTagihan:function(data) {
-				let param = {
-					id_tagihan:data.id_tagihan,
-					id_tagihan_detail:data.id_tagihan_detail,
-					page:this.pageBillPosition
+			closeCheckoutMenuAct:function() {
+				this.closeCheckoutMenu()
+				this.bayarNanti = false
+			},
+			hitungKembalian:function() {
+				if (this.dataPesanan.total_bayar != 0) {
+					let kembalian = this.dataPesanan.total_bayar - this.dataPesanan.total_harga
+					if (kembalian > 0) {
+						this.hitungKembalianAct(kembalian)
+					}
 				}
-
-				this.hapusTagihanDetail(param)
+				else {
+					let kembalian = 0
+					this.hitungKembalianAct(kembalian)
+				}
 			}
 		},
 		mounted() {

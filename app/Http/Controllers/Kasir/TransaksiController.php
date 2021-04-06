@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Kasir;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
+use App\Models\InfoOutlet;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -16,6 +18,17 @@ class TransaksiController extends Controller
 		$page  = 'transaksi';
 
 		return view('Kasir.transaksi.main',compact('title','page'));
+    }
+
+    public function strukTransaksi($id)
+    {
+        $info_outlet    = InfoOutlet::firstOrFail();
+        $get_transaksi  = TransaksiDetail::getData($id);
+        $transaksi_info = Transaksi::join('users','transaksi.id_users','=','users.id_users')
+                                    ->where('id_transaksi',$id)
+                                    ->firstOrFail();
+
+        return view('Kasir.transaksi.struk',compact('get_transaksi','transaksi_info','info_outlet'));
     }
 
     public function laporanTransaksi(Request $request)

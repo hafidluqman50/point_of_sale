@@ -259,6 +259,7 @@ class ApiController extends Controller
 		$menu             = $request->menu;
 		$total_harga      = $request->total_harga;
 		$total_bayar      = $request->total_bayar;
+		$kembalian		  = $request->kembalian;
 		$status_transaksi = $request->status_transaksi;
 		$ket_bayar        = $request->ket_bayar;
 		$keterangan       = $request->keterangan;
@@ -269,6 +270,7 @@ class ApiController extends Controller
 			'tanggal_transaksi' => date('Y-m-d'),
 			'total_harga'		=> $total_harga,
 			'total_bayar'		=> $total_bayar,
+			'kembalian'			=> $kembalian,
 			'status_transaksi'	=> $status_transaksi,
 			'ket_bayar'			=> $ket_bayar,
 			'keterangan'		=> $keterangan,
@@ -315,17 +317,14 @@ class ApiController extends Controller
 
 		TransaksiDetail::insert($insert_data);
 
-		// session()->forget('data_session');
+		if (Auth::user()->level_user == 2) {
+			$url = '/admin/transaksi/struk/'.$id_transaksi;
+		}
+		else {
+			$url = '/kasir/transaksi/struk/'.$id_transaksi;
+		}
 
-		$data_session = [
-			'list_item'    => [],
-			'total_harga'  => 0,
-			'time_expired' => '',
-		];
-
-		session()->put('data_session',$data_session);
-
-		return response()->json(['message' => 'Berhasil Input Pesanan']);
+		return response()->json(['message' => 'Berhasil Input Pesanan','url_href' => $url]);
     }
 
     public function listTagihan(Request $request)
@@ -441,15 +440,20 @@ class ApiController extends Controller
 		$nama_customer   = $request->nama_customer;
 		$keterangan      = $request->keterangan;
 		
-		$id_tagihan    = (string)Str::uuid();
-		Tagihan::create([
-			'id_tagihan'     => $id_tagihan,
-			'nama_customer'  => $nama_customer,
-			'total_tagihan'  => $total_tagihan,
-			'keterangan'     => $keterangan,
-			'status_tagihan' => 'belum-lunas',
-			'id_users'       => Auth::id()
-		]);
+		if (Tagihan::where('nama_customer',$nama_customer)->where('keterangan',$keterangan)->count() > 0) {
+			$id_tagihan = Tagihan::where('nama_customer',$nama_customer)->where('keterangan',$keterangan)->firstOrFail()->id_tagihan;
+		}
+		else {
+			$id_tagihan    = (string)Str::uuid();
+			Tagihan::create([
+				'id_tagihan'     => $id_tagihan,
+				'nama_customer'  => $nama_customer,
+				'total_tagihan'  => $total_tagihan,
+				'keterangan'     => $keterangan,
+				'status_tagihan' => 'belum-lunas',
+				'id_users'       => Auth::id()
+			]);
+		}
 
 		for ($i=0; $i < count($menu); $i++) {
 			if (isset($menu[$i]['varian_pilih'])) {

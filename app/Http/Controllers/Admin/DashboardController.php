@@ -8,6 +8,7 @@ use App\Models\Transaksi;
 use App\Models\Tagihan;
 use App\Models\Supplier;
 use App\Models\User;
+use Auth;
 use Arr;
 
 class DashboardController extends Controller
@@ -48,9 +49,10 @@ class DashboardController extends Controller
 
     public function settingsProfile()
     {
-    	$title = 'Settins Profile | Admin';
+		$title = 'Settins Profile | Admin';
+		$page  = '';
 
-    	return view('Admin.settings-profile',compact('title'));
+    	return view('Admin.settings-profile',compact('title','page'));
     }
 
 	public function save(Request $request)
@@ -67,9 +69,6 @@ class DashboardController extends Controller
 
 		if ($username == '' && $password != '') {
 			unset($data_users['username']);
-			if ($nama == '') {
-				unset($data_users['name']);
-			}
 			User::where('id_users',Auth::id())
 				->update($data_users);
 
@@ -77,22 +76,24 @@ class DashboardController extends Controller
 		}
 		else if($username != '' && $password == '') {
 			unset($data_users['password']);
-			if ($nama == '') {
-				unset($data_users['name']);
-			}
 			User::where('id_users',Auth::id())
 				->update($data_users);	
 
 			$message = 'Berhasil Ubah Username';
 		}
 		else if ($username != '' && $password != '') {
-			if ($nama == '') {
-				unset($data_users['name']);
-			}
 			User::where('id_users',Auth::id())
 				->update($data_users);
 
 			$message = 'Berhasil Ubah Username & Password';
+		}
+		else {
+			unset($data_users['username']);
+			unset($data_users['password']);
+			User::where('id_users',Auth::id())
+				->update($data_users);
+
+			$message = 'Berhasil Ubah Nama';
 		}
 
 		return redirect('/admin/settings-profile')->with('message',$message);

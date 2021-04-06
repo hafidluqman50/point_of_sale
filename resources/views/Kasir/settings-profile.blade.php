@@ -1,4 +1,4 @@
-@extends('Admin.layout.layout-app')
+@extends('Kasir.layout.layout-app')
 
 @section('content')
 	<div class="content-header">
@@ -23,16 +23,13 @@
 						Username Sudah Digunakan <button class="close" data-dismiss="alert">X</button>
 					</div>
 					@endif
-					<form action="{{ url('/admin/settings-profile/save') }}" method="POST" enctype="multipart/form-data" oninput="re_type_password.setCustomValidity(re_type_password.value != password.value ? 'Passwords do not match.' : '')">
+					<form action="{{ url('/kasir/settings-profile/save') }}" method="POST" enctype="multipart/form-data" oninput="re_type_password.setCustomValidity(re_type_password.value != password.value ? 'Passwords do not match.' : '')">
 						@csrf
 						<div class="card-body">
 							<div class="form-group">
-								<label for="">Nama</label>
-								<input type="text" name="nama" class="form-control" value="{{ old('nama') != '' ? old('nama') : '' }}">
-							</div>
-							<div class="form-group">
 								<label for="">Username</label>
-								<input type="text" name="username" class="form-control" value="{{ old('username') != '' ? old('username') : '' }}">
+								<input type="text" name="username" class="form-control" value="{{ old('username') != '' ? old('username') : Auth::user()->username }}" disabled="disabled">
+								<input type="checkbox" id="sip"> Ubah Username
 							</div>
 							<div class="form-group">
 								<label for="">Password</label>
@@ -51,4 +48,19 @@
 			</div>
 		</div>
 	</section>
+@endsection
+
+@section('js')
+<script>
+	$(function(){
+		$('#sip').click(function(){
+			if ($(this).is(':checked')) {
+				$('input[name="username"]').removeAttr('disabled');
+			}
+			else {
+				$('input[name="username"]').attr('disabled','disabled');
+			}
+		});
+	});
+</script>
 @endsection

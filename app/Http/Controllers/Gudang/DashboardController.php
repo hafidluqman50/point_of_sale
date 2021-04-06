@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Gudang;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -18,13 +19,13 @@ class DashboardController extends Controller
     public function settingsProfile()
     {
     	$title = 'Settins Profile | Gudang';
+		$page  = '';
 
-    	return view('Gudang.settings-profile',compact('title'));
+    	return view('Gudang.settings-profile',compact('title','page'));
     }
 
 	public function save(Request $request)
 	{
-		$nama  	  = $request->nama;
 		$username = $request->username;
 		$password = $request->password;
 
@@ -32,13 +33,10 @@ class DashboardController extends Controller
 			return redirect('/admin/settings-profile')->withInput($request->input());
 		}
 
-		$data_users = ['name' => $nama,'username' => $username,'password' => bcrypt($password)];
+		$data_users = ['username' => $username,'password' => bcrypt($password)];
 
 		if ($username == '' && $password != '') {
 			unset($data_users['username']);
-			if ($nama == '') {
-				unset($data_users['name']);
-			}
 			User::where('id_users',Auth::id())
 				->update($data_users);
 
@@ -46,18 +44,12 @@ class DashboardController extends Controller
 		}
 		else if($username != '' && $password == '') {
 			unset($data_users['password']);
-			if ($nama == '') {
-				unset($data_users['name']);
-			}
 			User::where('id_users',Auth::id())
 				->update($data_users);	
 
 			$message = 'Berhasil Ubah Username';
 		}
 		else if ($username != '' && $password != '') {
-			if ($nama == '') {
-				unset($data_users['name']);
-			}
 			User::where('id_users',Auth::id())
 				->update($data_users);
 

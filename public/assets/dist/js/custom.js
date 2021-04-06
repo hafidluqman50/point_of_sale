@@ -279,6 +279,7 @@ $(() => {
             {data:'tanggal_transaksi',name:'tanggal_transaksi'},
             {data:'total_harga',name:'total_harga'},
             {data:'total_bayar',name:'total_bayar'},
+            {data:'kembalian',name:'kembalian'},
             {data:'name',name:'name'},
             {data:'keterangan',name:'keterangan'},
             {data:'action',name:'action',searchable:false,orderable:false}

@@ -14,6 +14,10 @@ export default {
 		context.dispatch('closeModal','tagihanModal')
 		context.dispatch('hideDetailBill')
 	},
+	closeCheckoutMenu(context) {
+		context.commit(mutations.CLOSE_CHECKOUT_MENU)
+		context.dispatch('closeModal','checkoutMenu')
+	},
 	sidebarMenuLoad(context) {
 		axios.get('/load-jenis-item')
 		.then((response)=> {
@@ -177,7 +181,7 @@ export default {
 		axios.post('/data-item-jual/checkout',{
 			total_harga:dataPesanan.total_harga,
 			total_bayar:dataPesanan.total_bayar,
-			// kembalian:dataPesanan.kembalian,
+			kembalian:dataPesanan.kembalian,
 			keterangan:dataPesanan.keterangan,
 			status_transaksi:dataPesanan.status_transaksi,
 			ket_bayar:dataPesanan.ket_bayar,
@@ -188,10 +192,14 @@ export default {
 			context.commit(mutations.PROSES_BAYAR)
 			context.dispatch('loadSend',false)
 			context.dispatch('closeModal','checkoutMenu')
+			window.location.href = response.data.url_href
 		})
 		.catch((e) => {
 			console.log(e)
 		})
+	},
+	hitungKembalianAct(context,kembalian) {
+		context.commit(mutations.HITUNG_KEMBALIAN_ACT,kembalian)
 	},
 	tampilTagihan(context,page) {
 		axios.get('/data-item-jual/list-tagihan',{
@@ -206,6 +214,11 @@ export default {
 		.catch((e) => {
 			console.log(e)
 		})
+	},
+	pilihTagihan(context,param) {
+		context.commit(mutations.PILIH_TAGIHAN,param)
+		context.dispatch('closeModal','tagihanModal')
+		context.dispatch('openModal','checkoutMenu')
 	},
 	cariTagihanAct(context,param) {
 		if (param.cari_tagihan != null || param.cari_tagihan !== undefined) {

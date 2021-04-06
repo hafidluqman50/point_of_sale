@@ -5,13 +5,13 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Supplier</h1>
+					<h1 class="m-0 text-dark">User</h1>
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="#">Home</a></li>
-						<li class="breadcrumb-item"><a href="#">Supplier</a></li>
-						<li class="breadcrumb-item active">Supplier Tambah</li>
+						<li class="breadcrumb-item"><a href="#">User</a></li>
+						<li class="breadcrumb-item active">User Tambah</li>
 					</ol>
 				</div>
 			</div>
@@ -22,7 +22,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<a href="{{ url('/admin/data-supplier') }}">
+						<a href="{{ url('/admin/users') }}">
 							<button class="btn btn-default">
 								<span class="fas fa-arrow-left"></span> Kembali
 							</button>

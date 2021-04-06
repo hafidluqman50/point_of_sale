@@ -45,4 +45,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function checkUsername($username)
+    {
+        $check  = self::where('username',$username)->count();
+
+        $return = '';
+
+        if ($check == 0) {
+            $return = true;
+        }
+        else {
+            $return = false;
+        }
+
+        return $return;
+    }
 }

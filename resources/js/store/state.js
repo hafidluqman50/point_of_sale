@@ -23,7 +23,7 @@ export default {
 	dataPesanan:{
 		total_harga:0,
 		total_bayar:0,
-		// kembalian:null,
+		kembalian:0,
 		keterangan:null,
 		ket_bayar:null,
 		status_transaksi:null,

@@ -18,13 +18,25 @@ class isKasir
     {
         if (Auth::check()) 
         {
-            if (Auth::user()->level_user == 0) 
+            if (Auth::user()->status_delete == 0) 
             {
-                true;
+                if (Auth::user()->level_user == 0 && Auth::user()->status_akun == 1) 
+                {
+                    true;
+                }
+                else if (Auth::user()->level_user == 0 && Auth::user()->status_akun == 0) 
+                {
+                    Auth::logout();
+                    return redirect('/')->with('log','Akun Anda Di Nonaktifkan');
+                }
+                else {
+                    return redirect('/');
+                }
             }
-            else
+            else if(Auth::user()->status_delete == 1)
             {
-                return redirect('/');
+                Auth::logout();
+                return redirect('/')->with('log','Akun Anda Di Hapus');
             }
         }
         else

@@ -197,11 +197,21 @@
               </p>
             </a>
           </li>
+          @if (check_info_outlet())
           <li class="nav-item">
             <a href="{{ url('/admin/kasir') }}" class="nav-link">
               <i class="nav-icon fas fa-money-bill-wave"></i>
               <p>
                 Kasir
+              </p>
+            </a>
+          </li>
+          @endif
+          <li class="nav-item">
+            <a href="{{ url('/admin/info-outlet') }}" class="nav-link {{ $page == 'info-outlet' ? 'active' : '' }}">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                Info Outlet
               </p>
             </a>
           </li>
