@@ -52,14 +52,14 @@
 		}
 		.struk-total {
 			width:100%;
-			min-height:100px;
+			min-height:50px;
 			border-top:1px solid lightgrey;
 			border-bottom:1px solid lightgrey;
 			margin:0;
 		}
 		.struk-catatan {
 			width:100%;
-			height:50px;
+			min-height:50px;
 			border-top: 1px solid lightgrey;
 			padding-top:10px;
 		}
@@ -72,9 +72,9 @@
 				<div class="struk-header">
 					{{-- <div class="row align-items-center justify-content-center"> --}}
 						<h5 style="margin-bottom:7px; font-size:17px;"><b>JupiterPOS</b></h5>
-						<p style="margin:0; font-size:15px;">{{ $info_outlet->nama_outlet }}</p>
-						<p style="margin:0; font-size:15px;">{{ $info_outlet->alamat_outlet }}</p>
-						<p style="font-size:15px;"><span class="fas fa-phone"></span> {{ $info_outlet->nomor_telepon }}</p>
+						<p style="margin:0 0 7px 0; font-size:15px;">{{ $info_outlet->nama_outlet }}</p>
+						<p style="margin:0 0 7px 0; font-size:15px;">{{ $info_outlet->alamat_outlet }}</p>
+						<p style="margin:0;font-size:15px;"><span class="fas fa-phone"></span> {{ $info_outlet->nomor_telepon }}</p>
 					{{-- </div> --}}
 				</div>
 				<div class="struk-info">
@@ -93,6 +93,9 @@
 						<tr>
 							<td style="font-size:13px;"><b>{{ $element->nama_item }} : </b>
 								<td style="font-size:13px;"><b><span style="float:right">{{ format_rupiah($element->sub_total) }}</span></b></td>
+								<tr>
+									<td style="font-size:13px;"><b>{{ $element->banyak_pesan }}x {{ format_rupiah($element->harga_item) }}</b></td>
+								</tr>
 								@if ($element->varian != null)
 								<tr>
 									<td style="font-size:13px;">&nbsp;&nbsp;{{$explode[0]}} : </td>
