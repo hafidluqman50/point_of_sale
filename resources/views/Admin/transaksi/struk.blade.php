@@ -96,7 +96,7 @@
 								@if ($element->varian != null)
 								<tr>
 									<td style="font-size:13px;">&nbsp;&nbsp;{{$explode[0]}} : </td>
-									<td><span style="float:right">{{ format_rupiah($explode[1]) }}</span></td>
+									<td style="font-size:13px;"><span style="float:right">{{ format_rupiah($explode[1]) }}</span></td>
 								</tr>
 								@endif
 								@if ($element->keterangan != null)
